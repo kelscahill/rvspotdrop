@@ -1,0 +1,23 @@
+{% if post.thumbnail %}
+  {% set img_id = Image(post.thumbnail).id %}
+  {% set image_class = ' u-background--cover o-background-image--' ~ img_id %}
+  {% set img_src = Image(post.thumbnail).src|resize(1600,900) %}
+  <style>
+    .o-background-image--{{ img_id }} {
+      background-image: url({{ img_src }});
+    }
+  </style>
+{% endif %}
+<section class="c-section-hero{{ image_class }}">
+  <div class="c-section-hero--inner l-wrap l-container--m u-spacing">
+    {% if post.hero_title %}
+      <h1 class="o-heading--l">{{ post.hero_title }}</h1>
+    {% endif %}
+    {% if post.hero_description %}
+      <div class="c-section-hero__description o-heading--m">{{ post.hero_description }}</div>
+    {% endif %}
+    {% if post.hero_button %}
+      <a href="{{ post.hero_button.url }}" class="o-button" target="{{ post.hero_button.target ? post.hero_button.target : '_self' }}">{{ post.hero_button.title ? post.hero_button.title : 'Learn More' }}</a>
+    {% endif %}
+  </div>
+</section>

@@ -1,0 +1,128 @@
+/* ------------------------------------ *\
+    $HEADER
+\* ------------------------------------ */
+
+.c-utility {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: 40px;
+  background: $c-primary;
+
+  &--inner {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+  }
+
+  &__social {
+    a {
+      border: 0;
+      border-radius: 0;
+      background: none;
+      margin: 0;
+
+      svg path {
+        fill: $c-white;
+      }
+
+      &:hover,
+      &:focus {
+        background-color: $c-secondary;
+
+        svg path {
+          fill: $c-white;
+        }
+      }
+    }
+  }
+}
+
+.c-header {
+  &--inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__logo {
+    max-width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $space 0;
+    position: relative;
+    top: -8px;
+  }
+}
+
+/* ------------------------------------ *\
+    $FOOTER
+\* ------------------------------------ */
+
+.c-footer {
+  position: relative;
+  z-index: 1;
+  background-color: $c-secondary;
+
+  &-main {
+    padding: $space-double 0;
+
+    &__logo {
+      display: block;
+      background-color: $c-secondary;
+      border-radius: 180px;
+      width: 180px;
+      height: 180px;
+      margin-top: -90px;
+      margin-bottom: -$space;
+      display: block;
+      position: relative;
+      margin-left: auto;
+      margin-right: auto;
+      padding: $space;
+
+      .o-logo {
+        max-width: 140px;
+        margin: auto;
+        display: block;
+        transform: scale(1);
+      }
+    }
+
+    &__contact {
+      a {
+        color: $c-black;
+
+        &:hover,
+        &:focus {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  &-legal {
+    background-color: $c-primary;
+    color: $c-white;
+    width: 100%;
+    font-size: $font-size-xs;
+
+    .c-footer--inner {
+      padding: $space-quarter $space;
+      grid-row-gap: 0;
+    }
+
+    &__copyright {
+      @include media('>medium') {
+        text-align: left;
+      }
+    }
+
+    &__nav {
+      @include media('>medium') {
+        text-align: right;
+      }
+    }
+  }
+}
