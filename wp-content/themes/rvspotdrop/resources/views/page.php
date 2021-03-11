@@ -23,6 +23,9 @@
 
 $context = Timber::get_context();
 $post = new TimberPost();
+$context['current_user'] = new Timber\User();
 $context['post'] = $post;
+$context['user_logged_in'] = is_user_logged_in();
+$context['is_page_login'] = is_page('login');
 
 Timber::render(array('05-pages/page-' . $post->post_name . '.twig', '05-pages/page.twig'), $context);

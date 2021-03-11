@@ -121,13 +121,176 @@ function my_acf_json_save_point($path) {
 }
 add_filter('acf/settings/save_json', 'my_acf_json_save_point');
 
+/**
+ * Register custom block types.
+ */
+function register_custom_block_types() {
+  if ( function_exists( 'acf_register_block_type' ) ) {
+    // Register a banner block.
+    acf_register_block_type(
+      array(
+        'name'            => 'banner',
+        'title'           => 'Banner',
+        'description'     => 'A custom banner block.',
+        'category'        => 'custom',
+        'icon'            => 'id',
+        'keywords'        => array( 'banner', 'section' ),
+        'render_template' => 'blocks/banner.php',
+        'mode'            => 'edit',
+        'supports'        => array(
+          'mode' => false,
+        ),
+      )
+    );
+    // Register a hero block.
+    acf_register_block_type(
+      array(
+        'name'            => 'hero',
+        'title'           => 'Hero',
+        'description'     => 'A custom hero block.',
+        'category'        => 'custom',
+        'icon'            => 'schedule',
+        'keywords'        => array( 'hero', 'banner'),
+        'render_template' => 'blocks/hero.php',
+        'mode'            => 'edit',
+        'supports'        => array(
+          'mode' => false,
+        ),
+      )
+    );
+    // Register a cards block.
+    acf_register_block_type(
+      array(
+        'name'            => 'cards',
+        'title'           => 'Cards',
+        'description'     => 'A custom cards block.',
+        'category'        => 'custom',
+        'icon'            => 'screenoptions',
+        'keywords'        => array( 'cards', 'blocks'),
+        'render_template' => 'blocks/cards.php',
+        'mode'            => 'edit',
+        'supports'        => array(
+          'mode' => false,
+        ),
+      )
+    );
+  }
+}
+add_action( 'init', 'register_custom_block_types' );
+
 /*
  * Restrict non logged users to certain pages.
  */
 add_action('template_redirect','my_non_logged_redirect');
 function my_non_logged_redirect() {
-  if ((is_page('member') || is_page('partner')) && !is_user_logged_in() ) {
+  if ((is_page('campground-request') || is_page('campground-availability') ) && !is_user_logged_in() ) {
     wp_redirect( home_url() );
     die();
   }
+}
+
+/*
+ * Remove fields from user profiles.
+ */
+function filter_user_contact_methods( $methods ) {
+  // To remove a method
+  unset( $methods['myspace'] );
+  unset( $methods['linkedin'] );
+  unset( $methods['soundcloud'] );
+  unset( $methods['pinterest'] );
+  unset( $methods['tumblr'] );
+  unset( $methods['youtube'] );
+  unset( $methods['wikipedia'] );
+  unset( $methods['twitter'] );
+  unset( $methods['facebook'] );
+  unset( $methods['instagram'] );
+  unset( $methods['website'] );
+
+  return $methods;
+}
+add_filter( 'user_contactmethods', 'filter_user_contact_methods' );
+
+/**
+ * Modify WPForms Date/Time field date picker to accept a range of dates.
+ *
+ * @link https://wpforms.com/developers/allow-date-range-or-multiple-dates-in-date-picker/
+ *
+ */
+function wpf_dev_date_picker_range() {
+  ?>
+    <script type="text/javascript">
+      window.wpforms_datepicker = {
+        mode: "range"
+      }
+    </script>
+  <?php
+}
+add_action( 'wpforms_wp_footer', 'wpf_dev_date_picker_range' );
+
+/**
+ * Turn checkbox values into an array.
+ *
+ * @link https://wpforms.com/developers/how-to-store-checkbox-values-as-arrays-with-post-submissions/
+ *
+ */
+
+function wpforms_dev_user_registration_process_meta( $field_value, $meta_key, $field_id, $fields, $form_data ) {
+  // Turn checkbox value into an array
+  $keys = array(
+    'preferred_camping_locations_canada',
+    'preferred_camping_locations_usa',
+    'available_services',
+    'rig_types_welcome',
+    'park_features',
+    'rv_spot_type',
+    'age_restrictions',
+    'nightly_rate',
+    'service_requirements',
+    'rv_slide_outs',
+    'important_features',
+    'campground_features',
+    'locations_of_interest'
+  );
+
+  foreach ( $keys as $key ) {
+    if ( $meta_key === $key ) {
+      $field_value = explode( "\n", $field_value );
+    }
+  }
+
+  return $field_value;
+}
+add_filter( 'wpforms_user_registration_process_meta', 'wpforms_dev_user_registration_process_meta', 10, 5 );
+
+/**
+ * Filters form notification email footer content.
+ *
+ * @link https://wpforms.com/developers/how-to-remove-or-change-email-notification-footer-text/
+ *
+ * @param  array $footer
+ * @return string
+ */
+function wpf_dev_email_footer_text( $footer ) {
+    $footer = sprintf( __( '<div style="background-color: #f33f4b; color: #fcfcfc; padding: 20px; margin-left: -19px; margin-right: -19px; margin-top: -21px;">
+      <div style="display: inline-flex; align-items: center; justify-content: center;">
+        <a style="padding: 10px;" target="_blank" href="https://www.facebook.com/rvspotdrop"><img alt="Facebook" border="0" hspace="0" vspace="0" style="vertical-align:top;" target="_blank" src="https://img.mailinblue.com/new_images/rnb/theme4/rnb_ico_fb.png"></a>
+        <a style="padding: 10px;" target="_blank" href="https://www.instagram.com/rvspotdrop"><img alt="Instagram" border="0" hspace="0" vspace="0" style="vertical-align:top;" target="_blank" src="https://img.mailinblue.com/new_images/rnb/theme4/rnb_ico_ig.png"></a>
+      </div>
+      <div style="display: block; text-align: center; padding-top: 10px;">
+        <p style="color: #fcfcfc;"><a href="https://rvspotdrop.com" style="color: #fcfcfc; text-decoration: none;"><strong>RVSpotDrop</strong></a> | 18036 96 AVE, Edmonton, AB</p>
+        <p style="color: #fcfcfc;"><a href="mailto:hello@rvspotdrop.com" style="color: #fcfcfc;">hello@rvspotdrop.com</a></p>
+        <p style="color: #fcfcfc;">You\'ve received this email because you submitted a form on <a href="https://rvspotdrop.com" style="color: #fcfcfc;">rvspotdrop.com</a></p>
+      </div>
+    </div>', 'wpforms' ), esc_url( home_url() ), wp_specialchars_decode( get_bloginfo( 'name' ) ) );
+    return $footer;
+}
+add_filter( 'wpforms_email_footer_text', 'wpf_dev_email_footer_text' );
+
+
+add_filter('acf/validate_value/name=locations_of_interest', 'only_allow_5', 20, 4);
+function only_allow_5($valid, $value, $field, $input) {
+  if (count($value) > 5) {
+    $valid = 'Only Select 5';
+  }
+  return $valid;
 }

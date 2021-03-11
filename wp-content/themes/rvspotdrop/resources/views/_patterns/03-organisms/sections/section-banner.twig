@@ -1,0 +1,27 @@
+{% if banner.heading or banner.description %}
+  <section {{ banner.anchor ? 'id="' ~ banner.anchor ~ '" ' }}class="c-section-banner o-section">
+    <div class="c-section-banner--inner l-wrap l-container" bp="grid 6@lg">
+      <div class="c-section-banner__body u-spacing">
+        {% if banner.kicker %}
+          <div class="c-section-banner__kicker o-kicker">{{ banner.kicker }}</div>
+        {% endif %}
+        {% if banner.heading %}
+          <h2 class="c-section-banner__heading o-heading--xl u-space--bottom">{{ banner.heading }}</h2>
+        {% endif %}
+        {% if banner.description %}
+          <div class="c-section-banner__description o-rte-text">{{ banner.description }}</div>
+        {% endif %}
+        {% if banner.button %}
+          <a href="{{ banner.button.url }}" class="c-section-banner__button o-button--primary" target="{{ banner.button.target ? banner.button.target : '_self' }}">{{ banner.button.title ? banner.button.title : 'Learn More' }}</a>
+        {% endif %}
+      </div>
+      {% if banner.image %}
+        <div class="c-section-banner__image js-inview" data-animation="animate__animated animate__slideInRight">
+          <picture>
+            <img src="{{ Image(banner.image).src|resize(800,800) }}" alt="{{ Image(banner.image).alt }}" />
+          </picture>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endif %}

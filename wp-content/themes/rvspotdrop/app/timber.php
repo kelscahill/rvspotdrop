@@ -35,7 +35,7 @@ class SageTimberTheme extends TimberSite {
   }
 
   function add_to_context( $context ) {
-
+    
     /* Navigation Menus */
     $context['primary_nav'] = new TimberMenu('primary_navigation');
     $context['utility_nav'] = new TimberMenu('utility_navigation');

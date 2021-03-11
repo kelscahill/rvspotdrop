@@ -2,12 +2,38 @@
     $HEADER
 \* ------------------------------------ */
 
-.c-utility {
-  position: sticky;
+#wpadminbar {
+  position: fixed;
+  z-index: 10;
+
+  #wp-admin-bar-root-default {
+    #wp-admin-bar-customize,
+    #wp-admin-bar-comments,
+    #wp-admin-bar-wpseo-menu {
+      display: none;
+    }
+  }
+}
+
+.logged-in .c-utility {
   top: 0;
-  z-index: 2;
+
+  @include media(">782px") {
+    top: 32px;
+  }
+}
+
+.c-utility {
+  position: relative;
+  top: 0;
+  z-index: 9;
   height: 40px;
   background: $c-primary;
+
+  @include media(">medium") {
+    position: sticky;
+  }
+
 
   &--inner {
     display: flex;
@@ -15,7 +41,16 @@
     justify-content: space-between;
   }
 
+  &__nav {
+    @include media("<=medium") {
+      display: none;
+    }
+  }
+
   &__social {
+    position: relative;
+    left: -$space-half;
+
     a {
       border: 0;
       border-radius: 0;
@@ -39,6 +74,9 @@
 }
 
 .c-header {
+  border-bottom: $border--standard-light;
+  background-color: $c-white;
+
   &--inner {
     display: flex;
     align-items: center;
@@ -46,13 +84,40 @@
   }
 
   &__logo {
-    max-width: 200px;
+    display: flex;
+    align-items: center;
+    max-width: 240px;
+    padding: $space 0;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  &__nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: $space 0;
-    position: relative;
-    top: -8px;
+
+    .c-nav-primary {
+      display: none;
+
+      @include media(">xlarge") {
+        display: flex;
+      }
+    }
+
+    .o-toggle {
+      border-radius: 0;
+      background: none;
+      border: 0;
+      position: relative;
+      right: -$space;
+
+      @include media(">xlarge") {
+        display: none;
+      }
+    }
   }
 }
 
@@ -64,31 +129,11 @@
   position: relative;
   z-index: 1;
   background-color: $c-secondary;
+  font-weight: bold;
+  margin-top: $space-quad;
 
   &-main {
     padding: $space-double 0;
-
-    &__logo {
-      display: block;
-      background-color: $c-secondary;
-      border-radius: 180px;
-      width: 180px;
-      height: 180px;
-      margin-top: -90px;
-      margin-bottom: -$space;
-      display: block;
-      position: relative;
-      margin-left: auto;
-      margin-right: auto;
-      padding: $space;
-
-      .o-logo {
-        max-width: 140px;
-        margin: auto;
-        display: block;
-        transform: scale(1);
-      }
-    }
 
     &__contact {
       a {
@@ -114,13 +159,15 @@
     }
 
     &__copyright {
-      @include media('>medium') {
+      text-align: center;
+
+      @include media(">medium") {
         text-align: left;
       }
     }
 
     &__nav {
-      @include media('>medium') {
+      @include media(">medium") {
         text-align: right;
       }
     }

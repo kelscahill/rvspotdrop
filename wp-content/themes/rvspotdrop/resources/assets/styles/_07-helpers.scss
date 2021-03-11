@@ -83,6 +83,16 @@
   clip: rect(1px, 1px, 1px, 1px);
 }
 
+.js-inview {
+  opacity: 0;
+  visibility: hidden;
+
+  &.is-inview {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
 /**
  * Hide elements only present and necessary for js enabled browsers.
  */
@@ -92,6 +102,8 @@
 
 .u-align--center {
   text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .u-background--cover {

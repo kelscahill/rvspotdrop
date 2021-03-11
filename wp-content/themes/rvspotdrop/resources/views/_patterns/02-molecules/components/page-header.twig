@@ -1,0 +1,13 @@
+{% if is_front_page %}
+  <h1 class="is-vishidden">{{ site.title }}</h1>
+{% else %}
+  <div class="o-page-title u-spacing u-align-center l-wrap">
+    <h1>{{ post.display_title ? post.display_title : post.title }}</h1>
+    {% if post.intro %}
+      <div class="o-intro l-container--l u-align--center">{{ post.intro }}</div>
+    {% endif %}
+    {% if post.button %}
+      <a href="{{ post.button.url }}" class="o-button--primary" target="{{ post.button.target ? post.button.target : '_self' }}">{{ post.button.title ? post.button.title : 'Learn More' }}</a>
+    {% endif %}
+  </div>
+{% endif %}

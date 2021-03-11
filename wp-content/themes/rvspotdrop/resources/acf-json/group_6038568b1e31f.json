@@ -3,7 +3,23 @@
     "title": "Partner Additional Details",
     "fields": [
         {
-            "key": "field_60385695678a8",
+            "key": "field_60385cb078bd8",
+            "label": "Park General Information",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_60495fbfd37bf",
             "label": "Position Title",
             "name": "position_title",
             "type": "text",
@@ -20,41 +36,6 @@
             "prepend": "",
             "append": "",
             "maxlength": ""
-        },
-        {
-            "key": "field_603856a8678a9",
-            "label": "Phone",
-            "name": "phone",
-            "type": "text",
-            "instructions": "Best number to reach you including area code",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "(xxx) xxx-xxxx",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_60385cb078bd8",
-            "label": "Park General Information",
-            "name": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "left",
-            "endpoint": 0
         },
         {
             "key": "field_603856d7678aa",
@@ -76,11 +57,11 @@
             "maxlength": ""
         },
         {
-            "key": "field_603856e6678ab",
+            "key": "field_603da978f4171",
             "label": "RV Park Address",
             "name": "rv_park_address",
-            "type": "group",
-            "instructions": "Note: Currently only serving Canada and the US",
+            "type": "textarea",
+            "instructions": "Please note we are currently only serving Canada and the US (excluding Hawaii).",
             "required": 1,
             "conditional_logic": 0,
             "wrapper": {
@@ -88,166 +69,18 @@
                 "class": "",
                 "id": ""
             },
-            "layout": "block",
-            "sub_fields": [
-                {
-                    "key": "field_603856f7678ac",
-                    "label": "Address Line 1",
-                    "name": "address_line_1",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": ""
-                },
-                {
-                    "key": "field_603856ff678ad",
-                    "label": "Address Line 2",
-                    "name": "address_line_2",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": ""
-                },
-                {
-                    "key": "field_60385707678ae",
-                    "label": "City",
-                    "name": "city",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "50",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": ""
-                },
-                {
-                    "key": "field_6038570b678af",
-                    "label": "State",
-                    "name": "state",
-                    "type": "select",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "50",
-                        "class": "",
-                        "id": ""
-                    },
-                    "choices": {
-                        "Select State": "Select State",
-                        "AL": "Alabama",
-                        "AK": "Alaska",
-                        "AZ": "Arizona",
-                        "AR": "Arkansas",
-                        "CA": "California",
-                        "CO": "Colorado",
-                        "CT": "Connecticut",
-                        "DE": "Delaware",
-                        "FL": "Florida",
-                        "GA": "Georgia",
-                        "HI": "Hawaii",
-                        "ID": "Idaho",
-                        "IL": "Illinois",
-                        "IN": "Indiana",
-                        "IA": "Iowa",
-                        "KS": "Kansas",
-                        "KY": "Kentucky",
-                        "LA": "Louisiana",
-                        "ME": "Maine",
-                        "MD": "Maryland",
-                        "MA": "Massachusetts",
-                        "MI": "Michigan",
-                        "MN": "Minnesota",
-                        "MS": "Mississippi",
-                        "MO": "Missouri",
-                        "MT": "Montana",
-                        "NE": "Nebraska",
-                        "NV": "Nevada",
-                        "NH": "New Hampshire",
-                        "NJ": "New Jersey",
-                        "NM": "New Mexico",
-                        "NY": "New York",
-                        "NC": "North Carolina",
-                        "ND": "North Dakota",
-                        "OH": "Ohio",
-                        "OK": "Oklahoma",
-                        "OR": "Oregon",
-                        "PA": "Pennsylvania",
-                        "RI": "Rhode Island",
-                        "SC": "South Carolina",
-                        "SD": "South Dakota",
-                        "TN": "Tennessee",
-                        "TX": "Texas",
-                        "UT": "Utah",
-                        "VT": "Vermont",
-                        "VA": "Virginia",
-                        "WA": "Washington",
-                        "WV": "West Virginia",
-                        "WI": "Wisconsin",
-                        "WY": "Wyoming"
-                    },
-                    "default_value": false,
-                    "allow_null": 0,
-                    "multiple": 0,
-                    "ui": 0,
-                    "return_format": "value",
-                    "ajax": 0,
-                    "placeholder": ""
-                },
-                {
-                    "key": "field_6038574e678b0",
-                    "label": "Zip Code",
-                    "name": "zip_code",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "50",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": ""
-                }
-            ]
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": "",
+            "new_lines": ""
         },
         {
             "key": "field_60385789aa9b5",
             "label": "RV Park Website",
             "name": "rv_park_website",
             "type": "url",
-            "instructions": "",
+            "instructions": "Your park's website.",
             "required": 1,
             "conditional_logic": 0,
             "wrapper": {
@@ -257,6 +90,65 @@
             },
             "default_value": "",
             "placeholder": ""
+        },
+        {
+            "key": "field_603da61557fe0",
+            "label": "RV Park Facebook Url",
+            "name": "rv_park_facebook_url",
+            "type": "url",
+            "instructions": "Facebook page (if you have one).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_603da8957ddfd",
+            "label": "RV Park Instagram Handle",
+            "name": "rv_park_instagram_handle",
+            "type": "text",
+            "instructions": "Instagram handle (if you have one).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "@",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_603ed7140f55c",
+            "label": "RV Park Profile Image",
+            "name": "rv_park_profile_image",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
         },
         {
             "key": "field_603857ecaa9b8",
@@ -305,27 +197,8 @@
             "key": "field_603857baaa9b7",
             "label": "Nightly Rate",
             "name": "nightly_rate",
-            "type": "text",
-            "instructions": "What is the cost to stay one night at your RV park?",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "$",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_60385b0e78bd2",
-            "label": "Available Services",
-            "name": "available_services",
             "type": "checkbox",
-            "instructions": "Please choose all service types you offer",
+            "instructions": "What is the price range for a nightly stay?",
             "required": 1,
             "conditional_logic": 0,
             "wrapper": {
@@ -334,15 +207,81 @@
                 "id": ""
             },
             "choices": {
-                "3 way (30 amp, water, sewer)": "3 way (30 amp, water, sewer)",
-                "3 way (50 amp, water, sewer)": "3 way (50 amp, water, sewer)",
+                "$0-19": "$0-19",
+                "$20-29": "$20-29",
+                "$30-39": "$30-39",
+                "$40-49": "$40-49",
+                "$50-59": "$50-59",
+                "$60-69": "$60-69",
+                "$70-79": "$70-79",
+                ">$80": ">$80"
+            },
+            "allow_custom": 0,
+            "default_value": [],
+            "layout": "vertical",
+            "toggle": 0,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_60495f41c5ee3",
+            "label": "Direct Booking Link",
+            "name": "direct_booking_link",
+            "type": "text",
+            "instructions": "Please provide a direct link to your RV park's booking page or booking information page.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_603ed790a8eec",
+            "label": "Park Services",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_60385b0e78bd2",
+            "label": "Available Services",
+            "name": "available_services",
+            "type": "checkbox",
+            "instructions": "Please choose all service types you offer. *Full hookups typically include electric, water, and sewer)",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Full hookups (30 amp)": "Full hookups (30 amp)",
+                "Full hookups (50 amp)": "Full hookups (50 amp)",
                 "30 amp power": "30 amp power",
                 "50 amp power": "50 amp power",
-                "Water hookups": "Water hookups",
+                "Water hookup": "Water hookup",
                 "Potable water station": "Potable water station",
                 "Sewer": "Sewer",
                 "Dump station": "Dump station",
-                "Dry camping (no services)": "Dry camping (no services)"
+                "Dry camping (no services)": "Dry camping (no services)",
+                "Wifi \/ Internet": "Wifi \/ Internet"
             },
             "allow_custom": 0,
             "default_value": [],
@@ -452,36 +391,6 @@
             "step": ""
         },
         {
-            "key": "field_60385c4b78bd7",
-            "label": "What Is The Price Range For a Nightly Stay?",
-            "name": "nightly_stay_price_range",
-            "type": "checkbox",
-            "instructions": "Choose all that apply.",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "$0-19": "$0-19",
-                "$20-29": "$20-29",
-                "$30-39": "$30-39",
-                "$40-49": "$40-49",
-                "$50-59": "$50-59",
-                "$60-69": "$60-69",
-                "$70-79": "$70-79",
-                ">$80": ">$80"
-            },
-            "allow_custom": 0,
-            "default_value": [],
-            "layout": "vertical",
-            "toggle": 0,
-            "return_format": "value",
-            "save_custom": 0
-        },
-        {
             "key": "field_60385ceec29ee",
             "label": "Park Features",
             "name": "",
@@ -522,7 +431,8 @@
                 "Outdoor recreation": "Outdoor recreation",
                 "Fire rings": "Fire rings",
                 "Dog run\/park": "Dog run\/park",
-                "Open year round": "Open year round"
+                "Open year round": "Open year round",
+                "Other": "Other"
             },
             "allow_custom": 0,
             "default_value": [],
@@ -545,8 +455,8 @@
                 "id": ""
             },
             "choices": {
-                "Pull-Thru": "Pull-Thru",
-                "Back In": "Back In"
+                "Back-in": "Back-in",
+                "Pull thru": "Pull thru"
             },
             "allow_custom": 0,
             "default_value": [],
@@ -582,7 +492,7 @@
         {
             "key": "field_60385deec29f2",
             "label": "Pet Friendly",
-            "name": "pet_friendly",
+            "name": "rv_park_pet_friendly",
             "type": "radio",
             "instructions": "Are you pet-friendly?",
             "required": 1,
@@ -606,7 +516,7 @@
         {
             "key": "field_60385e6ac29f3",
             "label": "Pet Restrictions",
-            "name": "pet_restrictions",
+            "name": "rv_park_pet_restrictions",
             "type": "radio",
             "instructions": "If you are pet friendly, do you have any pet restrictions?",
             "required": 0,
@@ -630,7 +540,7 @@
         {
             "key": "field_60385efac29f4",
             "label": "Pet Restriction Details",
-            "name": "pet_restriction_details",
+            "name": "rv_park_pet_restriction_details",
             "type": "textarea",
             "instructions": "What Are Your Pet Restrictions? Please list any pet restrictions. Eg. 2 pets, under 20lbs, no lizards.",
             "required": 0,
@@ -657,7 +567,7 @@
         {
             "key": "field_60385f2bc29f5",
             "label": "Family Friendly",
-            "name": "family_friendly",
+            "name": "rv_park_family_friendly",
             "type": "radio",
             "instructions": "Are You Family Friendly?",
             "required": 1,
@@ -765,13 +675,13 @@
             }
         ]
     ],
-    "menu_order": 0,
-    "position": "normal",
+    "menu_order": -1,
+    "position": "acf_after_title",
     "style": "default",
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1614307403
+    "modified": 1615424305
 }

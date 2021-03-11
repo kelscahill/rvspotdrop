@@ -3,211 +3,26 @@
     "title": "Member Additional Details",
     "fields": [
         {
-            "key": "field_60384dcb48055",
-            "label": "Preferred Camping Country",
-            "name": "country",
-            "type": "radio",
-            "instructions": "Where do you want to camp?",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "usa": "United States",
-                "canada": "Canada"
-            },
-            "allow_null": 0,
-            "other_choice": 0,
-            "default_value": "usa",
-            "layout": "horizontal",
-            "return_format": "array",
-            "save_other_choice": 0
-        },
-        {
-            "key": "field_60384e3048056",
-            "label": "Preferred Camping Locations - Canada",
-            "name": "preferred_camping_locations_canada",
-            "type": "checkbox",
-            "instructions": "Where do you want to camp? Choose up to 10 preferred camping locations.",
+            "key": "field_604965f9dfdf1",
+            "label": "Equipment Details",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
             "required": 0,
-            "conditional_logic": [
-                [
-                    {
-                        "field": "field_60384dcb48055",
-                        "operator": "==",
-                        "value": "canada"
-                    }
-                ]
-            ],
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "alberta": "Alberta",
-                "british_columbia": "British Columbia (general)",
-                "okanagan": "Okanagan (BC)",
-                "cancouver_island": "Vancouver Island (BC)",
-                "eastern_canada": "Eastern Canada (Maritimes)",
-                "manitoba": "Manitoba",
-                "ontario": "Ontario",
-                "quebec": "Quebec",
-                "saskatchewan": "Saskatchewan"
-            },
-            "allow_custom": 0,
-            "default_value": [],
-            "layout": "vertical",
-            "toggle": 0,
-            "return_format": "array",
-            "save_custom": 0
-        },
-        {
-            "key": "field_60384f0a48057",
-            "label": "Preferred Camping Locations - USA",
-            "name": "preferred_camping_locations_usa",
-            "type": "checkbox",
-            "instructions": "Where do you want to camp? Choose up to 10 preferred camping locations.",
-            "required": 0,
-            "conditional_logic": [
-                [
-                    {
-                        "field": "field_60384dcb48055",
-                        "operator": "==",
-                        "value": "usa"
-                    }
-                ]
-            ],
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "AL": "Alabama",
-                "AK": "Alaska",
-                "AZ": "Arizona",
-                "AR": "Arkansas",
-                "CA": "California",
-                "CO": "Colorado",
-                "CT": "Connecticut",
-                "DE": "Delaware",
-                "FL": "Florida",
-                "GA": "Georgia",
-                "HI": "Hawaii",
-                "ID": "Idaho",
-                "IL": "Illinois",
-                "IN": "Indiana",
-                "IA": "Iowa",
-                "KS": "Kansas",
-                "KY": "Kentucky",
-                "LA": "Louisiana",
-                "ME": "Maine",
-                "MD": "Maryland",
-                "MA": "Massachusetts",
-                "MI": "Michigan",
-                "MN": "Minnesota",
-                "MS": "Mississippi",
-                "MO": "Missouri",
-                "MT": "Montana",
-                "NE": "Nebraska",
-                "NV": "Nevada",
-                "NH": "New Hampshire",
-                "NJ": "New Jersey",
-                "NM": "New Mexico",
-                "NY": "New York",
-                "NC": "North Carolina",
-                "ND": "North Dakota",
-                "OH": "Ohio",
-                "OK": "Oklahoma",
-                "OR": "Oregon",
-                "PA": "Pennsylvania",
-                "RI": "Rhode Island",
-                "SC": "South Carolina",
-                "SD": "South Dakota",
-                "TN": "Tennessee",
-                "TX": "Texas",
-                "UT": "Utah",
-                "VT": "Vermont",
-                "VA": "Virginia",
-                "WA": "Washington",
-                "WV": "West Virginia",
-                "WI": "Wisconsin",
-                "WY": "Wyoming"
-            },
-            "allow_custom": 0,
-            "default_value": [],
-            "layout": "vertical",
-            "toggle": 0,
-            "return_format": "array",
-            "save_custom": 0
-        },
-        {
-            "key": "field_60384fae48058",
-            "label": "Service Requirements",
-            "name": "service_requirements",
-            "type": "select",
-            "instructions": "Choose what service requirements you need.",
-            "required": 1,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "choices": {
-                "Select one": "Select one",
-                "30_amp": "30 Amp only",
-                "50_amp": "50 Amp only",
-                "3_way_30_amp": "3 way (30 Amp power, water, sewer)",
-                "3_way_50_amp": "3 way (50 Amp power, water, sewer)",
-                "water_only": "Water Only",
-                "dry_camping": "Dry camping (no services)"
-            },
-            "default_value": false,
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "return_format": "array",
-            "ajax": 0,
-            "placeholder": ""
-        },
-        {
-            "key": "field_6038506d48059",
-            "label": "Rig Length",
-            "name": "rig_length",
-            "type": "select",
-            "instructions": "Please select the length of your rig. This measurement is the trailer only and includes the hitch.",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "Select one": "Select one",
-                "under_20": "Less than 20'",
-                "21_30": "21 - 30'",
-                "31_40": "31 - 40'",
-                "over_41": "Greater than 41'"
-            },
-            "default_value": false,
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "return_format": "array",
-            "ajax": 0,
-            "placeholder": ""
+            "placement": "top",
+            "endpoint": 0
         },
         {
             "key": "field_603850ce4805a",
-            "label": "Rig Type",
-            "name": "rig_type",
-            "type": "select",
+            "label": "Equipment Type",
+            "name": "equipment_type",
+            "type": "radio",
             "instructions": "What kind of rig do you have?",
             "required": 1,
             "conditional_logic": 0,
@@ -217,26 +32,26 @@
                 "id": ""
             },
             "choices": {
-                "Select one": "Select one",
-                "A Class": "A Class",
-                "B Class \/ Van": "B Class \/ Van",
-                "C Class": "C Class",
-                "Travel Trailer": "Travel Trailer",
-                "Fifth Wheel": "Fifth Wheel",
-                "Tent Trailer": "Tent Trailer"
+                "Class A": "Class A",
+                "Travel trailer": "Travel trailer",
+                "Class B \/ Van": "Class B \/ Van",
+                "Fifth wheel": "Fifth wheel",
+                "Class C": "Class C",
+                "Hybrid": "Hybrid",
+                "Pop-up camper": "Pop-up camper",
+                "Truck camper": "Truck camper"
             },
-            "default_value": false,
             "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
+            "other_choice": 0,
+            "default_value": "",
+            "layout": "vertical",
             "return_format": "value",
-            "ajax": 0,
-            "placeholder": ""
+            "save_other_choice": 0
         },
         {
             "key": "field_603851194805b",
-            "label": "Rig Year",
-            "name": "rig_year",
+            "label": "Equipment Year",
+            "name": "equipment_year",
             "type": "text",
             "instructions": "What year is your rig? *Some campgrounds may have age restrictions.",
             "required": 1,
@@ -253,11 +68,56 @@
             "maxlength": ""
         },
         {
-            "key": "field_6038514f4805c",
-            "label": "Pet Friendly",
-            "name": "pet_friendly",
-            "type": "radio",
-            "instructions": "Are you traveling with pets?",
+            "key": "field_6038506d48059",
+            "label": "Equipment length",
+            "name": "equipment_length",
+            "type": "text",
+            "instructions": "Please select the length of your rig in feet. This measurement is the trailer only and includes the hitch.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_6042a640367ef",
+            "label": "RV Slide-outs",
+            "name": "rv_slide_outs",
+            "type": "checkbox",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Driver": "Driver",
+                "Passenger": "Passenger",
+                "Rear": "Rear",
+                "No slide-outs": "No slide-outs"
+            },
+            "allow_custom": 0,
+            "default_value": [],
+            "layout": "vertical",
+            "toggle": 0,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_60384fae48058",
+            "label": "Service Requirements",
+            "name": "service_requirements",
+            "type": "checkbox",
+            "instructions": "Choose what service requirements you need. *Full hookups is typically electric, water, and sewer.",
             "required": 1,
             "conditional_logic": 0,
             "wrapper": {
@@ -266,65 +126,131 @@
                 "id": ""
             },
             "choices": {
-                "Yes": "Yes",
-                "No": "No"
+                "Full hookup (30 amp)": "Full hookup (30 amp)",
+                "Full hookup (50 amp)": "Full hookup (50 amp)",
+                "20 amp": "20 amp",
+                "30 amp": "30 amp",
+                "50 amp": "50 amp",
+                "100 amp": "100 amp",
+                "Water hookup": "Water hookup",
+                "Sewer hookup": "Sewer hookup",
+                "Dump station": "Dump station",
+                "Dry camping (no services)": "Dry camping (no services)",
+                "ADA Accessible": "ADA Accessible",
+                "Wifi \/ Internet": "Wifi \/ Internet"
+            },
+            "allow_custom": 0,
+            "default_value": [],
+            "layout": "vertical",
+            "toggle": 0,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_60466e5bd4ebe",
+            "label": "Other Important Features",
+            "name": "important_features",
+            "type": "checkbox",
+            "instructions": "What other features are important to you when you choose a campground?",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Pet friendly": "Pet friendly",
+                "Kid friendly": "Kid friendly",
+                "Adult only": "Adult only",
+                "None of the above": "None of the above"
+            },
+            "allow_custom": 0,
+            "default_value": [],
+            "layout": "vertical",
+            "toggle": 0,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_6042a4921fc9b",
+            "label": "Other Information",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_60466eb687ab6",
+            "label": "Phone",
+            "name": "phone",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_6042a4021fc97",
+            "label": "Gender",
+            "name": "gender",
+            "type": "radio",
+            "instructions": "Select your gender",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Not specified": "Not specified",
+                "Male": "Male",
+                "Female": "Female",
+                "Other": "Other"
             },
             "allow_null": 0,
             "other_choice": 0,
-            "default_value": "No",
+            "default_value": "",
             "layout": "vertical",
             "return_format": "value",
             "save_other_choice": 0
         },
         {
-            "key": "field_603851764805d",
-            "label": "Adult Only",
-            "name": "adult_only",
-            "type": "radio",
-            "instructions": "Are you looking for an adult-only campground or resort?",
-            "required": 1,
+            "key": "field_6042a4581fc98",
+            "label": "Birthday",
+            "name": "birthday",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "choices": {
-                "Yes": "Yes",
-                "No": "No",
-                "No preference": "No preference"
-            },
-            "allow_null": 0,
-            "other_choice": 0,
-            "default_value": "No preference",
-            "layout": "vertical",
-            "return_format": "value",
-            "save_other_choice": 0
-        },
-        {
-            "key": "field_603851a34805e",
-            "label": "Kids",
-            "name": "kids",
-            "type": "radio",
-            "instructions": "Are you traveling with kids?",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "Yes": "Yes",
-                "No": "No",
-                "No preference": "No preference"
-            },
-            "allow_null": 0,
-            "other_choice": 0,
-            "default_value": "No preference",
-            "layout": "vertical",
-            "return_format": "value",
-            "save_other_choice": 0
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         }
     ],
     "location": [
@@ -336,13 +262,13 @@
             }
         ]
     ],
-    "menu_order": 0,
-    "position": "normal",
+    "menu_order": -1,
+    "position": "acf_after_title",
     "style": "default",
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1614304040
+    "modified": 1615423048
 }

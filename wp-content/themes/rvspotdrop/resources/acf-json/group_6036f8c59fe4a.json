@@ -1,11 +1,11 @@
 {
     "key": "group_6036f8c59fe4a",
-    "title": "Hero",
+    "title": "Page Settings",
     "fields": [
         {
             "key": "field_6036f8c9a936a",
-            "label": "Hero Title",
-            "name": "hero_title",
+            "label": "Display Title",
+            "name": "display_title",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -23,8 +23,8 @@
         },
         {
             "key": "field_6036f8d3a936b",
-            "label": "Hero Description",
-            "name": "hero_description",
+            "label": "Intro",
+            "name": "intro",
             "type": "textarea",
             "instructions": "",
             "required": 0,
@@ -42,8 +42,8 @@
         },
         {
             "key": "field_6036f8e3a936c",
-            "label": "Hero Button",
-            "name": "hero_button",
+            "label": "Button",
+            "name": "button",
             "type": "link",
             "instructions": "",
             "required": 0,
@@ -73,5 +73,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1614215430
+    "modified": 1614441663
 }

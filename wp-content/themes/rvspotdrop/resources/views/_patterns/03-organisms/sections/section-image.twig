@@ -1,0 +1,23 @@
+{% if image.background_image %}
+  {% set img_id = Image(image.background_image).id %}
+  {% set image_class = ' u-background--cover o-background-image--' ~ img_id %}
+  {% set img_src = Image(image.background_image).src|resize(1600,900) %}
+  <style>
+    .o-background-image--{{ img_id }} {
+      background-image: url({{ img_src }});
+    }
+  </style>
+{% endif %}
+<section class="c-section-image{{ image_class }} o-section">
+  <div class="c-section-image--inner l-wrap l-container--m u-spacing">
+    {% if image.heading %}
+      <h1 class="c-section-image__headign o-heading--l">{{ image.heading }}</h1>
+    {% endif %}
+    {% if image.description %}
+      <div class="c-section-image__description">{{ image.description }}</div>
+    {% endif %}
+    {% if image.button %}
+      <a href="{{ image.button.url }}" class="c-section-image__button o-button--primary" target="{{ image.button.target ? image.button.target : '_self' }}">{{ image.button.title ? image.button.title : 'Learn More' }}</a>
+    {% endif %}
+  </div>
+</section>

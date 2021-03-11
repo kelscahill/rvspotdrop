@@ -1,4 +1,3 @@
-{% include "02-molecules/components/alert.twig" %}
 <div class="c-utility">
   <div class="c-utility--inner l-wrap l-container">
     <div class="c-utility__social">
@@ -9,7 +8,6 @@
     </div>
   </div>
 </div>
-
 <header class="c-header">
   <div class="c-header--inner l-wrap l-container">
     <div class="c-header__logo">
@@ -17,6 +15,10 @@
     </div>
     <div class="c-header__nav">
       {% include "02-molecules/navigation/nav-primary.twig" %}
+      <button class="o-toggle o-icon o-icon--s js-toggle" data-toggled="l-body" data-prefix="menu" aria-role="Menu">
+        {% include "01-atoms/icons/menu.twig" %}
+      </button>
     </div>
   </div>
 </header>
+{% include "02-molecules/navigation/nav-drawer.twig" %}
