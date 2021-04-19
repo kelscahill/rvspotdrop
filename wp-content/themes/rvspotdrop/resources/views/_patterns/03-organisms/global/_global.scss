@@ -113,6 +113,7 @@
       border: 0;
       position: relative;
       right: -$space;
+      padding: $space;
 
       @include media(">xlarge") {
         display: none;

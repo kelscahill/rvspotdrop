@@ -3,10 +3,15 @@
 \* ------------------------------------ */
 
 .o-section {
-  padding-top: $space-quad;
-  padding-bottom: $space-quad;
+  padding-top: $space-double;
+  padding-bottom: $space-double;
   margin-left: -$space;
   margin-right: -$space;
+
+  @include media(">medium") {
+    padding-top: $space-quad;
+    padding-bottom: $space-quad;
+  }
 
   @include media(">xlarge") {
     margin-left: -$space-double;
@@ -26,7 +31,11 @@
   position: relative;
   overflow: hidden;
   margin-top: 0;
-  margin-bottom: $space-quad;
+  margin-bottom: $space-double;
+
+  @include media(">medium") {
+    margin-bottom: $space-quad;
+  }
 
   &--inner {
     @include media("<=medium") {
@@ -61,16 +70,23 @@
   }
 
   &__image {
-    display: table;
+    display: block;
+    width: 100%;
+    height: auto;
+    position: relative;
 
     img {
       box-shadow: $box-shadow--thick;
+      width: 100%;
+      height: auto;
     }
 
     svg {
       max-width: 400px;
       margin-left: auto;
       margin-right: auto;
+      width: 100%;
+      height: auto;
     }
   }
 }
@@ -87,6 +103,10 @@
     background-color: rgba($c-secondary, 0.2);
     border-radius: 50px;
     padding: $space-double;
+
+    @include media("<=medium") {
+      grid-column-gap: 0;
+    }
 
     @include media(">large") {
       border-radius: 100px;

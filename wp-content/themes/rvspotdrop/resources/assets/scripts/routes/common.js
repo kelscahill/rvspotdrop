@@ -1,27 +1,38 @@
 /* eslint-disable */
-let Rellax = require('rellax');
-let rellax = new Rellax('.js-rellax', {
-  breakpoints: [550, 700, 850]
-});
-
 import inView from 'in-view';
 
 export default {
   init() {
     // JavaScript to be fired on all pages
 
+    // Add class if is mobile
+    function isMobile() {
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        return true;
+      }
+      return false;
+    }
+    // Add class if is mobile
+    if (isMobile()) {
+      $('html').addClass(' touch');
+    } else if (!isMobile()){
+      $('html').addClass(' no-touch');
+    }
+
     /**
     * Add inview class on scroll if has-animation class.
     */
-    inView('.js-inview').on('enter', function() {
-      $("*[data-animation]").each(function() {
-        var animation = $(this).attr('data-animation');
-        if (inView.is(this)) {
-          $(this).addClass("is-inview");
-          $(this).addClass(animation);
-        }
+    if (!isMobile()) {
+      inView('.js-inview').on('enter', function() {
+        $("*[data-animation]").each(function() {
+          var animation = $(this).attr('data-animation');
+          if (inView.is(this)) {
+            $(this).addClass("is-inview");
+            $(this).addClass(animation);
+          }
+        });
       });
-    });
+    }
 
     /**
     * Remove Active Classes when clicking outside menus and modals

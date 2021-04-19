@@ -21,10 +21,6 @@
 
   .c-nav-drawer {
     right: 0;
-
-    @include media(">xlarge") {
-      right: -400px;
-    }
   }
 }
 
@@ -32,15 +28,20 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
-  max-width: 400px;
   background-color: $c-white;
   position: fixed;
   z-index: 9999;
   top: 0;
-  right: -400px;
+  right: -100vw;
   transition: right 0.25s $transition-effect;
+
+  @include media(">small") {
+    width: 100%;
+    max-width: 400px;
+    right: -400px;
+  }
 
   @include media(">xlarge") {
     display: none;
