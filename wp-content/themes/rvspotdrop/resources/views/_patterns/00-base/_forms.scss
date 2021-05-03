@@ -2,6 +2,15 @@
     $FORMS
 \* ------------------------------------ */
 
+.o-limit-reached {
+  font-weight: bold;
+
+  + .wpforms-field-container,
+  + .wpforms-field-container + .wpforms-submit-container {
+    display: none;
+  }
+}
+
 .o-form div.wpforms-container,
 div.wpforms-container {
   max-width: $large;

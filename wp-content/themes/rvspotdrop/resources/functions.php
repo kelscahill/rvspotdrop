@@ -286,11 +286,42 @@ function wpf_dev_email_footer_text( $footer ) {
 }
 add_filter( 'wpforms_email_footer_text', 'wpf_dev_email_footer_text' );
 
-
-add_filter('acf/validate_value/name=locations_of_interest', 'only_allow_5', 20, 4);
 function only_allow_5($valid, $value, $field, $input) {
   if (count($value) > 5) {
     $valid = 'Only Select 5';
   }
   return $valid;
 }
+add_filter('acf/validate_value/name=locations_of_interest', 'only_allow_5', 20, 4);
+
+/**
+ * Limit the number of form entries per month for form_id 836.
+ */
+add_action( 'wpforms_frontend_output', function ( $form_data ) {
+  // Only display on form 836.
+  if ( absint( $form_data['id'] ) !== 836 ) {
+    return;
+  }
+
+  // Set the default timezone.
+  date_default_timezone_set("America/Edmonton");
+  $this_month = date('Y-m-d H:i:s', strtotime('this month'));
+
+  $entries_count = wpforms()->entry->get_entries(
+    array(
+      'form_id' => '836',
+      'user_id' => get_current_user_id(),
+      'date' => $this_month
+    ), true
+  );
+  $result = absint( 2 - $entries_count );
+
+  // Display results container.
+  if ($result == 0) {
+    echo '<div class="o-limit-reached">Sorry, you\'ve hit the maximum number of 2 requests for the month. You will be able to submit 2 more requests next month. Please check back on the 1st! If you have any questions, please reach out to <a href="mailto:hello@rvspotdrop.com">hello@rvspotdrop.com</a>.</div>';
+  } elseif ($result == 1) {
+    echo '<em>You have ' . esc_html( $result ) . ' request left for the month of '.date('F', strtotime('this month')).'.</em>';
+  } else {
+    echo '<em>You have ' . esc_html( $result ) . ' requests left for the month of '.date('F', strtotime('this month')).'.</em>';
+  }
+}, 7 );
