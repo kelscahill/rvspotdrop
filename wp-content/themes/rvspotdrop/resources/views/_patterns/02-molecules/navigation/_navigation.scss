@@ -5,7 +5,7 @@
 /**
  * Drawer menu
  */
-.l-body.menu-is-active {
+body.menu-is-active {
   overflow: hidden;
 
   &::before {
@@ -151,7 +151,6 @@
       border-bottom: 1px solid transparent;
       text-align: center;
     }
-
 
     &:hover,
     &:focus {
@@ -316,6 +315,137 @@
     &:hover,
     &:focus {
       color: $c-white;
+    }
+  }
+}
+
+/**
+ * Dashboard nav
+ */
+.c-dashboard-nav {
+  position: sticky;
+  top: $space-double;
+  left: $space-half;
+
+  @include media('>medium') {
+    left: $space;
+  }
+
+  &::before {
+    content: "";
+    display: block;
+    width: 1px;
+    height: calc(100% - #{$icon-large});
+    position: absolute;
+    left: calc(#{$icon-large} /2);
+    top: 0;
+    background-color: $c-gray--light;
+    z-index: -1;
+  }
+
+  &__parent-list {
+    overflow: hidden;
+  }
+
+  &__link {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: $c-gray--light;
+    margin-bottom: $space;
+    white-space: nowrap;
+
+    @include media('>medium') {
+      white-space: normal;
+    }
+
+    span + span {
+      padding-left: $space-half;
+    }
+
+    .o-icon {
+      transition: background-color 0.25s ease;
+    }
+
+    &:hover,
+    &:focus {
+      color: $c-black;
+
+      .o-icon {
+        background-color: $c-secondary;
+
+        svg path {
+          fill: white;
+        }
+      }
+    }
+
+    &.is-active {
+      color: $c-black;
+
+      .o-icon {
+        background-color: $c-primary;
+        border-color: $c-primary;
+
+        svg path {
+          fill: white;
+        }
+      }
+    }
+  }
+
+  &__icon {
+    height: $icon-large;
+    width: $icon-large;
+    min-width: $icon-large;
+    border-radius: $icon-large;
+    background-color: white;
+    border: $border--standard;
+
+    svg path {
+      fill: $c-secondary;
+    }
+  }
+}
+
+/**
+ * Dashboard support nav
+ */
+.c-dashboard-support-nav {
+  transition: all 0.125s ease;
+  opacity: 0;
+  visibility: hidden;
+  margin-top: $space-double;
+  padding-bottom: 80px;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+
+  @include media('>medium') {
+    opacity: 1;
+    visibility: visible;
+    padding-bottom: $space;
+  }
+
+  &::before {
+    display: block;
+    content: "Support";
+    @include o-heading--s;
+    color: $c-gray--light;
+    padding-bottom: $space-half;
+    margin-bottom: $space-half;
+    border-bottom: $border--standard;
+    width: 100%;
+  }
+
+  a {
+    color: $c-black;
+    border: 0;
+    margin-bottom: $space-quarter;
+
+    &:hover,
+    &:focus {
+      color: $c-primary;
     }
   }
 }

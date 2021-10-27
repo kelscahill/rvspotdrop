@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file, formatted via [this recommendation](http://keepachangelog.com/).
 
+## [1.5.0] - 2021-03-31
+### Added
+- Notification's "Enable for abandoned forms entries" option compatibility improvements with payment addons adding own rules whether to send a notification email.
+
+### Changed
+- Replaced `jQuery.ready()` function with recommended way since jQuery 3.0.
+
 ## [1.4.4] - 2020-12-17
 ### Fixed
 - Form abandonment via external links not always detected on some mobile devices.

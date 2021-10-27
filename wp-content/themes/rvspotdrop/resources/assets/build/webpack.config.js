@@ -7,6 +7,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const CopyGlobsPlugin = require('copy-globs-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+
 const config = require('./config');
 
 const assetsFilenames = (config.enabled.cacheBusting) ? config.cacheBusting : '[name]';
@@ -93,16 +94,7 @@ let webpackConfig = {
         }),
       },
       {
-        test: /\.(svg)$/i,
-        include: config.paths.assets,
-        loader: 'svg-url-loader',
-        options: {
-          encoding: 'base64',
-          name: `[path]${assetsFilenames}.[ext]`,
-        },
-      },
-      {
-        test: /\.(ttf|eot|woff2?|png|jpe?g|gif|ico)$/,
+        test: /\.(ttf|eot|woff2?|png|jpe?g|gif|svg|ico)$/,
         include: config.paths.assets,
         loader: 'url',
         options: {
@@ -183,6 +175,7 @@ let webpackConfig = {
     new StyleLintPlugin({
       failOnError: !config.enabled.watcher,
       syntax: 'scss',
+      context: config.paths.patterns,
     }),
     new FriendlyErrorsWebpackPlugin(),
   ],

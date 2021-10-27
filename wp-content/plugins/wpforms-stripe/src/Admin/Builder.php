@@ -28,11 +28,12 @@ class Builder {
 	 */
 	public function init() {
 
-		\add_filter( 'wpforms_field_new_display_duplicate_button', array( $this, 'field_display_duplicate_button' ), 10, 2 );
-		\add_filter( 'wpforms_field_preview_display_duplicate_button', array( $this, 'field_display_duplicate_button' ), 10, 2 );
+		add_filter( 'wpforms_field_new_display_duplicate_button', [ $this, 'field_display_duplicate_button' ], 10, 2 );
+		add_filter( 'wpforms_field_preview_display_duplicate_button', [ $this, 'field_display_duplicate_button' ], 10, 2 );
+		add_action( 'wpforms_form_settings_notifications_single_after', [ $this, 'notification_settings' ], 10, 2 );
 
-		\add_filter( 'wpforms_builder_strings', array( $this, 'javascript_strings' ) );
-		\add_action( 'wpforms_builder_enqueues', array( $this, 'enqueues' ) );
+		add_filter( 'wpforms_builder_strings', [ $this, 'javascript_strings' ] );
+		add_action( 'wpforms_builder_enqueues', [ $this, 'enqueues' ] );
 	}
 
 	/**
@@ -254,6 +255,42 @@ class Builder {
 				),
 				'action_desc' => \esc_html__( 'payment as recurring if', 'wpforms-stripe' ),
 			)
+		);
+	}
+
+	/**
+	 * Add checkbox to form notification settings.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param \WPForms_Builder_Panel_Settings $settings WPForms_Builder_Panel_Settings class instance.
+	 * @param int                             $id       Subsection ID.
+	 */
+	public function notification_settings( $settings, $id ) {
+
+		wpforms_panel_field(
+			'checkbox',
+			'notifications',
+			'stripe',
+			$settings->form_data,
+			esc_html__( 'Enable for Stripe completed payments', 'wpforms-stripe' ),
+			[
+				'parent'      => 'settings',
+				'class'       => empty( $settings->form_data['payments']['stripe']['enable'] ) ? 'wpforms-hidden' : '',
+				'input_class' => 'wpforms-radio-group wpforms-radio-group-' . $id . '-notification-by-status wpforms-radio-group-item-stripe wpforms-notification-by-status-alert',
+				'subsection'  => $id,
+				'tooltip'     => wp_kses(
+					__( 'When enabled this notification will <em>only</em> be sent when a Stripe payment has been successfully <strong>completed</strong>.', 'wpforms-stripe' ),
+					[
+						'em'     => [],
+						'strong' => [],
+					]
+				),
+				'data'        => [
+					'radio-group'    => $id . '-notification-by-status',
+					'provider-title' => esc_html__( 'Stripe completed payments', 'wpforms-stripe' ),
+				],
+			]
 		);
 	}
 }

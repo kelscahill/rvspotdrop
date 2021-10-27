@@ -1,0 +1,27 @@
+{% set base_class = content.base_class|default('c-content-dashbaord') %}
+
+<article class="{{ bem_classes(base_class, content.element, content.modifiers, content.extra) }}">
+  {% include "@organisms/asides/aside-dashboard.twig" with {
+    "aside": {
+      "extra": bem_classes(base_class, 'sidebar')
+    }
+  } %}
+  <div class="{{ bem_classes(base_class, 'body') }} u-spacing--double">
+    {% include "@molecules/components/page-header.twig" %}
+    <div class="o-rte-text">
+      {{ post.content }}
+    </div>
+    {% if post.slug == 'dashboard' %}
+      {% include "@molecules/components/dashboard-cards.twig" with {
+        "dashboard_cards": dashboard_cards
+      } %}
+    {% elseif post.slug == 'profile' %}
+      {% filter shortcodes %}[wpforms id="1628"]{% endfilter %}
+    {% elseif post.slug == 'subscription' %}
+    {% elseif post.slug == 'past-campground-requests' %}
+      {% filter shortcodes %}[wpforms_entries_table id="836" user="current"]{% endfilter %}
+    {% elseif post.slug == 'past-campground-availability' %}
+      {% filter shortcodes %}[wpforms_entries_table id="1429" user="current"]{% endfilter %}
+    {% endif %}
+  </div>
+</article>

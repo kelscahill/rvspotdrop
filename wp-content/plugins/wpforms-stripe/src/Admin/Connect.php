@@ -195,8 +195,6 @@ class Connect {
 			return null;
 		}
 
-		Helpers::require_stripe();
-
 		try {
 			$account = \Stripe\Account::retrieve( null, \sanitize_text_field( $api_key ) );
 		} catch ( \Exception $e ) {

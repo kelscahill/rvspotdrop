@@ -1,4 +1,4 @@
-{% if utility_nav.theme_location == "utility_navigation" %}
+{% if utility_nav.items %}
   <nav class="c-nav-utility" role="navigation">
     {% for item in utility_nav.items %}
       <a class="c-nav-utility__link" target="{{ item.target ? item.target : '_self' }}" href="{{ item.link }}">{{ item.title }}</a>

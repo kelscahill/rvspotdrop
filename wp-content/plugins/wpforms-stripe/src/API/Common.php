@@ -48,6 +48,15 @@ abstract class Common {
 	protected $error;
 
 	/**
+	 * API exception.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @var \Exception
+	 */
+	protected $exception;
+
+	/**
 	 * Get class variable value or its key.
 	 *
 	 * @since 2.3.0
@@ -127,13 +136,23 @@ abstract class Common {
 	}
 
 	/**
+	 * Get API exception.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @return \Exception
+	 */
+	public function get_exception() {
+
+		return $this->get_var( 'exception' );
+	}
+
+	/**
 	 * Initial Stripe app configuration.
 	 *
 	 * @since 2.3.0
 	 */
 	public function setup_stripe() {
-
-		Helpers::require_stripe();
 
 		\Stripe\Stripe::setAppInfo(
 			'WPForms acct_17Xt6qIdtRxnENqV',
@@ -152,8 +171,6 @@ abstract class Common {
 	 * @param string $email Email to fetch an existing customer.
 	 */
 	protected function set_customer( $email ) {
-
-		Helpers::require_stripe();
 
 		try {
 			$customers = \Stripe\Customer::all(
@@ -188,34 +205,60 @@ abstract class Common {
 	 *
 	 * @since 2.3.0
 	 *
-	 * @param \Exception|\Stripe\Error\Base $e Stripe API exception to process.
+	 * @param \Exception|\Stripe\Exception\ApiErrorException $e Stripe API exception to process.
 	 */
 	protected function set_error_from_exception( $e ) {
 
 		\do_action( 'wpformsstripe_api_common_set_error_from_exception', $e );
 
-		if ( \is_a( $e, '\Stripe\Error\Card' ) ) {
+		if ( \is_a( $e, '\Stripe\Exception\CardException' ) ) {
 			$body        = $e->getJsonBody();
 			$this->error = $body['error']['message'];
 			return;
 		}
 
 		$errors = array(
-			'\Stripe\Error\RateLimit'      => \esc_html__( 'Too many requests made to the API too quickly.', 'wpforms-stripe' ),
-			'\Stripe\Error\InvalidRequest' => \esc_html__( 'Invalid parameters were supplied to Stripe API.', 'wpforms-stripe' ),
-			'\Stripe\Error\Authentication' => \esc_html__( 'Authentication with Stripe API failed.', 'wpforms-stripe' ),
-			'\Stripe\Error\ApiConnection'  => \esc_html__( 'Network communication with Stripe failed.', 'wpforms-stripe' ),
-			'\Stripe\Error\Base'           => \esc_html__( 'Unable to process Stripe payment.', 'wpforms-stripe' ),
-			'\Exception'                   => \esc_html__( 'Unable to process payment.', 'wpforms-stripe' ),
+			'\Stripe\Exception\RateLimitException'      => \esc_html__( 'Too many requests made to the API too quickly.', 'wpforms-stripe' ),
+			'\Stripe\Exception\InvalidRequestException' => \esc_html__( 'Invalid parameters were supplied to Stripe API.', 'wpforms-stripe' ),
+			'\Stripe\Exception\AuthenticationException' => \esc_html__( 'Authentication with Stripe API failed.', 'wpforms-stripe' ),
+			'\Stripe\Exception\ApiConnectionException'  => \esc_html__( 'Network communication with Stripe failed.', 'wpforms-stripe' ),
+			'\Stripe\Exception\ApiErrorException'       => \esc_html__( 'Unable to process Stripe payment.', 'wpforms-stripe' ),
+			'\Exception'                                => \esc_html__( 'Unable to process payment.', 'wpforms-stripe' ),
 		);
 
 		foreach ( $errors as $error_type => $error_message ) {
 
 			if ( \is_a( $e, $error_type ) ) {
 				$this->error = $error_message;
+
 				return;
 			}
 		}
+	}
+
+	/**
+	 * Set an exception from a Stripe API exception.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param \Exception $e Stripe API exception to process.
+	 */
+	protected function set_exception( $e ) {
+
+		$this->exception = $e;
+	}
+
+	/**
+	 * Handle Stripe API exception.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param \Exception $e Stripe API exception to process.
+	 */
+	protected function handle_exception( $e ) {
+
+		$this->set_exception( $e );
+		$this->set_error_from_exception( $e );
 	}
 
 	/**
@@ -295,15 +338,13 @@ abstract class Common {
 				'name' => \sanitize_text_field( $name ),
 			),
 			'nickname'       => \sanitize_text_field( $name ),
-			'currency'       => \strtolower( \wpforms_setting( 'currency', 'USD' ) ),
+			'currency'       => strtolower( wpforms_get_currency() ),
 			'id'             => $id,
 			'metadata'       => array(
 				'form_name' => \sanitize_text_field( $args['form_title'] ),
 				'form_id'   => $args['form_id'],
 			),
 		);
-
-		Helpers::require_stripe();
 
 		try {
 			$plan = \Stripe\Plan::create( $plan_args, Helpers::get_auth_opts() );
@@ -342,8 +383,6 @@ abstract class Common {
 			$args['amount'] * 100,
 			$period['name']
 		);
-
-		Helpers::require_stripe();
 
 		try {
 			$plan = \Stripe\Plan::retrieve( $plan_id, Helpers::get_auth_opts() );

@@ -29,7 +29,6 @@ module.exports = {
       open: config.open,
       proxyUrl: config.proxyUrl,
       watch: config.watch,
-      delay: 500,
     }),
   ],
 };

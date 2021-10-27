@@ -55,20 +55,21 @@ class WPForms_Field_Phone extends WPForms_Field {
 	public function field_properties( $properties, $field, $form_data ) {
 
 		// Smart: add validation rule and class.
-		if ( 'smart' === $field['format'] ) {
+		if ( $field['format'] === 'smart' ) {
 			$properties['inputs']['primary']['class'][]                        = 'wpforms-smart-phone-field';
 			$properties['inputs']['primary']['data']['rule-smart-phone-field'] = 'true';
 		}
 
 		// US: add input mask and class.
-		if ( 'us' === $field['format'] ) {
+		if ( $field['format'] === 'us' ) {
 			$properties['inputs']['primary']['class'][]                     = 'wpforms-masked-input';
 			$properties['inputs']['primary']['data']['inputmask']           = "'mask': '(999) 999-9999'";
 			$properties['inputs']['primary']['data']['rule-us-phone-field'] = 'true';
+			$properties['inputs']['primary']['data']['inputmask-inputmode'] = 'tel';
 		}
 
 		// International: add validation rule and class.
-		if ( 'international' === $field['format'] ) {
+		if ( $field['format'] === 'international' ) {
 			$properties['inputs']['primary']['data']['rule-int-phone-field'] = 'true';
 		}
 
@@ -244,19 +245,20 @@ class WPForms_Field_Phone extends WPForms_Field {
 		// Placeholder.
 		$this->field_option( 'placeholder', $field );
 
-		// Hide Label.
-		$this->field_option( 'label_hide', $field );
-
 		// Default value.
 		$this->field_option( 'default_value', $field );
 
 		// Custom CSS classes.
 		$this->field_option( 'css', $field );
 
+		// Hide Label.
+		$this->field_option( 'label_hide', $field );
+
 		// Options close markup.
-		$args = array(
+		$args = [
 			'markup' => 'close',
-		);
+		];
+
 		$this->field_option( 'advanced-options', $field, $args );
 	}
 
@@ -276,7 +278,7 @@ class WPForms_Field_Phone extends WPForms_Field {
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<input type="text" placeholder="' . esc_attr( $placeholder ) . '" class="primary-input" disabled>';
+		echo '<input type="text" placeholder="' . esc_attr( $placeholder ) . '" class="primary-input" readonly>';
 
 		// Description.
 		$this->field_preview_option( 'description', $field );

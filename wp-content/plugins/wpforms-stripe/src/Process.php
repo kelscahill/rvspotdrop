@@ -71,9 +71,10 @@ class Process {
 	 */
 	public function init() {
 
-		\add_action( 'wpforms_process', array( $this, 'process_entry' ), 10, 4 );
-		\add_action( 'wpforms_process_complete', array( $this, 'process_entry_meta' ), 10, 4 );
-		\add_action( 'wpformsstripe_api_common_set_error_from_exception', array( $this, 'process_card_error' ) );
+		add_action( 'wpforms_process', [ $this, 'process_entry' ], 10, 4 );
+		add_action( 'wpforms_process_complete', [ $this, 'process_entry_meta' ], 10, 4 );
+		add_action( 'wpformsstripe_api_common_set_error_from_exception', [ $this, 'process_card_error' ] );
+		add_filter( 'wpforms_entry_email_process', [ $this, 'process_email' ], 70, 4 );
 	}
 
 	/**
@@ -165,7 +166,7 @@ class Process {
 					array(
 						'payment_type'         => 'stripe',
 						'payment_total'        => $this->amount,
-						'payment_currency'     => \wpforms_setting( 'currency', 'USD' ),
+						'payment_currency'     => wpforms_get_currency(),
 						'payment_transaction'  => \sanitize_text_field( $payment->id ),
 						'payment_mode'         => 'live' === Helpers::get_stripe_mode() ? 'production' : 'test',
 						'payment_subscription' => ! empty( $subscription->id ) ? \sanitize_text_field( $subscription->id ) : '',
@@ -193,6 +194,39 @@ class Process {
 
 		// Processing complete.
 		\do_action( 'wpforms_stripe_process_complete', $fields, $form_data, $entry_id, $payment, $subscription, $customer );
+	}
+
+	/**
+	 * Logic that helps decide if we should send completed payments notifications.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param bool  $process         Whether to process or not.
+	 * @param array $fields          Form fields.
+	 * @param array $form_data       Form data.
+	 * @param int   $notification_id Notification ID.
+	 *
+	 * @return bool
+	 */
+	public function process_email( $process, $fields, $form_data, $notification_id ) {
+
+		if ( ! $process ) {
+			return false;
+		}
+
+		if ( empty( $form_data['payments']['stripe']['enable'] ) ) {
+			return $process;
+		}
+
+		if ( empty( $form_data['settings']['notifications'][ $notification_id ]['stripe'] ) ) {
+			return $process;
+		}
+
+		if ( ! $this->is_conditional_logic_ok( $this->settings ) ) {
+			return false;
+		}
+
+		return empty( wpforms_stripe()->api->get_error() );
 	}
 
 	/**
@@ -259,15 +293,19 @@ class Process {
 	 */
 	public function process_payment_single() {
 
+		$currency = strtolower( wpforms_get_currency() );
+
+		$amount_decimals = (int) str_pad( 1, wpforms_get_currency_decimals( $currency ) + 1, 0, STR_PAD_RIGHT );
+
 		// Define the basic payment details.
-		$args = array(
-			'amount'   => $this->amount * 100,
-			'currency' => \strtolower( \wpforms_setting( 'currency', 'USD' ) ),
-			'metadata' => array(
+		$args = [
+			'amount'   => $this->amount * $amount_decimals,
+			'currency' => $currency,
+			'metadata' => [
 				'form_name' => \sanitize_text_field( $this->form_data['settings']['form_title'] ),
 				'form_id'   => $this->form_id,
-			),
-		);
+			],
+		];
 
 		// Payment description.
 		if ( ! empty( $this->settings['payment_description'] ) ) {
@@ -295,6 +333,12 @@ class Process {
 
 		$error = '';
 
+		// Check for conditional logic.
+		if ( ! $this->is_conditional_logic_ok( $this->settings['recurring'] ) ) {
+			$this->process_payment_single();
+			return;
+		}
+
 		// Check subscription settings are provided.
 		if ( empty( $this->settings['recurring']['period'] ) || empty( $this->settings['recurring']['email'] ) ) {
 			$error = \esc_html__( 'Stripe subscription payment stopped, missing form settings.', 'wpforms-stripe' );
@@ -312,19 +356,13 @@ class Process {
 			return;
 		}
 
-		// Check for conditional logic.
-		if ( ! $this->is_conditional_logic_ok( $this->settings['recurring'] ) ) {
-			$this->process_payment_single();
-			return;
-		}
-
-		$args = array(
+		$args = [
 			'form_id'    => $this->form_id,
 			'form_title' => \sanitize_text_field( $this->form_data['settings']['form_title'] ),
 			'amount'     => $this->amount,
 			'email'      => \sanitize_email( $this->fields[ $this->settings['recurring']['email'] ]['value'] ),
 			'settings'   => $this->settings['recurring'],
-		);
+		];
 
 		\wpforms_stripe()->api->process_subscription( $args );
 
@@ -440,6 +478,11 @@ class Process {
 	 */
 	protected function log_error( $title, $message = '', $level = 'error' ) {
 
+		if ( $message instanceof \Stripe\Exception\ApiErrorException ) {
+			$body    = $message->getJsonBody();
+			$message = isset( $body['error']['message'] ) ? $body['error'] : $message->getMessage();
+		}
+
 		\wpforms_log(
 			$title,
 			$message,
@@ -465,13 +508,13 @@ class Process {
 			return;
 		}
 
-		$error = \sprintf(
+		$message = \sprintf(
 			/* translators: %s - error message. */
 			\esc_html__( 'Credit Card Payment Error: %s', 'wpforms-stripe' ),
 			$message
 		);
 
-		$this->display_error( $error );
+		$this->display_error( $message );
 
 		if ( 'subscription' === $type ) {
 			$title = \esc_html__( 'Stripe subscription payment stopped by error', 'wpforms-stripe' );
@@ -479,7 +522,7 @@ class Process {
 			$title = \esc_html__( 'Stripe payment stopped by error', 'wpforms-stripe' );
 		}
 
-		$this->log_error( $title, $message );
+		$this->log_error( $title, \wpforms_stripe()->api->get_exception() );
 	}
 
 	/**
@@ -519,7 +562,7 @@ class Process {
 	 *
 	 * @since 2.3.0
 	 *
-	 * @param \Exception|\Stripe\Error\Base $e Stripe API exception to process.
+	 * @param \Exception|\Stripe\Exception\ApiErrorException $e Stripe API exception to process.
 	 */
 	public function process_card_error( $e ) {
 
@@ -527,7 +570,7 @@ class Process {
 			return;
 		}
 
-		if ( ! \is_a( $e, '\Stripe\Error\Card' ) ) {
+		if ( ! \is_a( $e, '\Stripe\Exception\CardException' ) ) {
 			return;
 		}
 

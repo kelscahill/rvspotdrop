@@ -1,6 +1,8 @@
 <?php
 
 use WPForms\Pro\Forms\Fields\FileUpload\Chunk;
+use WPForms\Pro\Helpers\Upload;
+use WPForms\Pro\Robots;
 
 /**
  * File upload field.
@@ -55,6 +57,15 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	private $denylist = array( 'ade', 'adp', 'app', 'asp', 'bas', 'bat', 'cer', 'cgi', 'chm', 'cmd', 'com', 'cpl', 'crt', 'csh', 'csr', 'dll', 'drv', 'exe', 'fxp', 'flv', 'hlp', 'hta', 'htaccess', 'htm', 'html', 'htpasswd', 'inf', 'ins', 'isp', 'jar', 'js', 'jse', 'jsp', 'ksh', 'lnk', 'mdb', 'mde', 'mdt', 'mdw', 'msc', 'msi', 'msp', 'mst', 'ops', 'pcd', 'php', 'pif', 'pl', 'prg', 'ps1', 'ps2', 'py', 'rb', 'reg', 'scr', 'sct', 'sh', 'shb', 'shs', 'sys', 'swf', 'tmp', 'torrent', 'url', 'vb', 'vbe', 'vbs', 'vbscript', 'wsc', 'wsf', 'wsf', 'wsh', 'dfxp', 'onetmp' );
 
 	/**
+	 * Upload files helper.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @var Upload
+	 */
+	private $upload;
+
+	/**
 	 * Primary class constructor.
 	 *
 	 * @since 1.0.0
@@ -67,6 +78,9 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 		$this->icon  = 'fa-upload';
 		$this->order = 90;
 		$this->group = 'fancy';
+
+		// Init our upload helper & add the actions.
+		$this->upload = new Upload();
 
 		// Form frontend javascript.
 		add_action( 'wpforms_frontend_js', array( $this, 'frontend_js' ) );
@@ -114,10 +128,10 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 		// phpcs:ignore WordPress.Security.NonceVerification
 		if ( ! empty( $_POST['slow'] ) && 'true' === $_POST['slow'] && ! empty( $this->ajax_validate_form_field_modern() ) ) {
 			add_action( 'wpforms_file_upload_chunk_parallel', '__return_false' );
-			add_action( 'wpforms_file_upload_chunk_size', array( $this, 'get_slow_connection_chunk_size' ) );
+			add_action( 'wpforms_file_upload_chunk_size', [ $this, 'get_slow_connection_chunk_size' ] );
 		}
 
-		add_filter( 'robots_txt', array( $this, 'disallow_upload_dir_indexing' ), -42 );
+		add_filter( 'wpforms_pro_admin_entries_edit_field_output_editable', [ $this, 'is_editable' ], 10, 4 );
 	}
 
 	/**
@@ -149,7 +163,7 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 			wp_enqueue_script(
 				'wpforms-dropzone',
 				WPFORMS_PLUGIN_URL . "pro/assets/js/vendor/dropzone{$min}.js",
-				array( 'jquery' ),
+				[ 'jquery' ],
 				self::DROPZONE_VERSION,
 				true
 			);
@@ -157,7 +171,7 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 			wp_enqueue_script(
 				'wpforms-file-upload',
 				WPFORMS_PLUGIN_URL . "pro/assets/js/wpforms-file-upload{$min}.js",
-				array( 'wpforms', 'wp-util', 'wpforms-dropzone' ),
+				[ 'wpforms', 'wp-util', 'wpforms-dropzone' ],
 				WPFORMS_VERSION,
 				true
 			);
@@ -165,9 +179,10 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 			wp_localize_script(
 				'wpforms-dropzone',
 				'wpforms_file_upload',
-				array(
+				[
 					'url'             => admin_url( 'admin-ajax.php' ),
-					'errors'          => array(
+					'errors'          => [
+						'default_error'     => esc_html__( 'Something went wrong, please try again.', 'wpforms' ),
 						'file_not_uploaded' => esc_html__( 'This file was not uploaded.', 'wpforms' ),
 						'file_limit'        => esc_html__( 'File limit has been reached ({fileLimit}).', 'wpforms' ),
 						'file_extension'    => wpforms_setting( 'validation-fileextension', esc_html__( 'File type is not allowed.', 'wpforms' ) ),
@@ -176,9 +191,9 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 							esc_html__( 'File exceeds the upload limit allowed (%s).', 'wpforms' ),
 							wpforms_max_upload()
 						),
-					),
+					],
 					'loading_message' => esc_html__( 'File upload is in progress. Please submit the form once uploading is completed.', 'wpforms' ),
-				)
+				]
 			);
 		}
 	}
@@ -360,30 +375,44 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 		if ( ! empty( $field['value_raw'] ) ) {
 			return wpforms_chain( $field['value_raw'] )
 				->map(
-					static function ( $file ) {
+					function ( $file ) use ( $context ) {
 
 						if ( empty( $file['value'] ) || empty( $file['file_original'] ) ) {
 							return '';
 						}
 
-						return sprintf(
-							'<a href="%s" rel="noopener noreferrer" target="_blank">%s</a>',
-							esc_url( $file['value'] ),
-							esc_html( $file['file_original'] )
-						);
+						return $this->get_file_link_html( $file, $context ) . '<br>';
 					}
 				)
 				->array_filter()
-				->implode( '<br>' )
+				->implode()
 				->value();
 		}
 
-		// Process classic uploader.
-		return sprintf(
-			'<a href="%s" rel="noopener" target="_blank">%s</a>',
-			esc_url( $field['value'] ),
-			esc_html( $field['file_original'] )
+		return $this->get_file_link_html( $field, $context );
+	}
+
+	/**
+	 * Get file link HTML.
+	 *
+	 * @since 1.6.6
+	 *
+	 * @param array  $file    File data.
+	 * @param string $context Value display context.
+	 *
+	 * @return string
+	 */
+	private function get_file_link_html( $file, $context ) {
+
+		$html  = in_array( $context, [ 'email-html', 'entry-single' ], true ) ? $this->file_icon_html( $file ) : '';
+		$html .= sprintf(
+			'<a href="%s" rel="noopener noreferrer" target="_blank" style="%s">%s</a>',
+			esc_url( $file['value'] ),
+			$context === 'email-html' ? 'padding-left:10px;' : '',
+			esc_html( $file['file_original'] )
 		);
+
+		return $html;
 	}
 
 	/**
@@ -395,14 +424,14 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	 */
 	public function get_strings() {
 
-		return array(
+		return [
 			'preview_title_single' => esc_html__( 'Click or drag a file to this area to upload.', 'wpforms' ),
 			'preview_title_plural' => esc_html__( 'Click or drag files to this area to upload.', 'wpforms' ),
 			'preview_hint'         => sprintf( /* translators: % - max number of files as a template string (not a number), replaced by a number later. */
 				esc_html__( 'You can upload up to %s files.', 'wpforms' ),
 				self::TEMPLATE_MAXFILENUM
 			),
-		);
+		];
 	}
 
 	/**
@@ -525,6 +554,7 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 			),
 			false
 		);
+
 		$fld = $this->field_element(
 			'text',
 			$field,
@@ -541,11 +571,15 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 			),
 			false
 		);
-		$this->field_element( 'row', $field, array(
-			'slug'    => 'max_file_number',
-			'content' => $lbl . $fld,
-			'class'   => self::STYLE_CLASSIC === $style ? 'wpforms-row-hide' : '',
-		) );
+		$this->field_element(
+			'row',
+			$field,
+			[
+				'slug'    => 'max_file_number',
+				'content' => $lbl . $fld,
+				'class'   => $style === self::STYLE_CLASSIC ? 'wpforms-hidden' : '',
+			]
+		);
 
 		// Required toggle.
 		$this->field_option( 'required', $field );
@@ -571,6 +605,7 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 			),
 			false
 		);
+
 		$fld = $this->field_element(
 			'select',
 			$field,
@@ -584,38 +619,52 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 			),
 			false
 		);
-		$this->field_element( 'row', $field, array(
-			'slug'    => 'style',
-			'content' => $lbl . $fld,
-		) );
 
-		// Hide Label.
-		$this->field_option( 'label_hide', $field );
+		$this->field_element(
+			'row',
+			$field,
+			[
+				'slug'    => 'style',
+				'content' => $lbl . $fld,
+			]
+		);
 
 		// Media Library toggle.
-		$fld  = $this->field_element(
-			'checkbox',
+		$fld = $this->field_element(
+			'toggle',
 			$field,
-			array(
+			[
 				'slug'    => 'media_library',
 				'value'   => ! empty( $field['media_library'] ) ? 1 : '',
 				'desc'    => esc_html__( 'Store file in WordPress Media Library', 'wpforms' ),
 				'tooltip' => esc_html__( 'Check this option to store the final uploaded file in the WordPress Media Library', 'wpforms' ),
-			),
+			],
 			false
 		);
-		$this->field_element( 'row', $field, array(
-			'slug'    => 'media_library',
-			'content' => $fld,
-		) );
+
+		$this->field_element(
+			'row',
+			$field,
+			[
+				'slug'    => 'media_library',
+				'content' => $fld,
+			]
+		);
 
 		// Custom CSS classes.
 		$this->field_option( 'css', $field );
 
+		// Hide Label.
+		$this->field_option( 'label_hide', $field );
+
 		// Options close markup.
-		$this->field_option( 'advanced-options', $field, array(
-			'markup' => 'close',
-		) );
+		$this->field_option(
+			'advanced-options',
+			$field,
+			[
+				'markup' => 'close',
+			]
+		);
 	}
 
 	/**
@@ -656,6 +705,27 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 
 		// Description.
 		$this->field_preview_option( 'description', $field );
+	}
+
+	/**
+	 * Only a non-empty field is editable.
+	 *
+	 * @since 1.6.8.1
+	 *
+	 * @param bool  $is_editable  Default value.
+	 * @param array $field        Field data.
+	 * @param array $entry_fields Entry fields data.
+	 * @param array $form_data    Form data and settings.
+	 *
+	 * @return bool
+	 */
+	public function is_editable( $is_editable, $field, $entry_fields, $form_data ) {
+
+		if ( $field['type'] !== $this->type ) {
+			return $is_editable;
+		}
+
+		return ! empty( $entry_fields[ $field['id'] ]['value'] );
 	}
 
 	/**
@@ -816,7 +886,7 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 		 */
 		if (
 			( empty( $_FILES[ $input_name ]['tmp_name'] ) || 4 === $_FILES[ $input_name ]['error'] ) &&
-		     $this->is_required()
+			$this->is_required()
 		) {
 			wpforms()->process->errors[ $this->form_id ][ $this->field_id ] = wpforms_get_required_label();
 
@@ -827,6 +897,7 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 		 * Validate file size.
 		 */
 		$validated_size = $this->validate_size();
+
 		if ( ! empty( $validated_size ) ) {
 			wpforms()->process->errors[ $this->form_id ][ $this->field_id ] = $validated_size;
 
@@ -839,6 +910,7 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 		$ext = strtolower( pathinfo( $_FILES[ $input_name ]['name'], PATHINFO_EXTENSION ) );
 
 		$validated_ext = $this->validate_extension( $ext );
+
 		if ( ! empty( $validated_ext ) ) {
 			wpforms()->process->errors[ $this->form_id ][ $this->field_id ] = $validated_ext;
 
@@ -852,6 +924,7 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 		 * filter the allowed mime types in WordPress if this is an issue.
 		 */
 		$validated_filetype = $this->validate_wp_filetype_and_ext( $_FILES[ $input_name ]['tmp_name'], sanitize_file_name( wp_unslash( $_FILES[ $input_name ]['name'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+
 		if ( ! empty( $validated_filetype ) ) {
 			wpforms()->process->errors[ $this->form_id ][ $this->field_id ] = $validated_filetype;
 
@@ -946,143 +1019,66 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 		$file = ! empty( $_FILES[ $input_name ] ) ? $_FILES[ $input_name ] : false; // phpcs:ignore
 
 		// Preserve field CL visibility state before processing the field.
-		$visible = isset( wpforms()->process->fields[ $this->field_id ]['visible'] ) ? wpforms()->process->fields[ $this->field_id ]['visible'] : false;
+		$visible = isset( wpforms()->get( 'process' )->fields[ $this->field_id ]['visible'] ) ? wpforms()->get( 'process' )->fields[ $this->field_id ]['visible'] : false;
+		$default = [
+			'name'          => sanitize_text_field( $field_label ),
+			'value'         => '',
+			'file'          => '',
+			'file_original' => '',
+			'ext'           => '',
+			'id'            => absint( $this->field_id ),
+			'type'          => $this->type,
+		];
+
+		if ( $visible ) {
+			$default['visible'] = $visible;
+		}
 
 		// If there was no file uploaded or if this field has conditional logic
 		// rules active, stop here before we continue with the
 		// upload process.
-		if ( ! $file || 0 !== $file['error'] || in_array( $this->field_id, $this->form_data['conditional_fields'], true ) ) {
+		if (
+			! $file ||
+			$file['error'] !== 0 ||
+			(
+				! empty( $this->form_data['conditional_fields'] ) && in_array( $this->field_id, $this->form_data['conditional_fields'], true )
+			)
+		) {
 
-			wpforms()->process->fields[ $this->field_id ] = array(
-				'name'          => sanitize_text_field( $field_label ),
-				'value'         => '',
-				'file'          => '',
-				'file_original' => '',
-				'ext'           => '',
-				'id'            => absint( $this->field_id ),
-				'type'          => $this->type,
-			);
-			if ( $visible ) {
-				wpforms()->process->fields[ $this->field_id ]['visible'] = $visible;
-			}
+			wpforms()->get( 'process' )->fields[ $this->field_id ] = $default;
 
 			return;
 		}
 
-		// Define data.
-		$file_name     = sanitize_file_name( $file['name'] );
-		$file_ext      = pathinfo( $file_name, PATHINFO_EXTENSION );
-		$file_base     = $this->get_file_basename( $file_name, $file_ext );
-		$file_name_new = sprintf( '%s-%s.%s', $file_base, wp_hash( wp_rand() . microtime() . $this->form_id . $this->field_id ), strtolower( $file_ext ) );
-		$upload_dir    = wpforms_upload_dir();
-		$upload_path   = $upload_dir['path'];
+		$processed_file = $this->upload->process_file(
+			$file,
+			$this->field_id,
+			$this->form_data,
+			$this->is_media_integrated()
+		);
 
-		// Old dir.
-		$form_directory   = absint( $this->form_id ) . '-' . md5( $this->form_id . $this->form_data['created'] );
-		$upload_path_form = trailingslashit( $upload_path ) . $form_directory;
-
-		// Check for form upload directory destination.
-		if ( ! file_exists( $upload_path_form ) ) {
-
-			// New one.
-			$form_directory   = absint( $this->form_id ) . '-' . wp_hash( $this->form_data['created'] . $this->form_id );
-			$upload_path_form = trailingslashit( $upload_path ) . $form_directory;
-
-			// Check once again and make directory if it's not exists.
-			if ( ! file_exists( $upload_path_form ) ) {
-				wp_mkdir_p( $upload_path_form );
-			}
-		}
-		$file_new      = trailingslashit( $upload_path_form ) . $file_name_new;
-		$file_name_new = wp_basename( trailingslashit( dirname( $file_new ) ) . $file_name_new );
-		$file_new      = trailingslashit( dirname( $file_new ) ) . $file_name_new;
-		$file_url      = trailingslashit( $upload_dir['url'] ) . trailingslashit( $form_directory ) . $file_name_new;
-		$attachment_id = '0';
-
-		// Check if the .htaccess exists in the upload directory, if not - create it.
-		wpforms_create_upload_dir_htaccess_file();
-
-		// Check if the index.html exists in the directories, if not - create it.
-		wpforms_create_index_html_file( $upload_path );
-		wpforms_create_index_html_file( $upload_path_form );
-
-		// Move the file to the uploads dir - similar to _wp_handle_upload().
-		$move_new_file = @move_uploaded_file( $file['tmp_name'], $file_new ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-		if ( false === $move_new_file ) {
-			wpforms_log(
-				'Upload Error, could not upload file',
-				$file_url,
-				array(
-					'type'    => array( 'entry', 'error' ),
-					'form_id' => $this->form_data['id'],
-				)
-			);
+		if ( empty( $processed_file ) ) {
+			wpforms()->get( 'process' )->fields[ $this->field_id ] = $default;
 
 			return;
-		}
-
-		$this->set_file_fs_permissions( $file_new );
-
-		// Maybe move file to the WordPress media library.
-		if ( $this->is_media_integrated() ) {
-
-			// Include necessary code from core.
-			require_once ABSPATH . 'wp-admin/includes/media.php';
-			require_once ABSPATH . 'wp-admin/includes/file.php';
-			require_once ABSPATH . 'wp-admin/includes/image.php';
-
-			// Copy our file into WordPress uploads.
-			$file_args = array(
-				'error'    => '',
-				'tmp_name' => $file_new,
-				'name'     => $file_name_new,
-				'type'     => $file['type'],
-				'size'     => $file['size'],
-			);
-			$upload    = wp_handle_sideload( $file_args, array( 'test_form' => false ) );
-
-			if ( ! empty( $upload['file'] ) ) {
-				// Create a Media attachment for the file.
-				$attachment_id = wp_insert_attachment(
-					array(
-						'post_title'     => $this->get_wp_media_file_title( $file ),
-						'post_content'   => $this->get_wp_media_file_desc( $file ),
-						'post_status'    => 'publish',
-						'post_mime_type' => $file['type'],
-					),
-					$upload['file']
-				);
-
-				if ( ! empty( $attachment_id ) ) {
-					// Generate attachment meta.
-					wp_update_attachment_metadata(
-						$attachment_id,
-						wp_generate_attachment_metadata( $attachment_id, $upload['file'] )
-					);
-
-					// Update file url/name.
-					$file_url      = wp_get_attachment_url( $attachment_id );
-					$file_name_new = wp_basename( $file_url );
-				}
-			}
 		}
 
 		// Set final field details.
-		wpforms()->process->fields[ $this->field_id ] = array(
+		wpforms()->get( 'process' )->fields[ $this->field_id ] = [
 			'name'           => sanitize_text_field( $field_label ),
-			'value'          => esc_url_raw( $file_url ),
-			'file'           => $file_name_new,
-			'file_original'  => $file_name,
+			'value'          => esc_url_raw( $processed_file['file_url'] ),
+			'file'           => $processed_file['file_name_new'],
+			'file_original'  => $processed_file['file_name'],
 			'file_user_name' => sanitize_text_field( $file['name'] ),
-			'ext'            => $file_ext,
-			'attachment_id'  => absint( $attachment_id ),
+			'ext'            => $processed_file['file_ext'],
+			'attachment_id'  => absint( $processed_file['attachment_id'] ),
 			'id'             => absint( $this->field_id ),
 			'type'           => $this->type,
-		);
+		];
 
 		// Save field CL visibility state after field processing.
 		if ( $visible ) {
-			wpforms()->process->fields[ $this->field_id ]['visible'] = $visible;
+			wpforms()->get( 'process' )->fields[ $this->field_id ]['visible'] = $visible;
 		}
 	}
 
@@ -1162,21 +1158,10 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 		$data = array();
 
 		foreach ( $files as $file ) {
-			$file = $this->generate_file_info( $file );
-
-			if ( $this->is_media_integrated() ) {
-				$file['path'] = $file['tmp_path'];
-
-				$file = $this->generate_file_attachment( $file );
-			} else {
-				// Create form upload directory if needed.
-				$this->create_dir( dirname( $file['path'] ) );
-				rename( $file['tmp_path'], $file['path'] );
-				$this->set_file_fs_permissions( $file['path'] );
-			}
-
-			$data[] = $this->generate_file_data( $file );
+			$data[] = $this->process_file( $file );
 		}
+
+		$data = array_filter( $data );
 
 		if ( ! empty( $data ) ) {
 			$processed = wp_parse_args(
@@ -1200,161 +1185,6 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	}
 
 	/**
-	 * Add additional information to the files array for each file.
-	 *
-	 * @since 1.5.6
-	 *
-	 * @param array $file Submitted file basic info.
-	 *
-	 * @return array
-	 */
-	protected function generate_file_info( $file ) {
-
-		$dir = $this->get_form_files_dir();
-
-		$file['tmp_path'] = trailingslashit( $this->get_tmp_dir() ) . $file['file'];
-		$file['type']     = 'application/octet-stream';
-
-		if ( is_file( $file['tmp_path'] ) ) {
-			$filetype     = wp_check_filetype( $file['tmp_path'] );
-			$file['type'] = $filetype['type'];
-		}
-
-		// Data for no media case.
-		$file_ext              = pathinfo( $file['name'], PATHINFO_EXTENSION );
-		$file_base             = $this->get_file_basename( $file['name'], $file_ext );
-		$file['file_name_new'] = sanitize_file_name( sprintf( '%s-%s.%s', $file_base, wp_hash( wp_rand() . microtime() . $this->form_data['id'] . $this->field_id ), strtolower( $file_ext ) ) );
-		$file['file_url']      = trailingslashit( $dir['url'] ) . $file['file_name_new'];
-		$file['path']          = trailingslashit( $dir['path'] ) . $file['file_name_new'];
-		$file['attachment_id'] = 0;
-
-		return $file;
-	}
-
-	/**
-	 * Get file basename.
-	 *
-	 * Ensure the file name length does not exceed 64 characters to prevent `make_clickable()`
-	 * function from generating an incorrect URL.
-	 *
-	 * @since 1.6.5
-	 *
-	 * @param string $file_name File name.
-	 * @param string $file_ext  File extension.
-	 *
-	 * @return string
-	 */
-	private function get_file_basename( $file_name, $file_ext ) {
-
-		return mb_substr( wp_basename( $file_name, '.' . $file_ext ), 0, 64, 'UTF-8' );
-	}
-
-	/**
-	 * Create a Media Library attachment.
-	 *
-	 * @since 1.5.6
-	 *
-	 * @param array $file File to create Media Library attachment for.
-	 *
-	 * @return array
-	 */
-	protected function generate_file_attachment( $file ) {
-
-		// Include necessary code from core.
-		require_once ABSPATH . 'wp-admin/includes/media.php';
-		require_once ABSPATH . 'wp-admin/includes/file.php';
-		require_once ABSPATH . 'wp-admin/includes/image.php';
-
-		$file_args = array(
-			'error'    => '',
-			'tmp_name' => $file['path'],
-			'name'     => $file['file_name_new'],
-			'type'     => $file['type'],
-		);
-		$upload    = wp_handle_sideload( $file_args, array( 'test_form' => false ) );
-
-		if ( empty( $upload['file'] ) ) {
-			return $file;
-		}
-
-		// Create a Media attachment for the file.
-		$attachment_id = wp_insert_attachment(
-			array(
-				'post_title'     => $this->get_wp_media_file_title( $file ),
-				'post_content'   => $this->get_wp_media_file_desc( $file ),
-				'post_status'    => 'publish',
-				'post_mime_type' => $file['type'],
-			),
-			$upload['file']
-		);
-
-		if ( empty( $attachment_id ) ) {
-			return $file;
-		}
-
-		// Generate and update attachment meta.
-		wp_update_attachment_metadata(
-			$attachment_id,
-			wp_generate_attachment_metadata( $attachment_id, $upload['file'] )
-		);
-
-		// Update file information.
-		$file_url              = wp_get_attachment_url( $attachment_id );
-		$file['path']          = $upload['file'];
-		$file['file_url']      = $file_url;
-		$file['file_name_new'] = wp_basename( $file_url );
-		$file['attachment_id'] = $attachment_id;
-
-		return $file;
-	}
-
-	/**
-	 * Generate an attachment title used in WP Media library for an uploaded file.
-	 *
-	 * @since 1.6.1
-	 *
-	 * @param array $file File data.
-	 *
-	 * @return string
-	 */
-	private function get_wp_media_file_title( $file ) {
-
-		$title = apply_filters(
-			'wpforms_field_' . $this->type . '_media_file_title',
-			sprintf(
-				'%s: %s',
-				$this->field_data['label'],
-				$file['name']
-			),
-			$file,
-			$this->field_data
-		);
-
-		return wpforms_sanitize_text_deeply( $title );
-	}
-
-	/**
-	 * Generate an attachment description used in WP Media library for an uploaded file.
-	 *
-	 * @since 1.6.1
-	 *
-	 * @param array $file File data.
-	 *
-	 * @return string
-	 */
-	private function get_wp_media_file_desc( $file ) {
-
-		$desc = apply_filters(
-			'wpforms_field_' . $this->type . '_media_file_desc',
-			$this->field_data['description'],
-			$file,
-			$this->field_data
-		);
-
-		return wp_kses_post_deep( $desc );
-	}
-
-	/**
 	 * Generate a ready for DB data for each file.
 	 *
 	 * @since 1.5.6
@@ -1365,17 +1195,17 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	 */
 	protected function generate_file_data( $file ) {
 
-		return array(
-			'name'           => sanitize_text_field( $file['name'] ),
+		return [
+			'name'           => sanitize_text_field( $file['file_name'] ),
 			'value'          => esc_url_raw( $file['file_url'] ),
 			'file'           => $file['file_name_new'],
-			'file_original'  => $file['name'],
+			'file_original'  => $file['file_name'],
 			'file_user_name' => sanitize_text_field( $file['file_user_name'] ),
 			'ext'            => wpforms_chain( $file['file'] )->explode( '.' )->pop()->value(),
 			'attachment_id'  => isset( $file['attachment_id'] ) ? absint( $file['attachment_id'] ) : 0,
 			'id'             => $this->field_id,
 			'type'           => $file['type'],
-		);
+		];
 	}
 
 	/**
@@ -1450,13 +1280,11 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 
 			// Strip any suffix provided (eg M, MB etc), which leaves us with the raw MB value.
 			$max_size = preg_replace( '/[^0-9.]/', '', $this->field_data['max_size'] );
-			$max_size = wpforms_size_to_bytes( $max_size . 'M' );
 
-		} else {
-			$max_size = wpforms_max_upload( true );
+			return wpforms_size_to_bytes( $max_size . 'M' );
 		}
 
-		return $max_size;
+		return wpforms_max_upload( true );
 	}
 
 	/**
@@ -1475,12 +1303,13 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 		$lifespan = (int) apply_filters( 'wpforms_field_' . $this->type . '_clean_tmp_files_lifespan', DAY_IN_SECONDS );
 
 		foreach ( $files as $file ) {
-			if ( 'index.html' === $file || ! is_file( $file ) ) {
+			if ( $file === 'index.html' || ! is_file( $file ) ) {
 				continue;
 			}
 
 			// In some cases filemtime() can return false, in that case - pretend this is a new file and do nothing.
 			$modified = (int) filemtime( $file );
+
 			if ( empty( $modified ) ) {
 				$modified = time();
 			}
@@ -1689,6 +1518,7 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 		}
 
 		$is_valid_type = $this->validate_wp_filetype_and_ext( $tmp_path, $file_name );
+
 		if ( false !== $is_valid_type ) {
 			wp_send_json_error( $is_valid_type, 403 );
 		}
@@ -1714,26 +1544,27 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	protected function ajax_validate_form_field_modern() {
 
 		if (
-			empty( $_POST['form_id'] ) ||
-			empty( $_POST['field_id'] )
+			empty( $_POST['form_id'] ) || // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			empty( $_POST['field_id'] ) // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		) {
-			return array();
+			return [];
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$form_data = wpforms()->form->get( (int) $_POST['form_id'], [ 'content_only' => true ] );
 
 		if ( empty( $form_data ) || ! is_array( $form_data ) ) {
-			return array();
+			return [];
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$field_id = (int) $_POST['field_id'];
+
 		if (
 			! isset( $form_data['fields'][ $field_id ]['style'] ) ||
-			self::STYLE_MODERN !== $form_data['fields'][ $field_id ]['style']
+			$form_data['fields'][ $field_id ]['style'] !== self::STYLE_MODERN
 		) {
-			return array();
+			return [];
 		}
 
 		// Make data available everywhere in the class, so we don't need to pass it manually.
@@ -1742,10 +1573,10 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 		$this->field_id   = $field_id;
 		$this->field_data = $this->form_data['fields'][ $this->field_id ];
 
-		return array(
+		return [
 			'form_data' => $form_data,
 			'field_id'  => $field_id,
-		);
+		];
 	}
 
 	/**
@@ -1759,11 +1590,11 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	 */
 	protected function validate_basic( $error ) {
 
-		if ( 0 === $error || 4 === $error ) {
+		if ( $error === 0 || $error === 4 ) {
 			return false;
 		}
 
-		$errors = array(
+		$errors = [
 			false,
 			esc_html__( 'The uploaded file exceeds the upload_max_filesize directive in php.ini.', 'wpforms' ),
 			esc_html__( 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.', 'wpforms' ),
@@ -1773,14 +1604,54 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 			esc_html__( 'Missing a temporary folder.', 'wpforms' ),
 			esc_html__( 'Failed to write file to disk.', 'wpforms' ),
 			esc_html__( 'File upload stopped by extension.', 'wpforms' ),
-		);
+		];
 
 		if ( array_key_exists( $error, $errors ) ) {
-			/* translators: %s - error text. */
-			return sprintf( esc_html__( 'File upload error. %s', 'wpforms' ), $errors[ $error ] );
+			return sprintf( /* translators: %s - error text. */
+				esc_html__( 'File upload error. %s', 'wpforms' ),
+				$errors[ $error ]
+			);
 		}
 
 		return false;
+	}
+
+	/**
+	 * Generate both the file info and the file data to send to the database.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param array $file File to generate data from.
+	 *
+	 * @return array File data.
+	 */
+	public function process_file( $file ) {
+
+		$file['tmp_name'] = trailingslashit( $this->get_tmp_dir() ) . $file['file'];
+		$file['type']     = 'application/octet-stream';
+
+		if ( is_file( $file['tmp_name'] ) ) {
+			$filetype     = wp_check_filetype( $file['tmp_name'] );
+			$file['type'] = $filetype['type'];
+			$file['size'] = filesize( $file['tmp_name'] );
+		}
+
+		$uploaded_file = $this->upload->process_file(
+			$file,
+			$this->field_id,
+			$this->form_data,
+			$this->is_media_integrated()
+		);
+
+		if ( empty( $uploaded_file ) ) {
+			return [];
+		}
+
+		$uploaded_file['file']           = $file['file'];
+		$uploaded_file['file_user_name'] = $file['file_user_name'];
+		$uploaded_file['type']           = $file['type'];
+
+		return $this->generate_file_data( $uploaded_file );
 	}
 
 	/**
@@ -1795,10 +1666,11 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	protected function validate_size( $sizes = null ) {
 
 		if (
-			null === $sizes &&
+			$sizes === null &&
 			! empty( $_FILES )
 		) {
 			$sizes = [];
+
 			foreach ( $_FILES as $file ) {
 				$sizes[] = $file['size'];
 			}
@@ -1977,24 +1849,9 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 			return false;
 		}
 
-		$this->set_file_fs_permissions( $path_to );
+		$this->upload->set_file_fs_permissions( $path_to );
 
 		return $path_to;
-	}
-
-	/**
-	 * Set correct file permissions in the file system.
-	 *
-	 * @since 1.5.6
-	 *
-	 * @param string $path File to set permissions for.
-	 */
-	protected function set_file_fs_permissions( $path ) {
-
-		// Set correct file permissions.
-		$stat = stat( dirname( $path ) );
-
-		@chmod( $path, $stat['mode'] & 0000666 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 	}
 
 	/**
@@ -2075,6 +1932,7 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	 * Disallow WPForms upload directory indexing in robots.txt.
 	 *
 	 * @since 1.6.1
+	 * @deprecated 1.7.0
 	 *
 	 * @param string $output Robots.txt output.
 	 *
@@ -2082,25 +1940,169 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	 */
 	public function disallow_upload_dir_indexing( $output ) {
 
+		_deprecated_function( __CLASS__ . '::' . __METHOD__, '1.7.0 of the WPForms plugin' );
+
+		return ( new Robots() )->disallow_upload_dir_indexing( $output );
+	}
+
+	/**
+	 * Get file icon html.
+	 *
+	 * @since 1.6.6
+	 *
+	 * @param array $file_data File data.
+	 *
+	 * @return string
+	 */
+	public function file_icon_html( $file_data ) {
+
+		$src       = esc_url( $file_data['value'] );
+		$ext_types = wp_get_ext_types();
+
+		if ( ! in_array( $file_data['ext'], $ext_types['image'], true ) ) {
+
+			$src = wp_mime_type_icon( wp_ext2type( $file_data['ext'] ) );
+		} elseif ( $file_data['attachment_id'] ) {
+
+			$image = wp_get_attachment_image_src( $file_data['attachment_id'], [ 16, 16 ], true );
+			$src   = $image ? $image[0] : $src;
+		}
+
+		return sprintf( '<span class="file-icon"><img width="16" height="16" src="%s" alt="" /></span>', esc_url( $src ) );
+	}
+
+	/**
+	 * Get Form files path.
+	 *
+	 * @since 1.6.6
+	 *
+	 * @param string $form_id Form ID.
+	 *
+	 * @return string
+	 */
+	private static function get_form_files_path( $form_id ) {
+
+		$form_data = wpforms()->form->get( $form_id );
+
 		$upload_dir = wpforms_upload_dir();
+		$folder     = absint( $form_data->ID ) . '-' . wp_hash( $form_data->post_date . $form_data->ID );
 
-		if ( ! empty( $upload_dir['error'] ) ) {
-			return $output;
+		return trailingslashit( $upload_dir['path'] ) . $folder;
+	}
+
+	/**
+	 * Maybe delete uploaded files from entry.
+	 *
+	 * @since 1.6.6
+	 *
+	 * @param string $entry_id       Entry ID.
+	 * @param array  $delete_fields  Fields to delete.
+	 * @param array  $exclude_fields Exclude fields.
+	 *
+	 * @return array Removed files names.
+	 */
+	public static function delete_uploaded_files_from_entry( $entry_id, $delete_fields = [], $exclude_fields = [] ) {
+
+		$removed_files = [];
+		$entry         = wpforms()->entry->get( $entry_id );
+
+		if ( empty( $entry ) ) {
+			return $removed_files;
 		}
 
-		$site_url = site_url();
+		$files_path       = self::get_form_files_path( $entry->form_id );
+		$fields_to_delete = $delete_fields ? $delete_fields : (array) wpforms_decode( $entry->fields );
 
-		$upload_root = str_replace( $site_url, '', $upload_dir['url'] );
-		$upload_root = trailingslashit( $upload_root );
+		foreach ( $fields_to_delete as $field ) {
 
-		$site_url_parts = wp_parse_url( $site_url );
-		if ( ! empty( $site_url_parts['path'] ) ) {
-			$upload_root = $site_url_parts['path'] . $upload_root;
+
+			if ( ! isset( $field['type'] ) || $field['type'] !== 'file-upload' || ( $exclude_fields && ! isset( $exclude_fields[ $field['id'] ] ) ) ) {
+				continue;
+			}
+
+			$removed_files = self::delete_uploaded_file_from_entry( $removed_files, $field, $exclude_fields, $files_path );
 		}
 
-		$output .= "Disallow: $upload_root\n";
+		return $removed_files;
+	}
 
-		return $output;
+	/**
+	 * Maybe delete uploaded file from entry.
+	 *
+	 * @since 1.6.6
+	 *
+	 * @param array  $removed_files  Removed files array.
+	 * @param array  $field          Field to delete.
+	 * @param array  $exclude_fields Exclude fields.
+	 * @param string $files_path     Form files path.
+	 *
+	 * @return array
+	 */
+	private static function delete_uploaded_file_from_entry( $removed_files, $field, $exclude_fields, $files_path ) {
+
+		if ( ! self::is_modern_upload( $field ) ) {
+
+			$removed_files[] = self::delete_uploaded_file( $files_path, $field );
+
+			return $removed_files;
+		}
+
+		$values = $field['value_raw'];
+
+		if ( $exclude_fields ) {
+			$values = ! empty( $field['value_raw'] ) ? array_diff_key( $exclude_fields[ $field['id'] ]['value_raw'], $field['value_raw'] ) : $exclude_fields[ $field['id'] ]['value_raw'];
+		}
+
+		if ( empty( $values ) ) {
+			return $removed_files;
+		}
+
+		foreach ( $values as $value_raw ) {
+			$removed_files[] = self::delete_uploaded_file( $files_path, $value_raw );
+		}
+
+		return $removed_files;
+	}
+
+	/**
+	 * Delete uploaded file.
+	 *
+	 * @since 1.6.6
+	 *
+	 * @param string $files_path Path to files.
+	 * @param array  $file_data  File data.
+	 *
+	 * @return string
+	 */
+	private static function delete_uploaded_file( $files_path, $file_data ) {
+
+		if ( empty( $file_data['file'] ) ) {
+			return '';
+		}
+
+		$file = trailingslashit( $files_path ) . $file_data['file'];
+
+		if ( ! is_file( $file ) ) {
+			return '';
+		}
+
+		unlink( $file );
+
+		return $file_data['file_user_name'];
+	}
+
+	/**
+	 * Check if modern upload was used.
+	 *
+	 * @param array $field_data Field data.
+	 *
+	 * @since 1.6.6
+	 *
+	 * @return bool
+	 */
+	public static function is_modern_upload( $field_data ) {
+
+		return isset( $field_data['style'] ) && $field_data['style'] === self::STYLE_MODERN;
 	}
 }
 

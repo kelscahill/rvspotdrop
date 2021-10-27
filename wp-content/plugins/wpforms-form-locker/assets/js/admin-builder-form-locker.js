@@ -1,4 +1,4 @@
-/* globals wpforms_admin_builder_form_locker */
+/* global wpforms_admin_builder_form_locker */
 
 'use strict';
 
@@ -54,7 +54,7 @@ var WPFormsBuilderFormLocker = window.WPFormsBuilderFormLocker || ( function( do
 		 */
 		init: function() {
 
-			$( document ).ready( app.ready );
+			$( app.ready );
 		},
 
 		/**
@@ -66,6 +66,8 @@ var WPFormsBuilderFormLocker = window.WPFormsBuilderFormLocker || ( function( do
 
 			app.events();
 			app.conditionals();
+			app.selectConditionals();
+			app.emailDropdownToggle();
 			app.dateTimePicker();
 			app.scheduleDatetimeEvents();
 		},
@@ -77,15 +79,25 @@ var WPFormsBuilderFormLocker = window.WPFormsBuilderFormLocker || ( function( do
 		 */
 		events: function() {
 
-			$( '.wpforms-panel-field-datetime .wpforms-clear-datetime-field' ).click( function() {
-				var $input = $( this ).siblings( 'input' );
-				if ( $input.prop( '_flatpickr' ) ) {
-					$input.prop( '_flatpickr' ).clear();
-				} else {
-					$input.val( '' );
-				}
-				$( this ).hide();
-			} );
+			$( document ).on( 'click', '.wpforms-panel-field-datetime .wpforms-clear-datetime-field', app.resetDateTimeField );
+			$( document ).on( 'change', '#wpforms-panel-field-settings-form_locker_verification, #wpforms-panel-field-settings-form_locker_verification_type', app.selectConditionals );
+			$( document ).on( 'change', '#wpforms-panel-field-settings-form_locker_user_entry_limit_enable, #wpforms-panel-field-settings-form_locker_user_entry_restrict_by_email', app.emailDropdownToggle );
+		},
+
+		/**
+		 * Clear DateTime field.
+		 *
+		 * @since 2.0.0
+		 */
+		resetDateTimeField: function() {
+
+			var $input = $( this ).siblings( 'input' );
+			if ( $input.prop( '_flatpickr' ) ) {
+				$input.prop( '_flatpickr' ).clear();
+			} else {
+				$input.val( '' );
+			}
+			$( this ).hide();
 		},
 
 		/**
@@ -101,20 +113,24 @@ var WPFormsBuilderFormLocker = window.WPFormsBuilderFormLocker || ( function( do
 
 			var elements = [
 				{
-					id: '#wpforms-panel-field-settings-form_locker_password_enable',
-					hides: '#wpforms-panel-field-settings-form_locker_password-wrap,#wpforms-panel-field-settings-form_locker_password_message-wrap',
+					id: '#wpforms-panel-field-settings-form_locker_verification',
+					hides: '#wpforms-panel-field-settings-form_locker_verification_type-wrap',
 				},
 				{
 					id: '#wpforms-panel-field-settings-form_locker_schedule_enable',
 					hides: '#wpforms-form-locker-schedule-datetime-block,#wpforms-panel-field-settings-form_locker_schedule_message-wrap',
 				},
 				{
+					id: '#wpforms-panel-field-settings-form_locker_user_enable',
+					hides: '#wpforms-panel-field-settings-form_locker_user_message-wrap',
+				},
+				{
 					id: '#wpforms-panel-field-settings-form_locker_entry_limit_enable',
 					hides: '#wpforms-panel-field-settings-form_locker_entry_limit-wrap,#wpforms-panel-field-settings-form_locker_entry_limit_message-wrap',
 				},
 				{
-					id: '#wpforms-panel-field-settings-form_locker_user_enable',
-					hides: '#wpforms-panel-field-settings-form_locker_user_message-wrap',
+					id: '#wpforms-panel-field-settings-form_locker_user_entry_limit_enable',
+					hides: '#wpforms-panel-field-settings-form_locker_user_entry_restrict_by_ip-wrap,#wpforms-panel-field-settings-form_locker_user_entry_restrict_by_email-wrap,#wpforms-panel-field-settings-form_locker_user_entry_message_limited-wrap,.wpforms-form-locker-user-entry-container,#wpforms-panel-field-settings-form_locker_user_entry_email_field-wrap',
 				},
 			];
 
@@ -138,6 +154,57 @@ var WPFormsBuilderFormLocker = window.WPFormsBuilderFormLocker || ( function( do
 					effect    : 'appear',
 				} );
 			} );
+		},
+
+		/**
+		 * Load smart select conditionals.
+		 *
+		 * @since 2.0.0
+		 */
+		selectConditionals: function() {
+
+			var $verificationType = $( '#wpforms-panel-field-settings-form_locker_verification_type' ),
+				options = $verificationType.find( 'option' ),
+				value = $verificationType.val(),
+				isMainSwitchChecked = $( '#wpforms-panel-field-settings-form_locker_verification' ).is( ':checked' );
+
+			if ( ! options.length ) {
+				return;
+			}
+
+			options.each( function() {
+
+				var val = $( this ).val();
+
+				if ( ! isMainSwitchChecked || val !== value ) {
+					$( '.wpforms-form-locker-' + val ).hide();
+				}
+
+				if ( isMainSwitchChecked && val === value ) {
+					$( '.wpforms-form-locker-' + val ).show();
+				}
+			} );
+		},
+
+		/**
+		 * Show Email fields dropdown only when checkbox is enabled.
+		 *
+		 * @since 2.0.0
+		 */
+		emailDropdownToggle: function() {
+			var $hide = $( '#wpforms-panel-field-settings-form_locker_user_entry_restrict_by_email' ),
+				$block = $( '#wpforms-panel-field-settings-form_locker_user_entry_email_field-wrap' ),
+				isMainSwitchChecked = $( '#wpforms-panel-field-settings-form_locker_user_entry_limit_enable' ).is( ':checked' );
+
+			if ( ! $hide.length ) {
+				return;
+			}
+
+			if ( $hide.is( ':checked' ) && isMainSwitchChecked ) {
+				$block.show();
+			} else {
+				$block.hide();
+			}
 		},
 
 		/**
@@ -337,17 +404,19 @@ var WPFormsBuilderFormLocker = window.WPFormsBuilderFormLocker || ( function( do
 					return;
 				}
 
-				var sdate = ( start.date + start.time ).replace( /\D/g, '' ),
-					edate = ( end.date + end.time ).replace( /\D/g, '' );
+				var sdateTime = ( start.date + ' ' + start.time ).replace( /-/g, '/' ),
+					edateTime = ( end.date + ' ' + end.time ).replace( /-/g, '/' ),
+					sdateObj  = new Date( sdateTime ),
+					edateObj  = new Date( edateTime );
 
-				if ( edate > sdate ) {
+				if ( edateObj.getTime() > sdateObj.getTime() ) {
 					return;
 				}
 
-				var edateObj = new Date( start.date + ' ' + start.time );
-				edateObj.setMinutes( edateObj.getMinutes() + datePairDefaultTimeDelta );
-				el.scheduling.end.$tpicker.timepicker( 'setTime', edateObj );
-				el.scheduling.end.$dpicker.prop( '_flatpickr' ).setDate( edateObj );
+				// Set end time as a sum of start time and datePairDefaultTimeDelta (30 minutes ).
+				sdateObj.setMinutes( sdateObj.getMinutes() + datePairDefaultTimeDelta );
+				el.scheduling.end.$tpicker.timepicker( 'setTime', sdateObj );
+				el.scheduling.end.$dpicker.prop( '_flatpickr' ).setDate( sdateObj );
 
 				app.dateTimeClearBtnsRefresh( el.scheduling.end.$tpicker );
 				app.dateTimeClearBtnsRefresh( el.scheduling.end.$dpicker );

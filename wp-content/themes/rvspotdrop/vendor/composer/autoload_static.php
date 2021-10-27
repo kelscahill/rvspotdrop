@@ -4,13 +4,13 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitcb9aaf443c11ccbce954ed8c8b9abd7c
+class ComposerStaticInitf003e6f46f96e41b3e4787f8f81cf3b9
 {
     public static $files = array (
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -169,7 +169,7 @@ class ComposerStaticInitcb9aaf443c11ccbce954ed8c8b9abd7c
     );
 
     public static $fallbackDirsPsr4 = array (
-        0 => __DIR__ . '/..' . '/asm89/twig-cache-extension/lib',
+        0 => __DIR__ . '/..' . '/twig/cache-extension/lib',
     );
 
     public static $prefixesPsr0 = array (
@@ -207,11 +207,11 @@ class ComposerStaticInitcb9aaf443c11ccbce954ed8c8b9abd7c
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitcb9aaf443c11ccbce954ed8c8b9abd7c::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitcb9aaf443c11ccbce954ed8c8b9abd7c::$prefixDirsPsr4;
-            $loader->fallbackDirsPsr4 = ComposerStaticInitcb9aaf443c11ccbce954ed8c8b9abd7c::$fallbackDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitcb9aaf443c11ccbce954ed8c8b9abd7c::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitcb9aaf443c11ccbce954ed8c8b9abd7c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitf003e6f46f96e41b3e4787f8f81cf3b9::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitf003e6f46f96e41b3e4787f8f81cf3b9::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInitf003e6f46f96e41b3e4787f8f81cf3b9::$fallbackDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitf003e6f46f96e41b3e4787f8f81cf3b9::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitf003e6f46f96e41b3e4787f8f81cf3b9::$classMap;
 
         }, null, ClassLoader::class);
     }

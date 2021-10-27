@@ -86,13 +86,12 @@ final class Loader {
 	 */
 	public function __construct() {
 
-		$this->url  = \plugin_dir_url( __DIR__ );
-		$this->path = \plugin_dir_path( __DIR__ );
+		$this->url  = WPFORMS_STRIPE_URL;
+		$this->path = WPFORMS_STRIPE_PATH;
 
 		new Install();
 
-		\add_action( 'wpforms_loaded', array( $this, 'init' ) );
-		\add_action( 'wpforms_updater', array( $this, 'updater' ) );
+		\add_action( 'wpforms_loaded', [ $this, 'init' ] );
 	}
 
 	/**
@@ -101,14 +100,6 @@ final class Loader {
 	 * @since 2.0.0
 	 */
 	public function init() {
-
-		// WPForms Pro is required.
-		if ( ! wpforms()->pro ) {
-			return;
-		}
-
-		// Load translated strings.
-		\load_plugin_textdomain( 'wpforms-stripe', false, \dirname( \plugin_basename( \WPFORMS_STRIPE_FILE ) ) . '/languages/' );
 
 		$this->api = Helpers::get_api_class()->init();
 
@@ -167,21 +158,14 @@ final class Loader {
 	 * Load the plugin updater.
 	 *
 	 * @since 2.0.0
+	 * @deprecated 2.5.0
 	 *
 	 * @param string $key License key.
 	 */
 	public function updater( $key ) {
 
-		new \WPForms_Updater(
-			array(
-				'plugin_name' => 'WPForms Stripe',
-				'plugin_slug' => 'wpforms-stripe',
-				'plugin_path' => \plugin_basename( \WPFORMS_STRIPE_FILE ),
-				'plugin_url'  => \trailingslashit( $this->url ),
-				'remote_url'  => \WPFORMS_UPDATER_API,
-				'version'     => \WPFORMS_STRIPE_VERSION,
-				'key'         => $key,
-			)
-		);
+		_deprecated_function( __CLASS__ . '::' . __METHOD__, '2.5.0' );
+
+		wpforms_stripe_updater( $key );
 	}
 }

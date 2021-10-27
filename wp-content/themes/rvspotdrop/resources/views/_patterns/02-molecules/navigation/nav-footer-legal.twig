@@ -1,4 +1,4 @@
-{% if footer_legal_nav.theme_location == "footer_legal_navigation" %}
+{% if footer_legal_nav.items %}
   <nav class="c-nav-footer-legal" role="navigation">
     {% for item in footer_legal_nav.items %}
       <a class="c-nav-footer-legal__link" target="{{ item.target ? item.target : '_self' }}" href="{{ item.link }}">{{ item.title }}</a>

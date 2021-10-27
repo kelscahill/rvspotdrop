@@ -49,6 +49,8 @@ class PaymentIntents extends Common implements ApiInterface {
 
 		$this->set_config();
 
+		add_filter( 'wpforms_process_bypass_captcha', [ $this, 'bypass_captcha_on_3dsecure_submit' ], 10, 3 );
+
 		new \WPFormsStripe\Fields\StripeCreditCard();
 
 		return $this;
@@ -63,24 +65,36 @@ class PaymentIntents extends Common implements ApiInterface {
 
 		$min = \wpforms_get_min_suffix();
 
-		$localize_script = array(
-			'element_classes' => array(
+		/**
+		 * This filter allows to overwrite a Style object, which consists of CSS properties nested under objects.
+		 *
+		 * @since 2.5.0
+		 *
+		 * @link https://stripe.com/docs/js/appendix/style
+		 *
+		 * @param array [] Style object.
+		 */
+		$element_style = \apply_filters( 'wpforms_stripe_api_payment_intents_set_config_element_style', [] );
+
+		$localize_script = [
+			'element_classes' => [
 				'base'           => 'wpforms-stripe-element',
 				'complete'       => 'wpforms-stripe-element-complete',
 				'empty'          => 'wpforms-stripe-element-empty',
 				'focus'          => 'wpforms-stripe-element-focus',
 				'invalid'        => 'wpforms-stripe-element-invalid',
 				'webkitAutofill' => 'wpforms-stripe-element-webkit-autofill',
-			),
+			],
 			'element_locale'  => $this->filter_config_element_locale(),
-		);
+			'element_style'   => $element_style,
+		];
 
-		$this->config = array(
+		$this->config = [
 			'remote_js_url'   => 'https://js.stripe.com/v3/',
 			'local_js_url'    => \wpforms_stripe()->url . "assets/js/wpforms-stripe-elements{$min}.js",
 			'field_slug'      => 'stripe-credit-card',
 			'localize_script' => $localize_script,
-		);
+		];
 	}
 
 	/**
@@ -142,11 +156,9 @@ class PaymentIntents extends Common implements ApiInterface {
 	 *
 	 * @return \Stripe\PaymentIntent
 	 */
-	protected function retrieve_payment_intent( $id, $args = array() ) {
+	protected function retrieve_payment_intent( $id, $args = [] ) {
 
-		Helpers::require_stripe();
-
-		$defaults = array( 'id' => $id );
+		$defaults = [ 'id' => $id ];
 
 		$args = \wp_parse_args( $args, $defaults );
 
@@ -188,8 +200,6 @@ class PaymentIntents extends Common implements ApiInterface {
 			return;
 		}
 
-		Helpers::require_stripe();
-
 		$defaults = array(
 			'payment_method' => $this->payment_method_id,
 			'confirm'        => true,
@@ -207,11 +217,12 @@ class PaymentIntents extends Common implements ApiInterface {
 			}
 
 			if ( 'requires_action' === $this->intent->status ) {
+				$this->set_bypass_captcha_3dsecure_token();
 				$this->request_3dsecure_ajax( $this->intent );
 			}
 		} catch ( \Exception $e ) {
 
-			$this->set_error_from_exception( $e );
+			$this->handle_exception( $e );
 		}
 	}
 
@@ -270,20 +281,18 @@ class PaymentIntents extends Common implements ApiInterface {
 			return;
 		}
 
-		$sub_args = array(
-			'items'    => array(
-				array(
+		$sub_args = [
+			'items'    => [
+				[
 					'plan' => $this->get_plan_id( $args ),
-				),
-			),
-			'metadata' => array(
+				],
+			],
+			'metadata' => [
 				'form_name' => $args['form_title'],
 				'form_id'   => $args['form_id'],
-			),
-			'expand'   => array( 'latest_invoice.payment_intent' ),
-		);
-
-		Helpers::require_stripe();
+			],
+			'expand'   => [ 'latest_invoice.payment_intent' ],
+		];
 
 		try {
 
@@ -317,11 +326,12 @@ class PaymentIntents extends Common implements ApiInterface {
 			}
 
 			if ( 'requires_action' === $this->intent->status ) {
+				$this->set_bypass_captcha_3dsecure_token();
 				$this->request_3dsecure_ajax( $this->intent );
 			}
 		} catch ( \Exception $e ) {
 
-			$this->set_error_from_exception( $e );
+			$this->handle_exception( $e );
 		}
 	}
 
@@ -436,8 +446,6 @@ class PaymentIntents extends Common implements ApiInterface {
 	 */
 	protected function select_subscription_default_payment_method( $new_payment_method ) {
 
-		Helpers::require_stripe();
-
 		// Stripe does not set the first PaymentMethod attached to a Customer as Customer's 'default_payment_method'.
 		// Setting it manually if Customer's 'default_payment_method' is empty.
 		if ( empty( $this->customer->invoice_settings->default_payment_method ) ) {
@@ -481,8 +489,6 @@ class PaymentIntents extends Common implements ApiInterface {
 	 */
 	protected function update_remote_customer_default_payment_method( $payment_method_id ) {
 
-		Helpers::require_stripe();
-
 		\Stripe\Customer::update(
 			$this->get_customer( 'id' ),
 			array(
@@ -504,8 +510,6 @@ class PaymentIntents extends Common implements ApiInterface {
 	 * @throws \Exception In case of Stripe API error.
 	 */
 	protected function detach_remote_subscriptions_duplicated_payment_methods( $new_payment_method ) {
-
-		Helpers::require_stripe();
 
 		$subscriptions = \Stripe\Subscription::all(
 			array(
@@ -539,5 +543,77 @@ class PaymentIntents extends Common implements ApiInterface {
 		foreach ( $detach_methods as $detach_method ) {
 			$detach_method->detach();
 		}
+	}
+
+	/**
+	 * Set an encrypted token as a PaymentIntent metadata item.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @throws \Stripe\Exception\ApiErrorException In case payment intent save wasn't successful.
+	 */
+	private function set_bypass_captcha_3dsecure_token() {
+
+		$form_data = wpforms()->process->form_data;
+
+		// Set token only if captcha is enabled for the form.
+		if ( empty( $form_data['settings']['recaptcha'] ) ) {
+			return;
+		}
+
+		$this->intent->metadata['captcha_3dsecure_token'] = \WPForms\Helpers\Crypto::encrypt( $this->intent->id );
+
+		$this->intent->save();
+	}
+
+	/**
+	 * Bypass CAPTCHA check on successful 3dSecure check.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param bool  $is_bypassed True if CAPTCHA is bypassed.
+	 * @param array $entry       Form entry data.
+	 * @param array $form_data   Form data and settings.
+	 *
+	 * @return bool
+	 *
+	 * @throws \Stripe\Exception\ApiErrorException In case payment intent save wasn't successful.
+	 */
+	public function bypass_captcha_on_3dsecure_submit( $is_bypassed, $entry, $form_data ) {
+
+		// Sanity check to prevent possible tinkering with captcha on non-payment forms.
+		if ( empty( $form_data['payments']['stripe']['enable'] ) ) {
+			return $is_bypassed;
+		}
+
+		// Both reCAPTCHA and hCaptcha are enabled by the same setting.
+		if ( empty( $form_data['settings']['recaptcha'] ) ) {
+			return $is_bypassed;
+		}
+
+		if ( empty( $entry['payment_intent_id'] ) ) {
+			return $is_bypassed;
+		}
+
+		// This is executed before payment processing kicks in and fills `$this->intent`.
+		// PaymentIntent intent has to be retrieved from Stripe instead of getting it from `$this->intent`.
+		$intent = $this->retrieve_payment_intent( $entry['payment_intent_id'] );
+
+		if ( empty( $intent->status ) || $intent->status !== 'succeeded' ) {
+			return $is_bypassed;
+		}
+
+		$token = ! empty( $intent->metadata['captcha_3dsecure_token'] ) ? $intent->metadata['captcha_3dsecure_token'] : '';
+
+		if ( \WPForms\Helpers\Crypto::decrypt( $token ) !== $intent->id ) {
+			return $is_bypassed;
+		}
+
+		// Cleanup the token to prevent its repeated usage and declutter the metadata.
+		$intent->metadata['captcha_3dsecure_token'] = null;
+
+		$intent->save();
+
+		return true;
 	}
 }

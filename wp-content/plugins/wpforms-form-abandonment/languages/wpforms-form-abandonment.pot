@@ -1,4 +1,4 @@
-# Copyright (C) 2020 WPForms Form Abandonment
+# Copyright (C) 2021 WPForms Form Abandonment
 # This file is distributed under the same license as the WPForms Form Abandonment package.
 msgid ""
 msgstr ""
@@ -46,14 +46,27 @@ msgstr ""
 msgid "When checked only the most recent abandoned entry from the user is saved. See the Form Abandonment documentation for more info regarding this setting."
 msgstr ""
 
-#: class-form-abandonment.php:163
+#: class-form-abandonment.php:158
 msgid "Enable for abandoned forms entries"
 msgstr ""
 
-#: class-form-abandonment.php:168
+#: class-form-abandonment.php:165
 msgid "When enabled this notification will <em>only</em> be sent for abandoned form entries. This setting should only be used with <strong>new</strong> notifications."
 msgstr ""
 
-#: class-form-abandonment.php:234
+#: class-form-abandonment.php:173
+msgid "Form Abandonment entries"
+msgstr ""
+
+#: class-form-abandonment.php:235
 msgid "Abandoned"
+msgstr ""
+
+#. translators: %s - WPForms.com documentation page URL.
+#: wpforms-form-abandonment.php:112
+msgid "The WPForms Form Abandonment plugin is not accepting payments anymore because your site is running an outdated version of PHP that is no longer supported and is not compatible with the plugin. <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">Read more</a> for additional information."
+msgstr ""
+
+#: wpforms-form-abandonment.php:139
+msgid "The WPForms Form Abandonment plugin has been deactivated, because it requires WPForms v1.6.6 or later to work."
 msgstr ""

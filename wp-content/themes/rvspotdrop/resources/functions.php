@@ -1,57 +1,60 @@
 <?php
 /**
  * Do not edit anything in this file unless you know what you're doing
+ *
+ * @package WordPress
  */
 
 use Roots\Sage\Config;
 use Roots\Sage\Container;
 
 /**
- * Helper function for prettying up errors
- * @param string $message
- * @param string $subtitle
- * @param string $title
- */
-$sage_error = function ($message, $subtitle = '', $title = '') {
-  $title = $title ?: __('Sage &rsaquo; Error', 'sage');
-  $footer = '<a href="https://roots.io/sage/docs/">roots.io/sage/docs/</a>';
+* Helper function for prettying up errors
+*
+* @param string $message
+* @param string $subtitle
+* @param string $title
+*/
+$sage_error = function ( $message, $subtitle = '', $title = '' ) {
+  $title   = $title ?: __( 'Sage &rsaquo; Error', 'sage' );
+  $footer  = '<a href="https://roots.io/sage/docs/">roots.io/sage/docs/</a>';
   $message = "<h1>{$title}<br><small>{$subtitle}</small></h1><p>{$message}</p><p>{$footer}</p>";
-  wp_die($message, $title);
+  wp_die( esc_html( $message ), esc_html( $title ) );
 };
 
 /**
- * Ensure compatible version of PHP is used
- */
-if (version_compare('7', phpversion(), '>=')) {
-  $sage_error(__('You must be using PHP 7 or greater.', 'sage'), __('Invalid PHP version', 'sage'));
+* Ensure compatible version of PHP is used
+*/
+if ( version_compare( '7', phpversion(), '>=' ) ) {
+  $sage_error( __( 'You must be using PHP 7 or greater.', 'sage' ), __( 'Invalid PHP version', 'sage' ) );
 }
 
 /**
- * Ensure compatible version of WordPress is used
- */
-if (version_compare('5.0.0', get_bloginfo('version'), '>=')) {
-  $sage_error(__('You must be using WordPress 5.0.0 or greater.', 'sage'), __('Invalid WordPress version', 'sage'));
+* Ensure compatible version of WordPress is used
+*/
+if ( version_compare( '5.0.0', get_bloginfo( 'version' ), '>=' ) ) {
+  $sage_error( __( 'You must be using WordPress 5.0.0 or greater.', 'sage' ), __( 'Invalid WordPress version', 'sage' ) );
 }
 
 /**
- * Ensure dependencies are loaded
- */
-if (!class_exists('Roots\\Sage\\Container')) {
-  if (!file_exists($composer = __DIR__.'/../vendor/autoload.php')) {
+* Ensure dependencies are loaded
+*/
+if ( ! class_exists( 'Roots\\Sage\\Container' ) ) {
+  if ( ! file_exists( $composer = __DIR__ . '/../vendor/autoload.php' ) ) {
     $sage_error(
-      __('You must run <code>composer install</code> from the Sage directory.', 'sage'),
-      __('Autoloader not found.', 'sage')
+      __( 'You must run <code>composer install</code> from the Sage directory.', 'sage' ),
+      __( 'Autoloader not found.', 'sage' )
     );
   }
-  require_once $composer;
+  include_once $composer;
 }
 
 /**
- * Sage required files
- *
- * The mapped array determines the code library included in your theme.
- * Add or remove files to the array as needed. Supports child theme overrides.
- */
+* Sage required files
+*
+* The mapped array determines the code library included in your theme.
+* Add or remove files to the array as needed. Supports child theme overrides.
+*/
 array_map(function ($file) use ($sage_error) {
   $file = "../app/{$file}.php";
   if (!locate_template($file, true, true)) {
@@ -59,269 +62,183 @@ array_map(function ($file) use ($sage_error) {
   }
 }, ['helpers', 'setup', 'filters', 'admin', 'timber']);
 
-/**
- * Here's what's happening with these hooks:
- * 1. WordPress initially detects theme in themes/sage/resources
- * 2. Upon activation, we tell WordPress that the theme is actually in themes/sage/resources/views
- * 3. When we call get_template_directory() or get_template_directory_uri(), we point it back to themes/sage/resources
- *
- * We do this so that the Template Hierarchy will look in themes/sage/resources/views for core WordPress themes
- * But functions.php, style.css, and index.php are all still located in themes/sage/resources
- *
- * This is not compatible with the WordPress Customizer theme preview prior to theme activation
- *
- * get_template_directory()   -> /srv/www/example.com/current/web/app/themes/sage/resources
- * get_stylesheet_directory() -> /srv/www/example.com/current/web/app/themes/sage/resources
- * locate_template()
- * ├── STYLESHEETPATH         -> /srv/www/example.com/current/web/app/themes/sage/resources/views
- * └── TEMPLATEPATH           -> /srv/www/example.com/current/web/app/themes/sage/resources
- */
-array_map(
-  'add_filter',
-  ['theme_file_path', 'theme_file_uri', 'parent_theme_file_path', 'parent_theme_file_uri'],
-  array_fill(0, 4, 'dirname')
-);
-Container::getInstance()
-  ->bindIf('config', function () {
-    return new Config([
-      'assets' => require dirname(__DIR__).'/config/assets.php',
-      'theme' => require dirname(__DIR__).'/config/theme.php',
-      'view' => require dirname(__DIR__).'/config/view.php',
-    ]);
-  }, true);
+if ( ! class_exists( 'StarterSite' ) ) {
+  /**
+   * We're going to configure our theme inside of a subclass of Timber\Site
+   * You can move this to its own file and include here via php's include("MySite.php")
+   */
+  class StarterSite extends Timber\Site {
 
-/**
- * Allow SVG's through WP media uploader
- */
-function cc_mime_types($mimes) {
-  $mimes['svg'] = 'image/svg+xml';
-  return $mimes;
-}
-add_filter('upload_mimes', 'cc_mime_types');
+    /**
+     * Add timber support.
+     */
+    public function __construct() {
+      add_action( 'after_setup_theme', array( $this, 'theme_supports' ) );
+      add_filter( 'timber/context', array( $this, 'add_to_context' ) );
+      add_filter( 'timber/twig', array( $this, 'add_to_twig' ) );
 
-/**
- * ACF Options Page
- */
-if (function_exists('acf_add_options_page')) {
-  acf_add_options_page(array(
-    'page_title'  => 'Theme General Settings',
-    'menu_title'  => 'Theme Settings',
-    'menu_slug'   => 'theme-general-settings',
-    'capability'  => 'edit_posts',
-    'redirect'    => false
-  ));
-}
+      parent::__construct();
+    }
 
-/**
- * ACF Save json files
- */
-function my_acf_json_save_point($path) {
-  $path = get_stylesheet_directory() . '/acf-json';
-  return $path;
-}
-add_filter('acf/settings/save_json', 'my_acf_json_save_point');
+    /**
+     * This is where you add some context
+     *
+     * @param string $context context['this'] Being the Twig's {{ this }}.
+     */
+    public function add_to_context( $context ) {
+      return $context;
+    }
 
-/**
- * Register custom block types.
- */
-function register_custom_block_types() {
-  if ( function_exists( 'acf_register_block_type' ) ) {
-    // Register a banner block.
-    acf_register_block_type(
-      array(
-        'name'            => 'banner',
-        'title'           => 'Banner',
-        'description'     => 'A custom banner block.',
-        'category'        => 'custom',
-        'icon'            => 'id',
-        'keywords'        => array( 'banner', 'section' ),
-        'render_template' => 'blocks/banner.php',
-        'mode'            => 'edit',
-        'supports'        => array(
-          'mode' => false,
-        ),
-      )
-    );
-    // Register a hero block.
-    acf_register_block_type(
-      array(
-        'name'            => 'hero',
-        'title'           => 'Hero',
-        'description'     => 'A custom hero block.',
-        'category'        => 'custom',
-        'icon'            => 'schedule',
-        'keywords'        => array( 'hero', 'banner'),
-        'render_template' => 'blocks/hero.php',
-        'mode'            => 'edit',
-        'supports'        => array(
-          'mode' => false,
-        ),
-      )
-    );
-    // Register a cards block.
-    acf_register_block_type(
-      array(
-        'name'            => 'cards',
-        'title'           => 'Cards',
-        'description'     => 'A custom cards block.',
-        'category'        => 'custom',
-        'icon'            => 'screenoptions',
-        'keywords'        => array( 'cards', 'blocks'),
-        'render_template' => 'blocks/cards.php',
-        'mode'            => 'edit',
-        'supports'        => array(
-          'mode' => false,
-        ),
-      )
-    );
-  }
-}
-add_action( 'init', 'register_custom_block_types' );
-
-/*
- * Restrict non logged users to certain pages.
- */
-add_action('template_redirect','my_non_logged_redirect');
-function my_non_logged_redirect() {
-  if ((is_page('campground-request') || is_page('campground-availability') ) && !is_user_logged_in() ) {
-    wp_redirect( home_url() );
-    die();
-  }
-}
-
-/*
- * Remove fields from user profiles.
- */
-function filter_user_contact_methods( $methods ) {
-  // To remove a method
-  unset( $methods['myspace'] );
-  unset( $methods['linkedin'] );
-  unset( $methods['soundcloud'] );
-  unset( $methods['pinterest'] );
-  unset( $methods['tumblr'] );
-  unset( $methods['youtube'] );
-  unset( $methods['wikipedia'] );
-  unset( $methods['twitter'] );
-  unset( $methods['facebook'] );
-  unset( $methods['instagram'] );
-  unset( $methods['website'] );
-
-  return $methods;
-}
-add_filter( 'user_contactmethods', 'filter_user_contact_methods' );
-
-/**
- * Modify WPForms Date/Time field date picker to accept a range of dates.
- *
- * @link https://wpforms.com/developers/allow-date-range-or-multiple-dates-in-date-picker/
- *
- */
-function wpf_dev_date_picker_range() {
-  ?>
-    <script type="text/javascript">
-      window.wpforms_datepicker = {
-        mode: "range"
+    /**
+     * BEM function to pass in bem style classes.
+     *
+     * @param string $context BEM main class.
+     * @param string $block_class BEM block class.
+     * @param string $element_class BEM element class.
+     * @param string $modifiers BEM modifiers class(es).
+     * @param string $extra BEM extra class(es).
+     */
+    public function bem_classes( $context, $block_class, $element_class = '', $modifiers = array(), $extra = array() ) {
+      $base = $block_class;
+      $mods = null;
+      $xtra = null;
+      if ( isset( $element_class ) && $element_class ) {
+        $base = $base . '__' . $element_class;
       }
-    </script>
-  <?php
-}
-add_action( 'wpforms_wp_footer', 'wpf_dev_date_picker_range' );
+      if ( isset( $modifiers ) && ! empty( $modifiers ) ) {
+        if ( ! is_array( $modifiers ) ) {
+          $mods .= ' ' . $base . '--' . $modifiers;
+        } else {
+          foreach ( $modifiers as $mod ) {
+            if ( $mod ) {
+                $mods .= ' ' . $base . '--' . $mod;
+            }
+          };
+        }
+      }
+      if ( isset( $extra ) && ! empty( $extra ) ) {
+        if ( ! is_array( $extra ) ) {
+          $xtra .= ' ' . $extra;
+        } else {
+          foreach ( $extra as $xtra_item ) {
+            if ( $xtra_item ) {
+                $xtra .= ' ' . $xtra_item;
+            }
+          };
+        }
+      }
+      return $base . $mods . $xtra;
+    }
 
-/**
- * Turn checkbox values into an array.
- *
- * @link https://wpforms.com/developers/how-to-store-checkbox-values-as-arrays-with-post-submissions/
- *
- */
+    /**
+     * Add Attributes function to pass in multiple attributes including bem style classes.
+     *
+     * @param string $context Attributes content.
+     * @param string $additional_attributes Additional attributes for context.
+     */
+    public function add_attributes( $context, $additional_attributes = array() ) {
+      $attribute = null;
+      if ( isset( $additional_attributes ) && ! empty( $additional_attributes ) ) {
+        foreach ( $additional_attributes as $key => $value ) {
+          $attribute .= ' ' . $key . '=' . $value;
+        };
+      }
+      return $attribute;
+    }
 
-function wpforms_dev_user_registration_process_meta( $field_value, $meta_key, $field_id, $fields, $form_data ) {
-  // Turn checkbox value into an array
-  $keys = array(
-    'preferred_camping_locations_canada',
-    'preferred_camping_locations_usa',
-    'available_services',
-    'rig_types_welcome',
-    'park_features',
-    'rv_spot_type',
-    'age_restrictions',
-    'nightly_rate',
-    'service_requirements',
-    'rv_slide_outs',
-    'important_features',
-    'campground_features',
-    'locations_of_interest'
-  );
-
-  foreach ( $keys as $key ) {
-    if ( $meta_key === $key ) {
-      $field_value = explode( "\n", $field_value );
+    /**
+     * Custom WordPress functions.
+     *
+     * @param string $twig get extension.
+     */
+    public function add_to_twig( $twig ) {
+      $twig->addExtension( new Twig\ Extension\ StringLoaderExtension() );
+      $twig->addFunction( new Twig_SimpleFunction( 'bem_classes', array( $this, 'bem_classes' ), array( 'needs_context' => true ), array( 'is_safe' => array( 'html' ) ) ) );
+      $twig->addFunction( new Twig_SimpleFunction( 'add_attributes', array( $this, 'add_attributes' ), array( 'needs_context' => true ), array( 'is_safe' => array( 'html' ) ) ) );
+      return $twig;
     }
   }
-
-  return $field_value;
 }
-add_filter( 'wpforms_user_registration_process_meta', 'wpforms_dev_user_registration_process_meta', 10, 5 );
+
+new StarterSite();
 
 /**
- * Filters form notification email footer content.
- *
- * @link https://wpforms.com/developers/how-to-remove-or-change-email-notification-footer-text/
- *
- * @param  array $footer
- * @return string
- */
-function wpf_dev_email_footer_text( $footer ) {
-    $footer = sprintf( __( '<div style="background-color: #f33f4b; color: #fcfcfc; padding: 20px; margin-left: -19px; margin-right: -19px; margin-top: -21px;">
-      <div style="display: inline-flex; align-items: center; justify-content: center;">
-        <a style="padding: 10px;" target="_blank" href="https://www.facebook.com/rvspotdrop"><img alt="Facebook" border="0" hspace="0" vspace="0" style="vertical-align:top;" target="_blank" src="https://img.mailinblue.com/new_images/rnb/theme4/rnb_ico_fb.png"></a>
-        <a style="padding: 10px;" target="_blank" href="https://www.instagram.com/rvspotdrop"><img alt="Instagram" border="0" hspace="0" vspace="0" style="vertical-align:top;" target="_blank" src="https://img.mailinblue.com/new_images/rnb/theme4/rnb_ico_ig.png"></a>
-      </div>
-      <div style="display: block; text-align: center; padding-top: 10px;">
-        <p style="color: #fcfcfc;"><a href="https://rvspotdrop.com" style="color: #fcfcfc; text-decoration: none;"><strong>RVSpotDrop</strong></a> | 18036 96 AVE, Edmonton, AB</p>
-        <p style="color: #fcfcfc;"><a href="mailto:hello@rvspotdrop.com" style="color: #fcfcfc;">hello@rvspotdrop.com</a></p>
-        <p style="color: #fcfcfc;">You\'ve received this email because you submitted a form on <a href="https://rvspotdrop.com" style="color: #fcfcfc;">rvspotdrop.com</a></p>
-      </div>
-    </div>', 'wpforms' ), esc_url( home_url() ), wp_specialchars_decode( get_bloginfo( 'name' ) ) );
-    return $footer;
-}
-add_filter( 'wpforms_email_footer_text', 'wpf_dev_email_footer_text' );
+* Here's what's happening with these hooks:
+* 1. WordPress initially detects theme in themes/sage/resources
+* 2. Upon activation, we tell WordPress that the theme is actually in themes/sage/resources/views
+* 3. When we call get_template_directory() or get_template_directory_uri(), we point it back to themes/sage/resources
+*
+* We do this so that the Template Hierarchy will look in themes/sage/resources/views for core WordPress themes
+* But functions.php, style.css, and index.php are all still located in themes/sage/resources
+*
+* This is not compatible with the WordPress Customizer theme preview prior to theme activation
+*
+* get_template_directory()   -> /srv/www/example.com/current/web/app/themes/sage/resources
+* get_stylesheet_directory() -> /srv/www/example.com/current/web/app/themes/sage/resources
+* locate_template()
+* ├── STYLESHEETPATH         -> /srv/www/example.com/current/web/app/themes/sage/resources/views
+* └── TEMPLATEPATH           -> /srv/www/example.com/current/web/app/themes/sage/resources
+*/
+array_map(
+  'add_filter',
+  array( 'theme_file_path', 'theme_file_uri', 'parent_theme_file_path', 'parent_theme_file_uri' ),
+  array_fill( 0, 4, 'dirname' )
+);
+Container::getInstance()
+->bindIf(
+  'config',
+  function () {
+    return new Config(
+      array(
+        'assets' => include dirname( __DIR__ ) . '/config/assets.php',
+        'theme'  => include dirname( __DIR__ ) . '/config/theme.php',
+        'view'   => include dirname( __DIR__ ) . '/config/view.php',
+      )
+    );
+  },
+  true
+);
 
-function only_allow_5($valid, $value, $field, $input) {
-  if (count($value) > 5) {
-    $valid = 'Only Select 5';
+// Namespaces
+add_filter(
+  'timber/loader/loader',
+  function ( $loader ) {
+    $loader->addPath( __DIR__ . '/views/_patterns/01-atoms', 'atoms' );
+    $loader->addPath( __DIR__ . '/views/_patterns/02-molecules', 'molecules' );
+    $loader->addPath( __DIR__ . '/views/_patterns/03-organisms', 'organisms' );
+    $loader->addPath( __DIR__ . '/views/_patterns/04-templates', 'templates' );
+    return $loader;
   }
-  return $valid;
-}
-add_filter('acf/validate_value/name=locations_of_interest', 'only_allow_5', 20, 4);
+);
 
 /**
- * Limit the number of form entries per month for form_id 836.
+ * Register Custom Theme Functions.
  */
-add_action( 'wpforms_frontend_output', function ( $form_data ) {
-  // Only display on form 836.
-  if ( absint( $form_data['id'] ) !== 836 ) {
-    return;
-  }
+$register_theme_functions = __DIR__ . '/../app/custom-theme-functions.php';
+if (file_exists($register_theme_functions)) {
+  require_once $register_theme_functions;
+}
 
-  // Set the default timezone.
-  date_default_timezone_set("America/Edmonton");
-  $this_month = date('Y-m-d H:i:s', strtotime('this month'));
+/**
+ * Register Custom Post Types.
+ */
+// $register_custom_content_types = __DIR__ . '/../app/custom-content-types.php';
+// if (file_exists($register_custom_content_types)) {
+//   require_once $register_custom_content_types;
+// }
 
-  $entries_count = wpforms()->entry->get_entries(
-    array(
-      'form_id' => '836',
-      'user_id' => get_current_user_id(),
-      'date' => $this_month
-    ), true
-  );
-  $result = absint( 2 - $entries_count );
+/**
+ * Register Custom Taxonomies.
+ */
+// $register_custom_taxonomy = __DIR__ . '/../app/custom-taxonomy.php';
+// if (file_exists($register_custom_taxonomy)) {
+//   require_once $register_custom_taxonomy;
+// }
 
-  // Display results container.
-  if ($result == 0) {
-    echo '<div class="o-limit-reached">Sorry, you\'ve hit the maximum number of 2 requests for the month. You will be able to submit 2 more requests next month. Please check back on the 1st! If you have any questions, please reach out to <a href="mailto:hello@rvspotdrop.com">hello@rvspotdrop.com</a>.</div>';
-  } elseif ($result == 1) {
-    echo '<em>You have ' . esc_html( $result ) . ' request left for the month of '.date('F', strtotime('this month')).'.</em>';
-  } else {
-    echo '<em>You have ' . esc_html( $result ) . ' requests left for the month of '.date('F', strtotime('this month')).'.</em>';
-  }
-}, 7 );
+/**
+ * Register Custom Blocks.
+ */
+$register_custom_blocks = __DIR__ . '/../app/custom-blocks.php';
+if (file_exists($register_custom_blocks)) {
+  require_once $register_custom_blocks;
+}

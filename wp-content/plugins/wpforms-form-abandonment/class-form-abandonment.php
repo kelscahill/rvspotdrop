@@ -25,23 +25,23 @@ class WPForms_Form_Abandonment {
 	public function init() {
 
 		// Admin related Actions/Filters.
-		add_action( 'wpforms_builder_enqueues', array( $this, 'admin_enqueues' ) );
-		add_filter( 'wpforms_builder_settings_sections', array( $this, 'settings_register' ), 20, 2 );
-		add_action( 'wpforms_form_settings_panel_content', array( $this, 'settings_content' ), 20, 2 );
-		add_action( 'wpforms_form_settings_notifications_single_after', array( $this, 'notification_settings' ), 10, 2 );
-		add_filter( 'wpforms_entries_table_counts', array( $this, 'entries_table_counts' ), 10, 2 );
-		add_filter( 'wpforms_entries_table_views', array( $this, 'entries_table_views' ), 10, 3 );
-		add_filter( 'wpforms_entries_table_column_status', array( $this, 'entries_table_column_status' ), 10, 2 );
-		add_filter( 'wpforms_entry_details_sidebar_details_status', array( $this, 'entries_details_sidebar_status' ), 10, 3 );
-		add_filter( 'wpforms_entry_details_sidebar_actions_link', array( $this, 'entries_details_sidebar_actions' ), 10, 3 );
-		add_action( 'wp_ajax_wpforms_form_abandonment', array( $this, 'process_entries' ) );
-		add_action( 'wp_ajax_nopriv_wpforms_form_abandonment', array( $this, 'process_entries' ) );
-		add_filter( 'wpforms_entry_email_process', array( $this, 'process_email' ), 50, 5 );
-		add_action( 'wpforms_process_complete', array( $this, 'process_complete' ), 10, 4 );
+		add_action( 'wpforms_builder_enqueues', [ $this, 'admin_enqueues' ] );
+		add_filter( 'wpforms_builder_settings_sections', [ $this, 'settings_register' ], 20, 2 );
+		add_action( 'wpforms_form_settings_panel_content', [ $this, 'settings_content' ], 20, 2 );
+		add_action( 'wpforms_form_settings_notifications_single_after', [ $this, 'notification_settings' ], 10, 2 );
+		add_filter( 'wpforms_entries_table_counts', [ $this, 'entries_table_counts' ], 10, 2 );
+		add_filter( 'wpforms_entries_table_views', [ $this, 'entries_table_views' ], 10, 3 );
+		add_filter( 'wpforms_entries_table_column_status', [ $this, 'entries_table_column_status' ], 10, 2 );
+		add_filter( 'wpforms_entry_details_sidebar_details_status', [ $this, 'entries_details_sidebar_status' ], 10, 3 );
+		add_filter( 'wpforms_entry_details_sidebar_actions_link', [ $this, 'entries_details_sidebar_actions' ], 10, 3 );
+		add_action( 'wp_ajax_wpforms_form_abandonment', [ $this, 'process_entries' ] );
+		add_action( 'wp_ajax_nopriv_wpforms_form_abandonment', [ $this, 'process_entries' ] );
+		add_filter( 'wpforms_entry_email_process', [ $this, 'process_email' ], 50, 5 );
+		add_action( 'wpforms_process_complete', [ $this, 'process_complete' ], 10, 4 );
 
-		// Front-end related Actions/.
-		add_action( 'wpforms_frontend_container_class', array( $this, 'form_container_class' ), 10, 2 );
-		add_action( 'wpforms_wp_footer', array( $this, 'frontend_enqueues' ) );
+		// Front-end related Actions.
+		add_action( 'wpforms_frontend_container_class', [ $this, 'form_container_class' ], 10, 2 );
+		add_action( 'wpforms_wp_footer', [ $this, 'frontend_enqueues' ] );
 	}
 
 	/*****************************
@@ -59,8 +59,8 @@ class WPForms_Form_Abandonment {
 
 		wp_enqueue_script(
 			'wpforms-builder-form-abandonment',
-			plugin_dir_url( __FILE__ ) . 'assets/js/admin-builder-form-abandonment' . $suffix . '.js',
-			array( 'jquery' ),
+			WPFORMS_FORM_ABANDONMENT_URL . 'assets/js/admin-builder-form-abandonment' . $suffix . '.js',
+			[ 'jquery' ],
 			WPFORMS_FORM_ABANDONMENT_VERSION,
 			false
 		);
@@ -113,17 +113,17 @@ class WPForms_Form_Abandonment {
 			'form_abandonment_fields',
 			$instance->form_data,
 			'',
-			array(
-				'options' => array(
-					''    => array(
+			[
+				'options' => [
+					''    => [
 						'label' => esc_html__( 'Save only if email address or phone number is provided', 'wpforms-form-abandonment' ),
-					),
-					'all' => array(
+					],
+					'all' => [
 						'label'   => esc_html__( 'Always save abandoned entries', 'wpforms-form-abandonment' ),
 						'tooltip' => esc_html__( 'We believe abandoned form entries are only helpful if you have some way to contact the user. However this option is good for users that have anonymous form submissions.', 'wpforms-form-abandonment' ),
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
 		wpforms_panel_field(
@@ -132,9 +132,9 @@ class WPForms_Form_Abandonment {
 			'form_abandonment_duplicates',
 			$instance->form_data,
 			esc_html__( 'Prevent duplicate abandon entries', 'wpforms-form-abandonment' ),
-			array(
+			[
 				'tooltip' => esc_html__( 'When checked only the most recent abandoned entry from the user is saved. See the Form Abandonment documentation for more info regarding this setting.', 'wpforms-form-abandonment' ),
-			)
+			]
 		);
 
 		echo '</div>';
@@ -150,28 +150,29 @@ class WPForms_Form_Abandonment {
 	 */
 	public function notification_settings( $settings, $id ) {
 
-		// Only display if they have turned on form abandonment for the form and have saved.
-		if ( ! $this->has_form_abandonment( $settings->form_data ) ) {
-			return;
-		}
-
 		wpforms_panel_field(
 			'checkbox',
 			'notifications',
 			'form_abandonment',
 			$settings->form_data,
 			esc_html__( 'Enable for abandoned forms entries', 'wpforms-form-abandonment' ),
-			array(
-				'parent'     => 'settings',
-				'subsection' => $id,
-				'tooltip'    => wp_kses(
+			[
+				'parent'      => 'settings',
+				'class'       => ! $this->has_form_abandonment( $settings->form_data ) ? 'wpforms-hidden' : '',
+				'input_class' => 'wpforms-radio-group wpforms-radio-group-' . $id . '-notification-by-status wpforms-radio-group-item-form_abandonment wpforms-notification-by-status-alert',
+				'subsection'  => $id,
+				'tooltip'     => wp_kses(
 					__( 'When enabled this notification will <em>only</em> be sent for abandoned form entries. This setting should only be used with <strong>new</strong> notifications.', 'wpforms-form-abandonment' ),
-					array(
-						'em'     => array(),
-						'strong' => array(),
-					)
+					[
+						'em'     => [],
+						'strong' => [],
+					]
 				),
-			)
+				'data'        => [
+					'radio-group'    => $id . '-notification-by-status',
+					'provider-title' => esc_html__( 'Form Abandonment entries', 'wpforms-form-abandonment' ),
+				],
+			]
 		);
 	}
 
@@ -189,10 +190,10 @@ class WPForms_Form_Abandonment {
 
 		if ( $this->has_form_abandonment( $form_data ) ) {
 			$counts['abandoned'] = wpforms()->entry->get_entries(
-				array(
+				[
 					'form_id' => absint( $form_data['id'] ),
 					'status'  => 'abandoned',
-				),
+				],
 				true
 			);
 		}
@@ -216,11 +217,11 @@ class WPForms_Form_Abandonment {
 		if ( $this->has_form_abandonment( $form_data ) ) {
 
 			$base = add_query_arg(
-				array(
+				[
 					'page'    => 'wpforms-entries',
 					'view'    => 'list',
 					'form_id' => absint( $form_data['id'] ),
-				),
+				],
 				admin_url( 'admin.php' )
 			);
 
@@ -258,7 +259,7 @@ class WPForms_Form_Abandonment {
 	}
 
 	/**
-	 * Enable the displaying status for forms that are using form abandonment
+	 * Enable the displaying status for forms that are using form abandonment.
 	 *
 	 * @since 1.0.0
 	 *
@@ -316,12 +317,12 @@ class WPForms_Form_Abandonment {
 
 		// Grab posted data and decode.
 		$data  = json_decode( stripslashes( $_POST['forms'] ) ); // phpcs:ignore
-		$forms = array();
+		$forms = [];
 
 		// Compile all posted data into an array.
 		foreach ( $data as $form_id => $form ) {
 
-			$fields    = array();
+			$fields    = [];
 			$form_vars = '';
 
 			foreach ( $form as $post_input_data ) {
@@ -336,7 +337,7 @@ class WPForms_Form_Abandonment {
 		// Go through the data for each form abandoned (if multiple) and process.
 		foreach ( $forms as $form_id => $entry ) {
 
-			wpforms()->process->fields = array();
+			wpforms()->process->fields = [];
 
 			// Get the form settings for this form.
 			$form = wpforms()->form->get( $form_id );
@@ -428,14 +429,14 @@ class WPForms_Form_Abandonment {
 				$entry_id = $exists->entry_id;
 
 				// Prepare the args to be updated.
-				$data = array(
+				$data = [
 					'viewed' => 0,
 					'fields' => wp_json_encode( $fields ),
 					'date'   => date( 'Y-m-d H:i:s' ),
-				);
+				];
 
 				// Update.
-				wpforms()->entry->update( $entry_id, $data, '', '', array( 'cap' => false ) );
+				wpforms()->entry->update( $entry_id, $data, '', '', [ 'cap' => false ] );
 
 			} else {
 				/*
@@ -449,7 +450,7 @@ class WPForms_Form_Abandonment {
 				$user_uuid  = ! empty( $_COOKIE['_wpfuuid'] ) ? $_COOKIE['_wpfuuid'] : '';
 
 				// Prepare the args to be saved.
-				$data = array(
+				$data = [
 					'form_id'    => absint( $form_id ),
 					'user_id'    => absint( $user_id ),
 					'status'     => 'abandoned',
@@ -457,13 +458,13 @@ class WPForms_Form_Abandonment {
 					'ip_address' => sanitize_text_field( $user_ip ),
 					'user_agent' => sanitize_text_field( $user_agent ),
 					'user_uuid'  => sanitize_text_field( $user_uuid ),
-				);
+				];
 
 				// Save.
 				$entry_id = wpforms()->entry->add( $data );
 
 				// Send notification emails if configured.
-				wpforms()->process->entry_email( $fields, array(), $form_data, $entry_id, 'abandoned' );
+				wpforms()->process->entry_email( $fields, [], $form_data, $entry_id, 'abandoned' );
 			}
 
 			// Boom.
@@ -494,6 +495,7 @@ class WPForms_Form_Abandonment {
 
 		if ( 'abandoned' === $context && ! $this->has_form_abandonment( $form_data ) ) {
 			// If form abandonment for the form is disabled, never send notifications for form abandonment.
+
 			return false;
 		}
 
@@ -585,6 +587,7 @@ class WPForms_Form_Abandonment {
 		foreach ( $forms as $form ) {
 			if ( $this->has_form_abandonment( $form ) ) {
 				$enabled = true;
+
 				break;
 			}
 		}
@@ -601,26 +604,26 @@ class WPForms_Form_Abandonment {
 		// MobileDetect library.
 		wp_enqueue_script(
 			'wpforms-mobile-detect',
-			plugin_dir_url( __FILE__ ) . 'assets/js/vendor/mobile-detect' . $suffix . '.js',
-			array(),
+			WPFORMS_FORM_ABANDONMENT_URL . 'assets/js/vendor/mobile-detect' . $suffix . '.js',
+			[],
 			'1.4.3',
 			false
 		);
 
 		wp_enqueue_script(
 			'wpforms-form-abandonment',
-			plugin_dir_url( __FILE__ ) . 'assets/js/wpforms-form-abandonment' . $suffix . '.js',
-			array( 'jquery', 'wpforms-mobile-detect' ),
+			WPFORMS_FORM_ABANDONMENT_URL . 'assets/js/wpforms-form-abandonment' . $suffix . '.js',
+			[ 'jquery', 'wpforms-mobile-detect' ],
 			WPFORMS_FORM_ABANDONMENT_VERSION,
 			false
 		);
 		wp_localize_script(
 			'wpforms-form-abandonment',
 			'wpforms_form_abandonment',
-			array(
+			[
 				'ajaxurl'  => admin_url( 'admin-ajax.php' ),
 				'home_url' => home_url(),
-			)
+			]
 		);
 	}
 
@@ -637,7 +640,7 @@ class WPForms_Form_Abandonment {
 	 *
 	 * @return bool
 	 */
-	public function has_form_abandonment( $form_data = array() ) {
+	public function has_form_abandonment( $form_data = [] ) {
 
 		return ! empty( $form_data['settings']['form_abandonment'] );
 	}

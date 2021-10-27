@@ -3,24 +3,15 @@
 \* ------------------------------------ */
 
 #wpadminbar {
-  position: fixed;
-  z-index: 10;
+  display: none;
+}
 
-  #wp-admin-bar-root-default {
-    #wp-admin-bar-customize,
-    #wp-admin-bar-comments,
-    #wp-admin-bar-wpseo-menu {
-      display: none;
-    }
-  }
+html {
+  margin-top: 0 !important;
 }
 
 .logged-in .c-utility {
   top: 0;
-
-  @include media(">782px") {
-    top: 32px;
-  }
 }
 
 .c-utility {
@@ -56,6 +47,7 @@
       border-radius: 0;
       background: none;
       margin: 0;
+      height: 40px;
 
       svg path {
         fill: $c-white;

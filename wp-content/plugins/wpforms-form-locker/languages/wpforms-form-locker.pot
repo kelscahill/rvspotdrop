@@ -1,4 +1,4 @@
-# Copyright (C) 2020 WPForms Form Locker
+# Copyright (C) 2021 WPForms Form Locker
 # This file is distributed under the same license as the WPForms Form Locker package.
 msgid ""
 msgstr ""
@@ -14,135 +14,276 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/Admin.php:148
+#: src/Admin.php:153
 msgid "Require unique answer"
 msgstr ""
 
-#: src/Admin.php:149
+#: src/Admin.php:154
 msgid "Check this option to require only unique answers for the current field."
 msgstr ""
 
-#: src/Admin.php:168, src/Admin.php:185
+#: src/Admin.php:173, src/Admin.php:220
 msgid "Form Locker"
 msgstr ""
 
-#: src/Admin.php:193
-msgid "Enable password protection"
+#. translators: %d - field ID.
+#: src/Admin.php:197
+msgid "Field #%d"
 msgstr ""
 
-#: src/Admin.php:195, src/Admin.php:204, src/Lockers/Password.php:138
+#: src/Admin.php:230
+msgid "Enable verification"
+msgstr ""
+
+#: src/Admin.php:238
+msgid "Require users to enter information before accessing the form."
+msgstr ""
+
+#: src/Admin.php:239
+msgid "Form Verification"
+msgstr ""
+
+#: src/Admin.php:248
+msgid "Type"
+msgstr ""
+
+#: src/Admin.php:252, src/Admin.php:264, src/Lockers/Password.php:138
 msgid "Password"
 msgstr ""
 
-#: src/Admin.php:212
+#: src/Admin.php:253, src/Lockers/Age.php:249
+msgid "Age"
+msgstr ""
+
+#: src/Admin.php:254, src/Lockers/Email.php:203
+msgid "Email"
+msgstr ""
+
+#: src/Admin.php:277
+msgid "Criteria"
+msgstr ""
+
+#: src/Admin.php:294
+msgid "Minimum"
+msgstr ""
+
+#: src/Admin.php:295
+msgid "Maximum"
+msgstr ""
+
+#: src/Admin.php:296
+msgid "Equal to"
+msgstr ""
+
+#: src/Admin.php:308, src/Admin.php:323, src/Admin.php:338, src/Admin.php:600
 msgid "Display Message"
 msgstr ""
 
-#: src/Admin.php:217
+#: src/Admin.php:313
 msgid "This message is displayed to visitors above the password form."
 msgstr ""
 
-#: src/Admin.php:226
-msgid "Enable scheduling"
+#: src/Admin.php:328
+msgid "This message is displayed to visitors above the age verification form."
 msgstr ""
 
-#: src/Admin.php:228
-msgid "Scheduling"
+#: src/Admin.php:343
+msgid "This message is displayed to visitors above the email verification form."
 msgstr ""
 
-#: src/Admin.php:229
-msgid "Accept form entries during the date/time window below."
-msgstr ""
-
-#: src/Admin.php:240
-msgid "Start Date"
-msgstr ""
-
-#: src/Admin.php:244
-msgid "Clear Start Date"
-msgstr ""
-
-#: src/Admin.php:253
-msgid "Start Time"
-msgstr ""
-
-#: src/Admin.php:257
-msgid "Clear Start Time"
-msgstr ""
-
-#: src/Admin.php:268
-msgid "End Date"
-msgstr ""
-
-#: src/Admin.php:272
-msgid "Clear End Date"
-msgstr ""
-
-#: src/Admin.php:281
-msgid "End Time"
-msgstr ""
-
-#: src/Admin.php:285
-msgid "Clear End Time"
-msgstr ""
-
-#: src/Admin.php:296, src/Admin.php:332
-msgid "Closed Message"
-msgstr ""
-
-#: src/Admin.php:301, src/Admin.php:337
-msgid "This message is displayed to visitors when the form is closed."
-msgstr ""
-
-#: src/Admin.php:310
-msgid "Enable limit on total form entries"
-msgstr ""
-
-#: src/Admin.php:312
-msgid "Entry Limit"
-msgstr ""
-
-#: src/Admin.php:321
-msgid "Limit"
-msgstr ""
-
-#: src/Admin.php:346
-msgid "Enable restricting entries to logged in users only"
-msgstr ""
-
-#: src/Admin.php:348
-msgid "User"
-msgstr ""
-
-#: src/Admin.php:357
-msgid "Message"
+#: src/Admin.php:354
+msgid "Form scheduling"
 msgstr ""
 
 #: src/Admin.php:362
+msgid "Accept form entries during a specific date/time period."
+msgstr ""
+
+#: src/Admin.php:363
+msgid "Form Scheduling"
+msgstr ""
+
+#: src/Admin.php:374
+msgid "Start Date"
+msgstr ""
+
+#: src/Admin.php:378
+msgid "Clear Start Date"
+msgstr ""
+
+#: src/Admin.php:387
+msgid "Start Time"
+msgstr ""
+
+#: src/Admin.php:391
+msgid "Clear Start Time"
+msgstr ""
+
+#: src/Admin.php:402
+msgid "End Date"
+msgstr ""
+
+#: src/Admin.php:406
+msgid "Clear End Date"
+msgstr ""
+
+#: src/Admin.php:415
+msgid "End Time"
+msgstr ""
+
+#: src/Admin.php:419
+msgid "Clear End Time"
+msgstr ""
+
+#: src/Admin.php:430, src/Admin.php:507
+msgid "Closed Message"
+msgstr ""
+
+#: src/Admin.php:435, src/Admin.php:512, src/Admin.php:605
+msgid "This message is displayed to visitors when the form is closed."
+msgstr ""
+
+#: src/Admin.php:445
+msgid "Logged in users only"
+msgstr ""
+
+#: src/Admin.php:453
+msgid "Restrict form access to only those who meet your criteria."
+msgstr ""
+
+#: src/Admin.php:454
+msgid "Form Restrictions"
+msgstr ""
+
+#: src/Admin.php:463
+msgid "Message"
+msgstr ""
+
+#: src/Admin.php:468
 msgid "This message is displayed to logged out visitors in place of the form."
 msgstr ""
 
-#: src/Lockers/Password.php:132
-msgid "The password is incorrect."
+#: src/Admin.php:478
+msgid "Enable total entry limit"
 msgstr ""
 
-#: src/Lockers/Password.php:148
+#: src/Admin.php:486
+msgid "Limit the number of entries and restrict by email or IP address."
+msgstr ""
+
+#: src/Admin.php:487
+msgid "Entry Limits & Restrictions"
+msgstr ""
+
+#: src/Admin.php:496, src/Admin.php:569
+msgid "Limit"
+msgstr ""
+
+#: src/Admin.php:521
+msgid "Enable user entry limit"
+msgstr ""
+
+#: src/Admin.php:525
+msgid "This option is disabled because due to your GDPR settings you opted to not store IP addresses."
+msgstr ""
+
+#: src/Admin.php:535
+msgid "Restrict by IP address"
+msgstr ""
+
+#: src/Admin.php:544
+msgid "Restrict by email address"
+msgstr ""
+
+#: src/Admin.php:552
+msgid "Email Field"
+msgstr ""
+
+#: src/Admin.php:584
+msgid "per day"
+msgstr ""
+
+#: src/Admin.php:585
+msgid "per week"
+msgstr ""
+
+#: src/Admin.php:586
+msgid "per month"
+msgstr ""
+
+#: src/Admin.php:587
+msgid "per year"
+msgstr ""
+
+#: src/Lockers/Age.php:261, src/Lockers/Email.php:213, src/Lockers/Password.php:151
 msgid "Sending..."
 msgstr ""
 
-#: src/Lockers/Password.php:149
+#: src/Lockers/Age.php:262, src/Lockers/Email.php:214, src/Lockers/Password.php:152
 msgid "Submit"
 msgstr ""
 
-#: src/Lockers/UniqueAnswer.php:99
+#: src/Lockers/Age.php:298
+msgid "Your age does not meet the criteria."
+msgstr ""
+
+#: src/Lockers/Age.php:329
+msgid "Day"
+msgstr ""
+
+#: src/Lockers/Age.php:327
+msgid "Month"
+msgstr ""
+
+#: src/Lockers/Age.php:325
+msgid "Year"
+msgstr ""
+
+#: src/Lockers/Email.php:256
+msgid "Check your email inbox for verification link."
+msgstr ""
+
+#: src/Lockers/Email.php:322
+msgid "Email address confirmation"
+msgstr ""
+
+#: src/Lockers/Email.php:327
+msgid "Email address confirmation is required to access the form at"
+msgstr ""
+
+#: src/Lockers/Email.php:328
+msgid "To confirm your email address and access the form, please "
+msgstr ""
+
+#: src/Lockers/Email.php:329
+msgid "visit this link to"
+msgstr ""
+
+#: src/Lockers/Email.php:330
+msgid "verify your email address"
+msgstr ""
+
+#: src/Lockers/Email.php:331
+msgid "Alternately, you can copy and paste the following URL in your browser: "
+msgstr ""
+
+#: src/Lockers/Password.php:143
+msgid "The password is incorrect."
+msgstr ""
+
+#: src/Lockers/UniqueAnswer.php:147
 msgid "Unique Answer"
 msgstr ""
 
-#: src/Lockers/UniqueAnswer.php:101, src/Lockers/UniqueAnswer.php:117, src/Lockers/UniqueAnswer.php:220
+#: src/Lockers/UniqueAnswer.php:149, src/Lockers/UniqueAnswer.php:165, src/Lockers/UniqueAnswer.php:268
 msgid "The value must be unique."
 msgstr ""
 
 #. translators: %s - WPForms.com documentation page URL.
-#: wpforms-form-locker.php:59
+#: wpforms-form-locker.php:84
 msgid "The WPForms Form Locker plugin has been deactivated. Your site is running an outdated version of PHP that is no longer supported and is not compatible with the Form Locker addon. <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">Read more</a> for additional information."
+msgstr ""
+
+#: wpforms-form-locker.php:110
+msgid "The WPForms Form Locker plugin has been deactivated, because it requires WPForms v1.6.8 or later to work."
 msgstr ""

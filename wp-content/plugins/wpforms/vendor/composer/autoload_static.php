@@ -4,11 +4,11 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit0dbe9d3c83c36b21a651be634a153f2b
+class ComposerStaticInit10dad0c48a86c092d3f646e9b27dab13
 {
     public static $files = array (
-        'def43f6c87e4f8dfd0c9e1b1bab14fe8' => __DIR__ . '/..' . '/symfony/polyfill-iconv/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        'def43f6c87e4f8dfd0c9e1b1bab14fe8' => __DIR__ . '/..' . '/symfony/polyfill-iconv/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -18,6 +18,7 @@ class ComposerStaticInit0dbe9d3c83c36b21a651be634a153f2b
         ),
         'T' => 
         array (
+            'TrueBV\\' => 7,
             'TijsVerkoyen\\CssToInlineStyles\\' => 31,
         ),
         'S' => 
@@ -32,6 +33,10 @@ class ComposerStaticInit0dbe9d3c83c36b21a651be634a153f2b
         'WPForms\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'TrueBV\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/true/punycode/src',
         ),
         'TijsVerkoyen\\CssToInlineStyles\\' => 
         array (
@@ -62,6 +67,7 @@ class ComposerStaticInit0dbe9d3c83c36b21a651be634a153f2b
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'XLSXWriter' => __DIR__ . '/..' . '/mk-j/php_xlsxwriter/xlsxwriter.class.php',
         'XLSXWriter_BuffererWriter' => __DIR__ . '/..' . '/mk-j/php_xlsxwriter/xlsxwriter.class.php',
     );
@@ -69,10 +75,10 @@ class ComposerStaticInit0dbe9d3c83c36b21a651be634a153f2b
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit0dbe9d3c83c36b21a651be634a153f2b::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit0dbe9d3c83c36b21a651be634a153f2b::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit0dbe9d3c83c36b21a651be634a153f2b::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit0dbe9d3c83c36b21a651be634a153f2b::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit10dad0c48a86c092d3f646e9b27dab13::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit10dad0c48a86c092d3f646e9b27dab13::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit10dad0c48a86c092d3f646e9b27dab13::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit10dad0c48a86c092d3f646e9b27dab13::$classMap;
 
         }, null, ClassLoader::class);
     }

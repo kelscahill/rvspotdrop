@@ -92,8 +92,6 @@ class Charges extends Common implements ApiInterface {
 			return;
 		}
 
-		Helpers::require_stripe();
-
 		$defaults = array(
 			'source' => $this->token,
 		);
@@ -103,7 +101,7 @@ class Charges extends Common implements ApiInterface {
 		try {
 			$this->charge = \Stripe\Charge::create( $args, Helpers::get_auth_opts() );
 		} catch ( \Exception $e ) {
-			$this->set_error_from_exception( $e );
+			$this->handle_exception( $e );
 		}
 	}
 
@@ -132,8 +130,6 @@ class Charges extends Common implements ApiInterface {
 				'form_id'   => $args['form_id'],
 			),
 		);
-
-		Helpers::require_stripe();
 
 		try {
 
@@ -172,7 +168,7 @@ class Charges extends Common implements ApiInterface {
 
 		} catch ( \Exception $e ) {
 
-			if ( \is_a( $e, '\Stripe\Error\Card' ) ) {
+			if ( \is_a( $e, '\Stripe\Exception\CardException' ) ) {
 				$body = $e->getJsonBody();
 				// Cleanup if the card was added but requires user action unsupported by legacy integration.
 				if ( 'subscription_payment_intent_requires_action' === $body['error']['code'] ) {
@@ -184,7 +180,7 @@ class Charges extends Common implements ApiInterface {
 				}
 			}
 
-			$this->set_error_from_exception( $e );
+			$this->handle_exception( $e );
 		}
 
 	}
@@ -253,8 +249,6 @@ class Charges extends Common implements ApiInterface {
 			return '';
 		}
 
-		Helpers::require_stripe();
-
 		$default_source = \Stripe\Customer::retrieveSource(
 			$this->get_customer( 'id' ),
 			$this->customer->default_source,
@@ -291,8 +285,6 @@ class Charges extends Common implements ApiInterface {
 	 */
 	protected function update_remote_customer_default_source( $source_id ) {
 
-		Helpers::require_stripe();
-
 		\Stripe\Customer::update(
 			$this->get_customer( 'id' ),
 			array(
@@ -313,8 +305,6 @@ class Charges extends Common implements ApiInterface {
 	 */
 	protected function delete_remote_customer_source( $source_id ) {
 
-		Helpers::require_stripe();
-
 		\Stripe\Customer::deleteSource(
 			$this->get_customer( 'id' ),
 			$source_id,
@@ -332,8 +322,6 @@ class Charges extends Common implements ApiInterface {
 	 * @throws \Exception In case of Stripe API error.
 	 */
 	protected function delete_remote_subscriptions_duplicated_sources( $new_source ) {
-
-		Helpers::require_stripe();
 
 		$subscriptions = \Stripe\Subscription::all(
 			array(

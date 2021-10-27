@@ -10,19 +10,6 @@ namespace WPFormsStripe;
 class Helpers {
 
 	/**
-	 * Require Stripe library if not loaded.
-	 *
-	 * @since 2.3.0
-	 */
-	public static function require_stripe() {
-
-		// Load Stripe PHP library.
-		if ( ! \class_exists( 'Stripe\Stripe', false ) ) {
-			require_once \wpforms_stripe()->path . 'vendor/init.php';
-		}
-	}
-
-	/**
 	 * Check if Stripe keys have been configured in the plugin settings.
 	 *
 	 * @since 2.0.0
@@ -238,7 +225,7 @@ class Helpers {
 		$settings         = \get_option( 'wpforms_settings', array() );
 		$settings[ $key ] = \sanitize_text_field( $value );
 
-		return \update_option( 'wpforms_settings', $settings );
+		return wpforms_update_settings( $settings );
 	}
 
 	/**

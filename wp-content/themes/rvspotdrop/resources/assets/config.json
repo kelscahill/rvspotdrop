@@ -11,7 +11,7 @@
   },
   "publicPath": "/wp-content/themes/rvspotdrop",
   "devUrl": "https://rvspotdrop.test",
-  "proxyUrl": "http://localhost:3000",
+  "proxyUrl": "https://localhost:3000",
   "cacheBusting": "[name]_[hash:8]",
   "watch": [
     "app/**/*.php",

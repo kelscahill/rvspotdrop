@@ -71,7 +71,7 @@ class Notices {
 			</p>
 		</div>
 		<script type="text/javascript">
-			jQuery( document ).ready( function( $ ) {
+			jQuery( function( $ ) {
 				$( document ).on( 'click', '.notice.wpforms-stripe-v230 .notice-dismiss', function ( event ) {
 					event.preventDefault();
 					$.post( ajaxurl, {

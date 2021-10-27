@@ -326,15 +326,11 @@ class Settings {
 			'</p>' .
 			'</div>';
 
-		if ( ! empty( $_GET['stripe_reconnect'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$connect_url = \wpforms_stripe()->connect->get_connect_with_stripe_url( $mode );
 
-			$connect_url = \wpforms_stripe()->connect->get_connect_with_stripe_url( $mode );
-
-			$output .=
-				'<p class="desc">' .
-				'<a href="' . \esc_url( $connect_url ) . '">' . \esc_html__( 'Reconnect with Stripe', 'wpforms-stripe' ) . '</a>' .
-				'</p>';
-		}
+		$output .= '<p>';
+		$output .= '<a href="' . \esc_url( $connect_url ) . '">' . \esc_html__( 'Switch Accounts', 'wpforms-stripe' ) . '</a>';
+		$output .= '</p>';
 
 		return $output;
 	}

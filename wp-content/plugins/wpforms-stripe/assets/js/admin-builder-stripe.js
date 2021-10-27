@@ -50,6 +50,7 @@ var WPFormsStripe = window.WPFormsStripe || ( function( document, window, $ ) {
 
 			$( document ).on( 'wpformsFieldUpdate', app.settingsDisplay );
 			$( document ).on( 'wpformsSaved', app.requiredFieldsCheck );
+			$( document ).on( 'wpformsFieldDelete', app.disableNotifications );
 		},
 
 		/**
@@ -141,6 +142,26 @@ var WPFormsStripe = window.WPFormsStripe || ( function( document, window, $ ) {
 					},
 				},
 			} );
+		},
+
+		/**
+		 * Disable notifications.
+		 *
+		 * @since 2.5.0
+		 *
+		 * @param {object} e Event object.
+		 * @param {number} id Field ID.
+		 * @param {string} type Field type.
+		 */
+		disableNotifications: function( e, id, type ) {
+
+			if ( type === 'stripe-credit-card' ) {
+
+				var $notificationWrap = $( '.wpforms-panel-content-section-notifications [id*="-stripe-wrap"]' );
+
+				$notificationWrap.find( 'input[id*="-stripe"]' ).prop( 'checked', false );
+				$notificationWrap.addClass( 'wpforms-hidden' );
+			}
 		},
 	};
 

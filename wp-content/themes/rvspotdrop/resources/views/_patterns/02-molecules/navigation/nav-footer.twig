@@ -1,4 +1,4 @@
-{% if footer_nav.theme_location == "footer_navigation" %}
+{% if footer_nav.items %}
   <nav class="c-nav-footer" role="navigation">
     {% for item in footer_nav.items %}
       <a class="c-nav-footer__link" target="{{ item.target ? item.target : '_self' }}" href="{{ item.link }}">{{ item.title }}</a>

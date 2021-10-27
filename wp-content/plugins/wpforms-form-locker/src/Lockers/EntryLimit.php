@@ -19,11 +19,11 @@ class EntryLimit {
 	public $form_data;
 
 	/**
-	 * Constructor.
+	 * Init.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
-	public function __construct() {
+	public function init() {
 
 		$this->hooks();
 	}
@@ -35,8 +35,9 @@ class EntryLimit {
 	 */
 	public function hooks() {
 
-		add_filter( 'wpforms_frontend_load', array( $this, 'display_form' ), 10, 2 );
-		add_filter( 'wpforms_process_initial_errors', array( $this, 'submit_form' ), 10, 2 );
+		add_filter( 'wpforms_frontend_load', [ $this, 'display_form' ], 10, 2 );
+		add_filter( 'wpforms_process_initial_errors', [ $this, 'submit_form' ], 10, 2 );
+		add_filter( 'wpforms_conversational_forms_start_button_disabled', [ $this, 'is_locked_filter' ], 10, 2 );
 	}
 
 	/**
@@ -69,7 +70,7 @@ class EntryLimit {
 			return $load_form;
 		}
 
-		add_action( 'wpforms_frontend_not_loaded', array( $this, 'locked_html' ), 10, 2 );
+		add_action( 'wpforms_frontend_not_loaded', [ $this, 'locked_html' ], 10, 2 );
 
 		return false;
 	}
@@ -79,7 +80,7 @@ class EntryLimit {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $errors Form submit errors.
+	 * @param array $errors    Form submit errors.
 	 * @param array $form_data Form information.
 	 *
 	 * @return array
@@ -107,10 +108,9 @@ class EntryLimit {
 		$message = $this->get_locked_message();
 
 		if ( $message ) {
-			printf( '<p class="form-locked-message">%s</p>', wp_kses_post( wpautop( $message ) ) );
+			printf( '<div class="form-locked-message">%s</div>', wp_kses_post( wpautop( $message ) ) );
 		}
 	}
-
 
 	/**
 	 * Get locked form message from an admin area.
@@ -175,6 +175,23 @@ class EntryLimit {
 	}
 
 	/**
+	 * Filter locked state.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param bool  $locked    Locked state.
+	 * @param array $form_data Form data.
+	 *
+	 * @return bool
+	 */
+	public function is_locked_filter( $locked, $form_data ) {
+
+		$this->set_form_data( $form_data );
+
+		return $this->is_locked() ? true : $locked;
+	}
+
+	/**
 	 * Get the value unlocking the form.
 	 *
 	 * @since 1.0.0
@@ -185,7 +202,7 @@ class EntryLimit {
 
 		add_filter( 'wpforms_entry_handler_get_entries_where', [ $this, 'exclude_abandonment' ] );
 
-		$entries = wpforms()->entry->get_entries( array( 'form_id' => $this->form_data['id'] ), true );
+		$entries = wpforms()->entry->get_entries( [ 'form_id' => $this->form_data['id'] ], true );
 
 		remove_filter( 'wpforms_entry_handler_get_entries_where', [ $this, 'exclude_abandonment' ] );
 
@@ -195,7 +212,7 @@ class EntryLimit {
 	/**
 	 * Exclude abandonment status for locked form.
 	 *
-	 * @since {VERSION}
+	 * @since 2.0.0
 	 *
 	 * @param array $where List of WHERE conditions for entries query.
 	 *
@@ -207,5 +224,4 @@ class EntryLimit {
 
 		return $where;
 	}
-
 }

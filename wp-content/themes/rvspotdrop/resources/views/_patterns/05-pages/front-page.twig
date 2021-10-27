@@ -1,11 +1,11 @@
-{% extends "04-templates/base.twig" %}
+{% extends "@templates/_layout.twig" %}
 
 {% block sections_before %}
-  {% include "03-organisms/sections/section-hero.twig" %}
+  {% include "@organisms/sections/section-hero.twig" %}
 {% endblock %}
 
 {% block content %}
-  {% include "03-organisms/content/content-page.twig" %}
+  {% include "@organisms/content/content-page.twig" %}
 {% endblock %}
 
 {% block sections_after %}

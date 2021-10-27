@@ -20,6 +20,18 @@ export default {
     }
 
     /**
+    * Add active class to nav.
+    */
+    var str = location.href.toLowerCase();
+    $(".js-link").each(function() {
+      if (str.indexOf(this.href.toLowerCase()) > -1) {
+        $(this).closest(".js-link").removeClass("is-active");
+        $(this).addClass("is-active");
+        $(this).parent().parent().addClass("has-active-links");
+      }
+    });
+
+    /**
     * Add inview class on scroll if has-animation class.
     */
     if (!isMobile()) {

@@ -207,9 +207,6 @@ class WPForms_Field_Number_Slider extends WPForms_Field {
 		// Size.
 		$this->field_option( 'size', $field );
 
-		// Hide label.
-		$this->field_option( 'label_hide', $field );
-
 		// Default value.
 		$lbl = $this->field_element(
 			'label',
@@ -311,19 +308,23 @@ class WPForms_Field_Number_Slider extends WPForms_Field {
 		$this->field_element(
 			'row',
 			$field,
-			array(
+			[
 				'slug'    => 'step',
 				'content' => $lbl . $fld,
-			)
+			]
 		);
 
 		// Custom CSS classes.
 		$this->field_option( 'css', $field );
 
+		// Hide label.
+		$this->field_option( 'label_hide', $field );
+
 		// Options close markup.
-		$args = array(
+		$args = [
 			'markup' => 'close',
-		);
+		];
+
 		$this->field_option( 'advanced-options', $field, $args );
 	}
 
@@ -414,7 +415,11 @@ class WPForms_Field_Number_Slider extends WPForms_Field {
 		$field_submit = (float) $this->sanitize_value( $field_submit );
 
 		// Basic required check - if field is marked as required, check for entry data.
-		if ( ! empty( $form_data['fields'][ $field_id ]['required'] ) && empty( $field_submit ) && 0 != $field_submit ) {
+		if (
+			! empty( $form_data['fields'][ $field_id ]['required'] ) &&
+			empty( $field_submit ) &&
+			(string) $field_submit !== '0'
+		) {
 			wpforms()->process->errors[ $form_id ][ $field_id ] = wpforms_get_required_label();
 		}
 

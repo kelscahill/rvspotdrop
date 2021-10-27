@@ -1,4 +1,4 @@
-/* globals wpforms, wpforms_settings, wpforms_form_locker */
+/* global wpforms, wpforms_settings, wpforms_form_locker */
 
 'use strict';
 
@@ -25,7 +25,7 @@ var WPFormsFormLocker = window.WPFormsFormLocker || ( function( document, window
 		 */
 		init: function() {
 
-			$( document ).ready( app.ready );
+			$( app.ready );
 		},
 
 		/**
@@ -146,7 +146,7 @@ var WPFormsFormLocker = window.WPFormsFormLocker || ( function( document, window
 		/**
 		 * Init validator groups for all unique Name fields.
 		 *
-		 * @since {VERSION}
+		 * @since 2.0.0
 		 */
 		initNameGroupsValidation: function() {
 
@@ -162,7 +162,7 @@ var WPFormsFormLocker = window.WPFormsFormLocker || ( function( document, window
 		/**
 		 * Get field combined value.
 		 *
-		 * @since {VERSION}
+		 * @since 2.0.0
 		 *
 		 * @param {jQuery} $field WPForms field jQuery object.
 		 *
@@ -187,7 +187,7 @@ var WPFormsFormLocker = window.WPFormsFormLocker || ( function( document, window
 		/**
 		 * Generate validator groups data.
 		 *
-		 * @since {VERSION}
+		 * @since 2.0.0
 		 *
 		 * @param {jQuery} $form Form jQuery object.
 		 *
@@ -218,7 +218,7 @@ var WPFormsFormLocker = window.WPFormsFormLocker || ( function( document, window
 		/**
 		 * Update validator lists.
 		 *
-		 * @since {VERSION}
+		 * @since 2.0.0
 		 *
 		 * @param {object} validator      jQuery validator object.
 		 * @param {string} subfieldPrefix Subfield name prefix.

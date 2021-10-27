@@ -66,16 +66,16 @@ var WPFormsStripeElements = window.WPFormsStripeElements || ( function( document
 
 			var $hiddenInput = $form.find( '.wpforms-stripe-credit-card-hidden-input' );
 
+			var style = wpforms_stripe.data.element_style;
+
+			if ( $.isEmptyObject( style ) ) {
+				style = app.getElementStyleDefault( $hiddenInput );
+			}
+
 			var cardSettings = {
 				classes       : wpforms_stripe.data.element_classes,
 				hidePostalCode: true,
-				style         : {
-					base: {
-						fontFamily: $hiddenInput.css( 'font-family' ),
-						fontSize  : $hiddenInput.css( 'font-size' ),
-						color     : $hiddenInput.css( 'color' ),
-					},
-				},
+				style         : style,
 			};
 
 			var cardElement = app.stripe.elements().create( 'card', cardSettings );
@@ -98,7 +98,43 @@ var WPFormsStripeElements = window.WPFormsStripeElements || ( function( document
 				app.displayStripeError( $form, message );
 			} );
 
+			$hiddenInput.data( 'stripe-element', cardElement );
+
 			return cardElement;
+		},
+
+		/**
+		 *
+		 * Get default styles for card settings.
+		 *
+		 * @since 2.5.0
+		 *
+		 * @param {jQuery} $hiddenInput Input element.
+		 *
+		 * @returns {object} Base styles.
+		 */
+		getElementStyleDefault: function( $hiddenInput ) {
+
+			var style = {
+				base: {
+					fontSize  : $hiddenInput.css( 'font-size' ),
+					color     : $hiddenInput.css( 'color' ),
+				},
+			};
+
+			var fontFamily = $hiddenInput.css( 'font-family' );
+
+			var regExp = /[“”<>!@$%^&*=~`|{}[\]]/;
+
+			if ( regExp.test( fontFamily ) ) {
+				fontFamily = $( 'p' ).css( 'font-family' );
+			}
+
+			if ( ! regExp.test( fontFamily ) ) {
+				style.base.fontFamily = fontFamily;
+			}
+
+			return style;
 		},
 
 		/**

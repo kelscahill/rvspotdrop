@@ -28,10 +28,11 @@ class Export {
 		'entries_per_step'     => 5000,           // Number of entries in a chunk that are retrieved and saved into a temp file per one iteration.
 		'csv_export_separator' => ',',            // Columns separator.
 		'disallowed_fields'    => [               // Disallowed fields array.
+			'captcha',
+			'entry-preview',
 			'divider',
 			'html',
 			'pagebreak',
-			'captcha',
 		],
 	];
 
@@ -143,22 +144,34 @@ class Export {
 	protected function init_settings() {
 
 		// Additional information fields.
+		$this->additional_info_fields = [
+			'entry_id'   => esc_html__( 'Entry ID', 'wpforms' ),
+			'date'       => esc_html__( 'Entry Date', 'wpforms' ),
+			'notes'      => esc_html__( 'Entry Notes', 'wpforms' ),
+			'viewed'     => esc_html__( 'Viewed', 'wpforms' ),
+			'starred'    => esc_html__( 'Starred', 'wpforms' ),
+			'user_agent' => esc_html__( 'User Agent', 'wpforms' ),
+			'ip_address' => esc_html__( 'User IP', 'wpforms' ),
+			'user_uuid'  => esc_html__( 'Unique Generated User ID', 'wpforms' ),
+			'pstatus'    => esc_html__( 'Payment Status', 'wpforms' ),
+			'pginfo'     => esc_html__( 'Payment Gateway Information', 'wpforms' ),
+			'del_fields' => esc_html__( 'Include data of previously deleted fields', 'wpforms' ),
+		];
+
+		if ( function_exists( 'wpforms_geolocation' ) ) {
+			$this->additional_info_fields['geodata'] = esc_html__( 'Geolocation Details', 'wpforms' );
+		}
+
+		/**
+		 * Additional information fields for entries export.
+		 *
+		 * @since 1.5.5.1
+		 *
+		 * @param array $fields Additional info fields.
+		 */
 		$this->additional_info_fields = apply_filters(
 			'wpforms_pro_admin_entries_export_additional_info_fields',
-			array(
-				'entry_id'   => esc_html__( 'Entry ID', 'wpforms' ),
-				'date'       => esc_html__( 'Entry Date', 'wpforms' ),
-				'notes'      => esc_html__( 'Entry Notes', 'wpforms' ),
-				'viewed'     => esc_html__( 'Viewed', 'wpforms' ),
-				'starred'    => esc_html__( 'Starred', 'wpforms' ),
-				'user_agent' => esc_html__( 'User Agent', 'wpforms' ),
-				'ip_address' => esc_html__( 'User IP', 'wpforms' ),
-				'user_uuid'  => esc_html__( 'Unique Generated User ID', 'wpforms' ),
-				'geodata'    => esc_html__( 'Geolocation Details', 'wpforms' ),
-				'pstatus'    => esc_html__( 'Payment Status', 'wpforms' ),
-				'pginfo'     => esc_html__( 'Payment Gateway Information', 'wpforms' ),
-				'del_fields' => esc_html__( 'Include data of previously deleted fields', 'wpforms' ),
-			)
+			$this->additional_info_fields
 		);
 
 		// This option should be available only if zip PHP extension is loaded.
@@ -273,43 +286,49 @@ class Export {
 	 */
 	public function init_args( $method = 'GET' ) {
 
-		$args = array();
+		$args = [];
 
-		$method = 'GET' === $method ? 'GET' : 'POST';
-		$req    = 'GET' === $method ? $_GET : $_POST; // phpcs:ignore
+		$method = $method === 'GET' ? 'GET' : 'POST';
+		$req    = $method === 'GET' ? $_GET : $_POST; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
 
 		// Action.
 		$args['action'] = '';
+
 		if ( ! empty( $req['action'] ) ) {
 			$args['action'] = sanitize_text_field( wp_unslash( $req['action'] ) );
 		}
 
 		// Nonce.
 		$args['nonce'] = '';
+
 		if ( ! empty( $req['nonce'] ) ) {
 			$args['nonce'] = sanitize_text_field( wp_unslash( $req['nonce'] ) );
 		}
 
 		// Form ID.
 		$args['form_id'] = 0;
+
 		if ( ! empty( $req['form'] ) ) {
 			$args['form_id'] = (int) $req['form'];
 		}
 
 		// Entry ID.
 		$args['entry_id'] = 0;
+
 		if ( ! empty( $req['entry_id'] ) ) {
 			$args['entry_id'] = (int) $req['entry_id'];
 		}
 
 		// Fields.
-		$args['fields'] = array();
+		$args['fields'] = [];
+
 		if ( ! empty( $req['fields'] ) ) {
 			$args['fields'] = array_map( 'intval', wp_unslash( $req['fields'] ) );
 		}
 
 		// Additional Information.
-		$args['additional_info'] = array();
+		$args['additional_info'] = [];
+
 		if ( ! empty( $req['additional_info'] ) ) {
 			$args['additional_info'] = array_map( 'sanitize_text_field', wp_unslash( $req['additional_info'] ) );
 		}
@@ -322,30 +341,34 @@ class Export {
 		}
 
 		// Date range.
-		$args['dates'] = array();
+		$args['dates'] = [];
+
 		if ( ! empty( $req['date'] ) ) {
 			$dates = explode( ' - ', sanitize_text_field( wp_unslash( $req['date'] ) ) );
 
 			switch ( count( $dates ) ) {
 				case 1:
-					$args['dates'] = sanitize_text_field( $req['date'] ); // phpcs:ignore
+					$args['dates'] = sanitize_text_field( $req['date'] );
+
 					break;
 
 				case 2:
 					$args['dates'] = array_map( 'sanitize_text_field', $dates );
+
 					break;
 			}
 		}
 
 		// Search.
-		$args['search'] = array(
+		$args['search'] = [
 			'field'      => 'any',
 			'comparison' => 'contains',
 			'term'       => '',
-		);
+		];
+
 		if ( isset( $req['search'] ) ) {
-			if ( isset( $req['search']['field'] ) && is_numeric( $req['search']['field'] ) ) {
-				$args['search']['field'] = (int) $req['search']['field'];
+			if ( isset( $req['search']['field'] ) ) {
+				$args['search']['field'] = sanitize_key( $req['search']['field'] );
 			}
 			if ( ! empty( $req['search']['comparison'] ) ) {
 				$args['search']['comparison'] = sanitize_key( $req['search']['comparison'] );
@@ -357,6 +380,7 @@ class Export {
 
 		// Request ID.
 		$args['request_id'] = '';
+
 		if ( ! empty( $req['request_id'] ) ) {
 			$args['request_id'] = sanitize_text_field( wp_unslash( $req['request_id'] ) );
 		}

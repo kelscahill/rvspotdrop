@@ -1,4 +1,4 @@
-/* global wpforms_admin, wpforms_admin_edit_entry, wpf, wpforms */
+/* global wpforms_admin, wpforms_admin_edit_entry, wpf, wpforms, tinyMCE */
 /**
  * WPForms Edit Entry function.
  *
@@ -61,6 +61,8 @@ var WPFormsEditEntry = window.WPFormsEditEntry || ( function( document, window, 
 
 			app.initSavedFormData();
 			app.events();
+
+			wpf.initTooltips();
 		},
 
 		/**
@@ -80,6 +82,9 @@ var WPFormsEditEntry = window.WPFormsEditEntry || ( function( document, window, 
 
 			// Prevent lost not saved changes.
 			$( window ).on( 'beforeunload', app.beforeUnload );
+
+			// Confirm file deletion.
+			$( document ).on( 'click', '.wpforms-edit-entry-field-file-upload .delete', app.fileDelete );
 		},
 
 		/**
@@ -140,8 +145,40 @@ var WPFormsEditEntry = window.WPFormsEditEntry || ( function( document, window, 
 		 */
 		preSubmitActions: function() {
 
+			var formID = $( '#wpforms-edit-entry-form' ).data( 'formid' );
+
 			// Fix for Smart Phone fields.
 			$( '.wpforms-smart-phone-field' ).trigger( 'input' );
+
+			// Delete files from the list.
+			$( '.wpforms-edit-entry-field-file-upload a.disabled' ).each( function() {
+
+				$( this ).parent().remove();
+			} );
+
+			$( '.wpforms-field-file-upload' ).each( function() {
+
+				var $this = $( this );
+
+				if ( $this.is( ':empty' ) ) {
+					$this.closest( '.wpforms-edit-entry-field-file-upload' ).addClass( 'empty' );
+					$this.html( $( '<span>', {
+						class: 'wpforms-entry-field-value',
+						text: wpforms_admin_edit_entry.strings.entry_empty_file,
+					} ) );
+				}
+			} );
+
+			// Update Rich Text fields content.
+			$( '.wpforms-field-richtext' ).each( function() {
+
+				var fieldID = $( this ).data( 'field-id' ),
+					editor = tinyMCE.get( 'wpforms-' + formID + '-field_' + fieldID );
+
+				if ( editor ) {
+					editor.save();
+				}
+			} );
 		},
 
 		/**
@@ -343,6 +380,47 @@ var WPFormsEditEntry = window.WPFormsEditEntry || ( function( document, window, 
 				}
 
 				$fieldContainer.find( '[name="' + fieldInputName + '"]' ).addClass( 'wpforms-error' ).after( errorLabel );
+			} );
+		},
+
+		/**
+		 * Confirm file deletion.
+		 *
+		 * @since 1.6.6
+		 *
+		 * @param {object} event Event object.
+		 */
+		fileDelete : function( event ) {
+
+			event.preventDefault();
+
+			var $element = $( this ),
+				$fileInput = $element.parent().find( 'a' ).first();
+
+			// Trigger alert modal to confirm.
+			$.confirm( {
+				title: false,
+				content:  wpforms_admin_edit_entry.strings.entry_delete_file.replace( '{file_name}', $fileInput.html() ),
+				icon: 'fa fa-exclamation-circle',
+				type: 'orange',
+				buttons: {
+					confirm: {
+						text: wpforms_admin.ok,
+						btnClass: 'btn-confirm',
+						keys: [ 'enter' ],
+						action: function() {
+
+							$fileInput.html( $fileInput.text().strike() );
+							$fileInput.addClass( 'disabled' );
+							$element.parent().find( 'input[type="hidden"]' ).remove();
+							$element.remove();
+						},
+					},
+					cancel: {
+						text: wpforms_admin.cancel,
+						keys: [ 'esc' ],
+					},
+				},
 			} );
 		},
 	};

@@ -24,6 +24,15 @@ class WPForms_Process {
 	public $confirmation_message;
 
 	/**
+	 * Current confirmation.
+	 *
+	 * @since 1.6.9
+	 *
+	 * @var array
+	 */
+	private $confirmation;
+
+	/**
 	 * Store formatted fields.
 	 *
 	 * @since 1.0.0
@@ -160,19 +169,22 @@ class WPForms_Process {
 
 		// CAPTCHA check.
 		$captcha_settings = wpforms_get_captcha_settings();
+		$bypass_captcha   = apply_filters( 'wpforms_process_bypass_captcha', false, $entry, $this->form_data );
+
 		if (
 			! empty( $captcha_settings['provider'] ) &&
-			'none' !== $captcha_settings['provider'] &&
+			$captcha_settings['provider'] !== 'none' &&
 			! empty( $captcha_settings['site_key'] ) &&
 			! empty( $captcha_settings['secret_key'] ) &&
 			isset( $this->form_data['settings']['recaptcha'] ) &&
-			'1' == $this->form_data['settings']['recaptcha'] &&
+			(int) $this->form_data['settings']['recaptcha'] === 1 &&
+			empty( $bypass_captcha ) &&
 			! isset( $_POST['__amp_form_verify'] ) // phpcs:ignore WordPress.Security.NonceVerification.Missing -- No need to check CAPTCHA until form is submitted.
 			&&
-			( ( 'recaptcha' === $captcha_settings['provider'] && 'v3' === $captcha_settings['recaptcha_type'] ) || ! wpforms_is_amp() ) // AMP requires Google reCAPTCHA v3.
+			( ( $captcha_settings['provider'] === 'recaptcha' && $captcha_settings['recaptcha_type'] === 'v3' ) || ! wpforms_is_amp() ) // AMP requires Google reCAPTCHA v3.
 		) {
 
-			if ( 'hcaptcha' === $captcha_settings['provider'] ) {
+			if ( $captcha_settings['provider'] === 'hcaptcha' ) {
 				$verify_url_raw   = 'https://hcaptcha.com/siteverify';
 				$captcha_provider = esc_html__( 'hCaptcha', 'wpforms-lite' );
 				$post_key         = 'h-captcha-response';
@@ -185,7 +197,7 @@ class WPForms_Process {
 			/* translators: %s - The CAPTCHA provider name. */
 			$error           = wpforms_setting( "{$captcha_settings['provider']}-fail-msg", sprintf( esc_html__( '%s verification failed, please try again later.', 'wpforms-lite' ), $captcha_provider ) );
 			$token           = ! empty( $_POST[ $post_key ] ) ? $_POST[ $post_key ] : false; // phpcs:ignore
-			$is_recaptcha_v3 = 'recaptcha' === $captcha_settings['provider'] && 'v3' === $captcha_settings['recaptcha_type'];
+			$is_recaptcha_v3 = $captcha_settings['provider'] === 'recaptcha' && $captcha_settings['recaptcha_type'] === 'v3';
 
 			if ( $is_recaptcha_v3 ) {
 				$token = ! empty( $_POST['wpforms']['recaptcha'] ) ? $_POST['wpforms']['recaptcha'] : false; // phpcs:ignore
@@ -200,17 +212,9 @@ class WPForms_Process {
 			/*
 			 * hCaptcha uses user IP to better detect bots and their attacks on a form.
 			 * Majority of our users have GDPR disabled.
-			 * So we remove this data from the request only when it's not needed:
-			 * 1) when GDPR is enabled AND globally disabled user details storage;
-			 * 2) when GDPR is enabled AND IP address processing is disabled on per form basis.
+			 * So we remove this data from the request only when it's not needed, depending on wpforms_is_collecting_ip_allowed($this->form_data) check.
 			 */
-			if (
-				wpforms_setting( 'gdpr', false ) &&
-				(
-					wpforms_setting( 'gdpr-disable-details', false ) ||
-					! empty( $this->form_data['settings']['disable_ip'] )
-				)
-			) {
+			if ( ! wpforms_is_collecting_ip_allowed( $this->form_data ) ) {
 				unset( $verify_query_arg['remoteip'] );
 			}
 
@@ -615,6 +619,7 @@ class WPForms_Process {
 
 		// Pass a message to a frontend if no redirection happened.
 		if ( ! empty( $confirmations[ $confirmation_id ]['type'] ) && 'message' === $confirmations[ $confirmation_id ]['type'] ) {
+			$this->confirmation         = $confirmations[ $confirmation_id ];
 			$this->confirmation_message = $confirmations[ $confirmation_id ]['message'];
 
 			if ( ! empty( $confirmations[ $confirmation_id ]['message_scroll'] ) ) {
@@ -644,6 +649,18 @@ class WPForms_Process {
 		$confirmation_message = apply_filters( 'wpforms_frontend_confirmation_message', wpautop( $confirmation_message ), $form_data, $fields, $entry_id );
 
 		return $confirmation_message;
+	}
+
+	/**
+	 * Get current confirmation.
+	 *
+	 * @since 1.6.9
+	 *
+	 * @return array
+	 */
+	public function get_current_confirmation() {
+
+		return ! empty( $this->confirmation ) ? $this->confirmation : [];
 	}
 
 	/**
@@ -693,10 +710,7 @@ class WPForms_Process {
 	public function entry_email( $fields, $entry, $form_data, $entry_id, $context = '' ) {
 
 		// Check that the form was configured for email notifications.
-		if (
-			empty( $form_data['settings']['notification_enable'] ) ||
-			'1' != $form_data['settings']['notification_enable']
-		) {
+		if ( empty( $form_data['settings']['notification_enable'] ) ) {
 			return;
 		}
 

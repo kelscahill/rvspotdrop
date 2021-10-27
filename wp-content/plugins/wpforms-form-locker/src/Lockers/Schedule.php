@@ -19,11 +19,12 @@ class Schedule {
 	public $form_data;
 
 	/**
-	 * Constructor.
+	 * Init.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
-	public function __construct() {
+	public function init() {
+
 		$this->hooks();
 	}
 
@@ -34,8 +35,9 @@ class Schedule {
 	 */
 	public function hooks() {
 
-		\add_filter( 'wpforms_frontend_load', array( $this, 'display_form' ), 10, 2 );
-		\add_filter( 'wpforms_process_initial_errors', array( $this, 'submit_form' ), 10, 2 );
+		add_filter( 'wpforms_frontend_load', [ $this, 'display_form' ], 10, 2 );
+		add_filter( 'wpforms_process_initial_errors', [ $this, 'submit_form' ], 10, 2 );
+		add_filter( 'wpforms_conversational_forms_start_button_disabled', [ $this, 'is_locked_filter' ], 10, 2 );
 	}
 
 	/**
@@ -103,8 +105,9 @@ class Schedule {
 	public function locked_html() {
 
 		$message = $this->get_locked_message();
+
 		if ( $message ) {
-			printf( '<p class="form-locked-message">%s</p>', wp_kses_post( wpautop( $message ) ) );
+			printf( '<div class="form-locked-message">%s</div>', wp_kses_post( wpautop( $message ) ) );
 		}
 	}
 
@@ -117,6 +120,7 @@ class Schedule {
 	 * @return string
 	 */
 	public function get_locked_message() {
+
 		return ! empty( $this->form_data['settings']['form_locker_schedule_message'] ) ? $this->form_data['settings']['form_locker_schedule_message'] : '';
 	}
 
@@ -154,16 +158,17 @@ class Schedule {
 
 		// Flatpickr is set to store the date in a hardcoded 'Y-m-d' format
 		// jQuery timepicker fetches a time format from WP settings.
-		$format = 'Y-m-d' . get_option( 'time_format' );
+		$format  = 'Y-m-d ';
+		$format .= get_option( 'time_format' ) ? get_option( 'time_format' ) : 'g:i a';
 
 		if ( $start_date ) {
 			$start_time = ! empty( $this->form_data['settings']['form_locker_schedule_start_time'] ) ? $this->form_data['settings']['form_locker_schedule_start_time'] : '';
-			$start      = date_create_from_format( $format, $start_date . $start_time );
+			$start      = date_create_from_format( $format, gmdate( $format, strtotime( $start_date . $start_time ) ) );
 		}
 
 		if ( $end_date ) {
 			$end_time = ! empty( $this->form_data['settings']['form_locker_schedule_end_time'] ) ? $this->form_data['settings']['form_locker_schedule_end_time'] : '';
-			$end      = date_create_from_format( $format, $end_date . $end_time );
+			$end      = date_create_from_format( $format, gmdate( $format, strtotime( $end_date . $end_time ) ) );
 		}
 
 		if ( empty( $start ) && empty( $end ) ) {
@@ -188,6 +193,23 @@ class Schedule {
 	}
 
 	/**
+	 * Filter locked state.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param bool  $locked    Locked state.
+	 * @param array $form_data Form data.
+	 *
+	 * @return bool
+	 */
+	public function is_locked_filter( $locked, $form_data ) {
+
+		$this->set_form_data( $form_data );
+
+		return $this->is_locked() ? true : $locked;
+	}
+
+	/**
 	 * Get the value unlocking the form.
 	 *
 	 * @since 1.0.0
@@ -195,6 +217,7 @@ class Schedule {
 	 * @return string
 	 */
 	public function get_unlocking_value() {
+
 		return \current_time( 'mysql' );
 	}
 }

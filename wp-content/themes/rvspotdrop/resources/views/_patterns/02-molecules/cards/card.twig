@@ -1,0 +1,43 @@
+{% set base_class = card.base_class|default('c-card') %}
+
+{% if card %}
+  <div class="{{ bem_classes(base_class, card.element, card.modifiers, card.extra) }} u-spacing--double" {{ add_attributes(card.attributes) }}>
+    <div class="{{ bem_classes(base_class, 'content') }} u-spacing--half">
+      {% include "@atoms/icons/icon.twig" with {
+        "icon": {
+          "name": card.icon,
+          "modifiers": "xlarge",
+          "extra": bem_classes(base_class, 'icon')
+        }
+      } %}
+      {% include "@atoms/text/heading/heading.twig" with {
+        "heading": {
+          "level": "2",
+          "size": "l",
+          "text": card.title,
+          "extra": bem_classes(base_class, 'heading')
+        }
+      } %}
+      {% include "@atoms/text/dek/dek.twig" with {
+        "dek": {
+          "text": card.description,
+          "extra": bem_classes(base_class, 'dek')
+        }
+      } %}
+    </div>
+    <div class="{{ bem_classes(base_class, 'footer') }} u-spacing--half">
+      {% if card.title == 'Make a Campground Request' %}
+        {{ function('max_form_limit_block_message') }}
+      {% else %}
+        {% include "@atoms/buttons/button.twig" with {
+          "button": {
+            "url": card.button.url,
+            "text": card.button.text,
+            "modifiers": "tertiary",
+            "extra": bem_classes(base_class, 'button')
+          }
+        } %}
+      {% endif %}
+    </div>
+  </div>
+{% endif %}

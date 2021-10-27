@@ -19,11 +19,12 @@ class User {
 	public $form_data;
 
 	/**
-	 * Constructor.
+	 * Init.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
-	public function __construct() {
+	public function init() {
+
 		$this->hooks();
 	}
 
@@ -34,8 +35,9 @@ class User {
 	 */
 	public function hooks() {
 
-		\add_filter( 'wpforms_frontend_load', array( $this, 'display_form' ), 10, 2 );
-		\add_filter( 'wpforms_process_initial_errors', array( $this, 'submit_form' ), 10, 2 );
+		add_filter( 'wpforms_frontend_load', [ $this, 'display_form' ], 10, 2 );
+		add_filter( 'wpforms_process_initial_errors', [ $this, 'submit_form' ], 10, 2 );
+		add_filter( 'wpforms_conversational_forms_start_button_disabled', [ $this, 'is_locked_filter' ], 10, 2 );
 	}
 
 	/**
@@ -104,7 +106,7 @@ class User {
 
 		$message = $this->get_locked_message();
 		if ( $message ) {
-			printf( '<p class="form-locked-message">%s</p>', wp_kses_post( wpautop( $message ) ) );
+			printf( '<div class="form-locked-message">%s</div>', wp_kses_post( wpautop( $message ) ) );
 		}
 	}
 
@@ -156,6 +158,23 @@ class User {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Filter locked state.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param bool  $locked    Locked state.
+	 * @param array $form_data Form data.
+	 *
+	 * @return bool
+	 */
+	public function is_locked_filter( $locked, $form_data ) {
+
+		$this->set_form_data( $form_data );
+
+		return $this->is_locked() ? true : $locked;
 	}
 
 	/**

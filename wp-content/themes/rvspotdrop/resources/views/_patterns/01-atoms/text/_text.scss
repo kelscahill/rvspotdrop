@@ -6,7 +6,8 @@ p {
   @include p;
 }
 
-small {
+small,
+.o-small {
   font-size: 90%;
 }
 
@@ -166,6 +167,13 @@ abbr {
   .wp-block-button__link {
     @include o-button;
     @include o-button--primary;
+  }
+
+  .wp-block-separator {
+    background-color: $c-gray;
+    height: 1px;
+    border: 0;
+    width: 100%;
   }
 
   hr {

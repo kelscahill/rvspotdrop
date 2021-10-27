@@ -86,7 +86,12 @@ function get_assets_list($directory, $base_url)
                 function ($asset_path) use ($directory, $base_url, $build_folder) {
                     // Use realpath to remove default relative path and confirm file exists.
                     $real_path = realpath($directory . $build_folder . '/' . $asset_path);
-                    $str       = substr($real_path, strpos($real_path, $build_folder . DIRECTORY_SEPARATOR));
+
+                    // Remove path to plugins dir to avoid problems where site path includes build folder name.
+                    $str       = str_replace(WP_PLUGIN_DIR, '', $real_path);
+
+                    // Get things into a format we can enqueue.
+                    $str       = substr($str, strpos($str, $build_folder . DIRECTORY_SEPARATOR));
                     $str       = switch_slashes_for_windows($str);// Windows fix
                     $formatted = $base_url . '/' . $str;
 
@@ -173,7 +178,8 @@ function get_plugin_basedir_path()
  */
 function get_asset_uri($asset_path, $base_url)
 {
-    if (strpos($asset_path, '://') !== false) {
+    // If it has a URL scheme, or is a relative URL as defined via WP_CONTENT_DIR or similar.
+    if (strpos($asset_path, '://') !== false || plugins_url() === substr($asset_path, 0, strlen(plugins_url()))) {
         return $asset_path;
     }
 

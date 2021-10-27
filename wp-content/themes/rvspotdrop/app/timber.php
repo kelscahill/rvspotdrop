@@ -35,15 +35,17 @@ class SageTimberTheme extends TimberSite {
   }
 
   function add_to_context( $context ) {
-    
-    /* Navigation Menus */
-    $context['primary_nav'] = new TimberMenu('primary_navigation');
-    $context['utility_nav'] = new TimberMenu('utility_navigation');
-    $context['footer_nav'] = new TimberMenu('footer_navigation');
-    $context['footer_legal_nav'] = new TimberMenu('footer_legal_navigation');
 
     /* Site info */
     $context['site'] = $this;
+
+    /* Menus */
+    $context['primary_nav'] = new TimberMenu( 'Primary Navigation' );
+    $context['utility_nav']  = new TimberMenu( 'Utility Navigation' );
+    $context['footer_nav']  = new TimberMenu( 'Footer Navigation' );
+    $context['footer_legal_nav']  = new TimberMenu( 'Footer Legal Navigation' );
+    $context['dashboard_nav']  = new TimberMenu( 'Dashboard Navigation' );
+    $context['dashboard_support_nav']  = new TimberMenu( 'Dashboard Support Navigation' );
 
     /* Sidebars */
     $context['sidebar_primary'] = Timber::get_widgets('sidebar-primary');

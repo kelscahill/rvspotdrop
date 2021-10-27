@@ -1,24 +1,24 @@
 <div class="c-utility">
   <div class="c-utility--inner l-wrap l-container">
     <div class="c-utility__social">
-      {% include "02-molecules/components/social-links.twig" %}
+      {% include "@molecules/components/social-links.twig" %}
     </div>
     <div class="c-utility__nav">
-      {% include "02-molecules/navigation/nav-utility.twig" %}
+      {% include "@molecules/navigation/nav-utility.twig" %}
     </div>
   </div>
 </div>
 <header class="c-header">
   <div class="c-header--inner l-wrap l-container">
     <div class="c-header__logo">
-      {% include "01-atoms/images/logo.twig" %}
+      {% include "@atoms/images/logos/logo.twig" %}
     </div>
     <div class="c-header__nav">
-      {% include "02-molecules/navigation/nav-primary.twig" %}
-      <button class="o-toggle o-icon o-icon--s js-toggle" data-toggled="l-body" data-prefix="menu" aria-role="Menu">
-        {% include "01-atoms/icons/menu.twig" %}
+      {% include "@molecules/navigation/nav-primary.twig" %}
+      <button class="o-toggle o-icon o-icon--small js-toggle" data-toggled="body" data-prefix="menu" aria-role="Menu">
+        {% include "@atoms/icons/menu.twig" %}
       </button>
     </div>
   </div>
 </header>
-{% include "02-molecules/navigation/nav-drawer.twig" %}
+{% include "@molecules/navigation/nav-drawer.twig" %}

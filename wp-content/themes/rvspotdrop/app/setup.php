@@ -40,10 +40,12 @@ add_action('after_setup_theme', function () {
      * @link https://developer.wordpress.org/reference/functions/register_nav_menus/
      */
     register_nav_menus([
-        'primary_navigation' => __('Primary Navigation', 'sage'),
-        'utility_navigation' => __('Utility Navigation', 'sage'),
-        'footer_navigation' => __('Footer Navigation', 'sage'),
-        'footer_legal_navigation' => __('Footer Legal Navigation', 'sage')
+        'primary_nav' => __('Primary Navigation', 'sage'),
+        'utility_nav' => __('Utility Navigation', 'sage'),
+        'footer_legal_nav' => __('Footer Legal Navigation', 'sage'),
+        'footer_nav' => __('Footer Navigation', 'sage'),
+        'dashboard_nav' => __('Dashboard Navigation', 'sage'),
+        'dashboard_support_nav' => __('Dashboard Support Navigation', 'sage')
     ]);
 
     /**
@@ -68,7 +70,7 @@ add_action('after_setup_theme', function () {
      * Use main stylesheet for visual editor
      * @see resources/assets/styles/layouts/_tinymce.scss
      */
-    add_editor_style(asset_path('styles/main.css'));
+    //add_editor_style(asset_path('styles/main.css'));
 }, 20);
 
 /**
@@ -129,19 +131,3 @@ add_action('after_setup_theme', function () {
         return "<?= " . __NAMESPACE__ . "\\asset_path({$asset}); ?>";
     });
 });
-
-/**
- * Custom image styles.
- */
-
-// 16:9 crop.
-add_image_size('horiz__16x9--s', 500, 280, array('center', 'center'));
-add_image_size('horiz__16x9--m', 800, 450, array('center', 'center'));
-add_image_size('horiz__16x9--l', 1100, 620, array('center', 'center'));
-//add_image_size('horiz__16x9--xl', 1600, 900, array('center', 'center'));
-
-// 4:3 crop.
-add_image_size('horiz__4x3--s', 500, 375, array('center', 'center'));
-add_image_size('horiz__4x3--m', 800, 600, array('center', 'center'));
-add_image_size('horiz__4x3--l', 1100, 825, array('center', 'center'));
-//add_image_size('horiz__4x3--xl', 1600, 1200, array('center', 'center'));

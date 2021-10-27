@@ -7,7 +7,7 @@
  * Requires PHP:      5.5
  * Author:            WPForms
  * Author URI:        https://wpforms.com
- * Version:           1.4.4
+ * Version:           1.5.0
  * Text Domain:       wpforms-form-abandonment
  * Domain Path:       languages
  *
@@ -31,7 +31,119 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin version.
-define( 'WPFORMS_FORM_ABANDONMENT_VERSION', '1.4.4' );
+define( 'WPFORMS_FORM_ABANDONMENT_VERSION', '1.5.0' );
+define( 'WPFORMS_FORM_ABANDONMENT_FILE', __FILE__ );
+define( 'WPFORMS_FORM_ABANDONMENT_PATH', plugin_dir_path( WPFORMS_FORM_ABANDONMENT_FILE ) );
+define( 'WPFORMS_FORM_ABANDONMENT_URL', plugin_dir_url( WPFORMS_FORM_ABANDONMENT_FILE ) );
+
+/**
+ * Load the provider class.
+ *
+ * @since 1.5.0
+ */
+function wpforms_form_abandonment_load() {
+
+	// Load translated strings.
+	load_plugin_textdomain( 'wpforms-form-abandonment', false, dirname( plugin_basename( WPFORMS_FORM_ABANDONMENT_FILE ) ) . '/languages/' );
+
+	// Check requirements.
+	if ( ! wpforms_form_abandonment_required() ) {
+		return;
+	}
+
+	// Load the plugin.
+	wpforms_form_abandonment();
+}
+
+add_action( 'plugins_loaded', 'wpforms_form_abandonment_load' );
+
+/**
+ * Check addon requirements.
+ *
+ * @since 1.5.0
+ */
+function wpforms_form_abandonment_required() {
+
+	if ( version_compare( PHP_VERSION, '5.5', '<' ) ) {
+		add_action( 'admin_init', 'wpforms_form_abandonment_deactivate' );
+		add_action( 'admin_notices', 'wpforms_form_abandonment_fail_php_version' );
+
+		return false;
+	}
+
+	if ( ! function_exists( 'wpforms' ) || ! wpforms()->pro ) {
+		return false;
+	}
+
+	if ( version_compare( wpforms()->version, '1.6.6', '<' ) ) {
+		add_action( 'admin_init', 'wpforms_form_abandonment_deactivate' );
+		add_action( 'admin_notices', 'wpforms_form_abandonment_fail_wpforms_version' );
+
+		return false;
+	}
+
+	if ( ! function_exists( 'wpforms_get_license_type' ) || ! in_array( wpforms_get_license_type(), [ 'pro', 'elite', 'agency', 'ultimate' ], true ) ) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Deactivate the plugin.
+ *
+ * @since 1.5.0
+ */
+function wpforms_form_abandonment_deactivate() {
+
+	deactivate_plugins( plugin_basename( WPFORMS_FORM_ABANDONMENT_FILE ) );
+}
+
+/**
+ * Admin notice for minimum PHP version.
+ *
+ * @since 1.5.0
+ */
+function wpforms_form_abandonment_fail_php_version() {
+
+	echo '<div class="notice notice-error"><p>';
+	printf(
+		wp_kses( /* translators: %s - WPForms.com documentation page URL. */
+			__( 'The WPForms Form Abandonment plugin is not accepting payments anymore because your site is running an outdated version of PHP that is no longer supported and is not compatible with the plugin. <a href="%s" target="_blank" rel="noopener noreferrer">Read more</a> for additional information.', 'wpforms-form-abandonment' ),
+			[
+				'a' => [
+					'href'   => [],
+					'rel'    => [],
+					'target' => [],
+				],
+			]
+		),
+		'https://wpforms.com/docs/supported-php-version/'
+	);
+
+	echo '</p></div>';
+
+	if ( isset( $_GET['activate'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		unset( $_GET['activate'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	}
+}
+
+/**
+ * Admin notice for minimum WPForms version.
+ *
+ * @since 1.5.0
+ */
+function wpforms_form_abandonment_fail_wpforms_version() {
+
+	echo '<div class="notice notice-error"><p>';
+	esc_html_e( 'The WPForms Form Abandonment plugin has been deactivated, because it requires WPForms v1.6.6 or later to work.', 'wpforms-form-abandonment' );
+	echo '</p></div>';
+
+	if ( isset( $_GET['activate'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		unset( $_GET['activate'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	}
+
+}
 
 /**
  * Load the main class.
@@ -40,17 +152,8 @@ define( 'WPFORMS_FORM_ABANDONMENT_VERSION', '1.4.4' );
  */
 function wpforms_form_abandonment() {
 
-	// WPForms Pro is required.
-	if ( ! wpforms()->pro ) {
-		return;
-	}
-
-	load_plugin_textdomain( 'wpforms-form-abandonment', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-
-	require_once plugin_dir_path( __FILE__ ) . 'class-form-abandonment.php';
+	require_once WPFORMS_FORM_ABANDONMENT_PATH . 'class-form-abandonment.php';
 }
-
-add_action( 'wpforms_loaded', 'wpforms_form_abandonment' );
 
 /**
  * Load the plugin updater.
@@ -62,15 +165,15 @@ add_action( 'wpforms_loaded', 'wpforms_form_abandonment' );
 function wpforms_form_abandonment_updater( $key ) {
 
 	new WPForms_Updater(
-		array(
+		[
 			'plugin_name' => 'WPForms Form Abandonment',
 			'plugin_slug' => 'wpforms-form-abandonment',
-			'plugin_path' => plugin_basename( __FILE__ ),
-			'plugin_url'  => trailingslashit( plugin_dir_url( __FILE__ ) ),
+			'plugin_path' => plugin_basename( WPFORMS_FORM_ABANDONMENT_FILE ),
+			'plugin_url'  => trailingslashit( WPFORMS_FORM_ABANDONMENT_URL ),
 			'remote_url'  => WPFORMS_UPDATER_API,
 			'version'     => WPFORMS_FORM_ABANDONMENT_VERSION,
 			'key'         => $key,
-		)
+		]
 	);
 }
 add_action( 'wpforms_updater', 'wpforms_form_abandonment_updater' );

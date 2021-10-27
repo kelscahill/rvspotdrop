@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html class="no-js" {{ site.language_attribute }}>
+  {% include "@templates/_head.twig" %}
+  <body class="body {{ body_class }}">
+    <a class="skip-link screen-reader-text visually-hidden" href="#content">Skip to content</a>
+    {% include "@organisms/global/header.twig" %}
+    {% block sections_before %}{% endblock %}
+    <div class="l-wrap" role="document">
+      <main class="l-main">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+    {% block sections_after %}{% endblock %}
+    {% include "@organisms/global/footer.twig" %}
+    {{ function('wp_footer') }}
+  </body>
+</html>

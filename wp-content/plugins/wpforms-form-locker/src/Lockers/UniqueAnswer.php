@@ -19,11 +19,12 @@ class UniqueAnswer {
 	public $form_data;
 
 	/**
-	 * UniqueAnswer constructor.
+	 * Init.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
-	public function __construct() {
+	public function init() {
+
 		$this->hooks();
 	}
 
@@ -34,16 +35,16 @@ class UniqueAnswer {
 	 */
 	public function hooks() {
 
-		\add_action( 'wpforms_frontend_js', array( $this, 'enqueue_frontend_scripts' ) );
+		add_action( 'wpforms_frontend_js', [ $this, 'enqueue_frontend_scripts' ] );
 
-		\add_filter( 'wpforms_settings_defaults', array( $this, 'register_settings_messages' ) );
-		\add_filter( 'wpforms_frontend_strings', array( $this, 'register_frontend_messages' ) );
-		\add_filter( 'wpforms_field_properties', array( $this, 'field_properties' ), 10, 2 );
+		add_filter( 'wpforms_settings_defaults', [ $this, 'register_settings_messages' ] );
+		add_filter( 'wpforms_frontend_strings', [ $this, 'register_frontend_messages' ] );
+		add_filter( 'wpforms_field_properties', [ $this, 'field_properties' ], 10, 2 );
 
-		\add_filter( 'wpforms_process_initial_errors', array( $this, 'submit_form' ), 10, 2 );
+		add_filter( 'wpforms_process_initial_errors', [ $this, 'submit_form' ], 10, 2 );
 
-		\add_action( 'wp_ajax_wpforms_form_locker_unique_answer', array( $this, 'is_unique_ajax' ) );
-		\add_action( 'wp_ajax_nopriv_wpforms_form_locker_unique_answer', array( $this, 'is_unique_ajax' ) );
+		add_action( 'wp_ajax_wpforms_form_locker_unique_answer', [ $this, 'is_unique_ajax' ] );
+		add_action( 'wp_ajax_nopriv_wpforms_form_locker_unique_answer', [ $this, 'is_unique_ajax' ] );
 	}
 
 	/**
@@ -54,6 +55,7 @@ class UniqueAnswer {
 	 * @param array $form_data Form information.
 	 */
 	protected function set_form_data( $form_data ) {
+
 		$this->form_data = $form_data;
 	}
 
@@ -61,26 +63,72 @@ class UniqueAnswer {
 	 * Enqueue frontend scripts.
 	 *
 	 * @since 1.0.0
+	 * @since 2.0.0 Added conditional check before the script will be enqueue.
+	 *
+	 * @param array $forms Forms on the current page.
 	 */
-	public function enqueue_frontend_scripts() {
+	public function enqueue_frontend_scripts( $forms ) {
 
-		$min = \wpforms_get_min_suffix();
+		$has_unique_answer = false;
 
-		\wp_enqueue_script(
+		foreach ( $forms as $form ) {
+			if ( $this->has_unique_answer( $form ) ) {
+				$has_unique_answer = true;
+
+				break;
+			}
+		}
+
+		if ( ! $has_unique_answer ) {
+			return;
+		}
+
+		$min = wpforms_get_min_suffix();
+
+		wp_enqueue_script(
 			'wpforms-form-locker',
-			\wpforms_form_locker()->url . "assets/js/wpforms-form-locker{$min}.js",
-			array( 'wpforms' ),
-			\WPFORMS_FORM_LOCKER_VERSION,
+			wpforms_form_locker()->url . "assets/js/wpforms-form-locker{$min}.js",
+			[ 'wpforms' ],
+			WPFORMS_FORM_LOCKER_VERSION,
 			true
 		);
 
-		\wp_localize_script(
+		wp_localize_script(
 			'wpforms-form-locker',
 			'wpforms_form_locker',
-			array(
-				'ajaxurl' => \admin_url( 'admin-ajax.php' ),
-			)
+			[
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			]
 		);
+	}
+
+	/**
+	 * Whether the provided form has a field, which support unique answer and it enabled.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param array $form Form data.
+	 *
+	 * @return bool
+	 */
+	protected function has_unique_answer( $form ) {
+
+		if ( empty( $form['fields'] ) ) {
+			return false;
+		}
+
+		foreach ( (array) $form['fields'] as $field ) {
+
+			if (
+				! empty( $field['type'] ) &&
+				in_array( $field['type'], self::get_unique_answer_field_types(), true ) &&
+				! empty( $field['unique_answer'] )
+			) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -148,7 +196,7 @@ class UniqueAnswer {
 	/**
 	 * Conditionally add properties to the Name field elements enabling jQuery Validate.
 	 *
-	 * @since {VERSION}
+	 * @since 2.0.0
 	 *
 	 * @param array $properties Field properties.
 	 * @param array $field      Field settings.

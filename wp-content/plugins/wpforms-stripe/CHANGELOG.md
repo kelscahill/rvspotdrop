@@ -1,6 +1,21 @@
 # Change Log
 All notable changes to this project will be documented in this file, formatted via [this recommendation](https://keepachangelog.com/).
 
+## [2.5.0] - 2021-03-31
+### Added
+- New "Switch Accounts" link in the addon settings to change the Stripe account used.
+- Filter to apply custom styles to a Credit Card field.
+- Email Notifications option to limit to completed payments only.
+
+### Changed
+- Full object is now logged instead of just a message in case of a Stripe error.
+- Upgrade Stripe PHP SDK to 7.72.0.
+
+### Fixed
+- Edge case when a subscription email is still being required despite changing the payment to single by conditional logic.
+- Invalid characters in 'font-family' added by external CSS rules may break the Credit Card field.
+- Stripe form with active Captcha fails to submit after Stripe 3DSecure validation.
+
 ## [2.4.3] - 2020-12-17
 ### Fixed
 - Stripe Live/Test modal appears when clicking on any checkbox in WPForms settings while using jQuery 3.0.

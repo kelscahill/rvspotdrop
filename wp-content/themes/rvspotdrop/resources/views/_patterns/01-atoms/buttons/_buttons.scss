@@ -4,27 +4,32 @@
 
 @mixin o-button {
   @include o-heading--xs;
-
+  font-weight: 600;
   display: inline-flex;
   position: relative;
   justify-content: center;
   align-items: center;
-  transition: $transition-all;
+  transition: all 0.5s ease;
   text-decoration: none;
-  border: 2px solid;
   border-radius: 40px;
   text-align: center;
-  line-height: 1;
-  white-space: nowrap;
+  line-height: 1.4;
   appearance: none;
   cursor: pointer;
   padding: $space-half $space;
   text-transform: uppercase;
   outline: 0;
+  border: 0;
 
   @include media('>medium') {
     padding: 15px $space-double;
     font-size: $font-size-s;
+  }
+
+  &:hover,
+  &:focus {
+    border: 0;
+    outline: 0;
   }
 }
 
@@ -34,19 +39,23 @@
 @mixin o-button--primary {
   color: $c-white;
   background: linear-gradient(-250deg, $c-secondary 50%, $c-primary 50%);
-  background-size: 200% 100%;
+  background-size: 250% 100%;
   background-position: right bottom;
-  border-color: $c-primary;
 
   &:hover,
   &:focus {
     color: $c-white;
-    border-color: $c-secondary;
     background-position: left bottom;
   }
 }
 
-.o-button--primary {
+.o-button,
+.o-button--primary,
+button,
+button[type="submit"],
+input[type="submit"],
+.o-form div.wpforms-container .wpforms-form button[type=submit],
+div.wpforms-container .wpforms-form button[type=submit] {
   @include o-button;
   @include o-button--primary;
 }
@@ -56,15 +65,13 @@
  */
 @mixin o-button--secondary {
   color: $c-white;
-  background: linear-gradient(to left, $c-secondary 50%, $c-primary 50%);
-  background-size: 200% 100%;
+  background: linear-gradient(-250deg, $c-primary 50%, $c-secondary 50%);
+  background-size: 250% 100%;
   background-position: right bottom;
-  border-color: $c-secondary;
 
   &:hover,
   &:focus {
     color: $c-white;
-    border-color: $c-primary;
     background-position: left bottom;
   }
 }
@@ -78,31 +85,27 @@ div.wpforms-container .wpforms-form .wpforms-page-button,
 /**
  * Button Tertiary
  */
-@mixin o-button--teritary {
+@mixin o-button--tertiary {
   color: $c-primary;
-  background: linear-gradient(to left, transparent 50%, $c-primary 50%);
-  background-size: 200% 100%;
+  background: linear-gradient(-250deg, $c-primary 50%, transparent 50%);
+  background-size: 250% 100%;
   background-position: right bottom;
+  border: 2px solid $c-primary;
 
   &:hover,
   &:focus {
     color: $c-white;
-    border-color: $c-primary;
     background-position: left bottom;
+    border: 2px solid $c-primary;
+  }
+
+  &.is-disabled {
+    border-color: $c-gray--light;
+    color: $c-gray--light;
+    pointer-events: none;
   }
 }
 
-.o-button--teritary {
-  @include o-button;
-  @include o-button--teritary;
-}
-
-
-button,
-input[type="submit"],
-.o-button,
-.o-form div.wpforms-container .wpforms-form button[type=submit],
-div.wpforms-container .wpforms-form button[type=submit] {
-  @include o-button;
-  @include o-button--primary;
+.o-button--tertiary {
+  @include o-button--tertiary;
 }

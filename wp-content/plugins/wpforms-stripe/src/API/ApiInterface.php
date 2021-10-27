@@ -120,4 +120,13 @@ interface ApiInterface {
 	 * @return string
 	 */
 	public function get_error();
+
+	/**
+	 * Get API exception.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @return \Exception
+	 */
+	public function get_exception();
 }

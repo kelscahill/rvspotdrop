@@ -31,5 +31,5 @@ return array(
     'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
     'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
     'App\\' => array($baseDir . '/app'),
-    '' => array($vendorDir . '/asm89/twig-cache-extension/lib'),
+    '' => array($vendorDir . '/twig/cache-extension/lib'),
 );

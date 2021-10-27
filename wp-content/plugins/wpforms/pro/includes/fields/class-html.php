@@ -18,7 +18,7 @@ class WPForms_Field_HTML extends WPForms_Field {
 		$this->name  = esc_html__( 'HTML', 'wpforms' );
 		$this->type  = 'html';
 		$this->icon  = 'fa-code';
-		$this->order = 170;
+		$this->order = 180;
 		$this->group = 'fancy';
 
 		// Define additional field properties.
@@ -177,18 +177,20 @@ class WPForms_Field_HTML extends WPForms_Field {
 		 */
 
 		// Options open markup.
-		$args = array(
+		$args = [
 			'markup' => 'open',
-		);
+		];
+
 		$this->field_option( 'advanced-options', $field, $args );
 
 		// Custom CSS classes.
 		$this->field_option( 'css', $field );
 
 		// Options close markup.
-		$args = array(
+		$args = [
 			'markup' => 'close',
-		);
+		];
+
 		$this->field_option( 'advanced-options', $field, $args );
 	}
 
