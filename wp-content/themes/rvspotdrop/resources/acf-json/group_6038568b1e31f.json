@@ -442,6 +442,25 @@
             "save_custom": 0
         },
         {
+            "key": "field_617b448941792",
+            "label": "Other Park Features",
+            "name": "other_park_features",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
             "key": "field_60385d74c29f0",
             "label": "RV Spot Type",
             "name": "rv_spot_type",
@@ -683,5 +702,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1615424305
+    "modified": 1635468447
 }

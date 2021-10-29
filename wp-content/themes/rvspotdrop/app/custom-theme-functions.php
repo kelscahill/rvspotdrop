@@ -160,67 +160,6 @@ function only_allow_5($valid, $value, $field, $input) {
 add_filter('acf/validate_value/name=locations_of_interest', 'only_allow_5', 20, 4);
 
 /**
- * Limit the number of form entries per month for form_id 836.
- */
-function max_form_limit_block_message() {
-  // Set the default timezone.
-  date_default_timezone_set("America/Edmonton");
-  $this_month = date('Y-m-d H:i:s', strtotime('this month'));
-
-  $entries_count = wpforms()->entry->get_entries(
-    array(
-      'form_id' => '836',
-      'user_id' => get_current_user_id(),
-      'date' => $this_month
-    ), true
-  );
-  $result = absint( 2 - $entries_count );
-
-  // Display results container.
-  if ($result == 0) {
-    echo '<a role="button" class="o-button o-button--tertiary c-card__button u-space--half--bottom is-disabled" href="/campground-request/"><span>Make a Request</span></a>';
-    echo '<p class="o-small"><em>You have ' . esc_html( date('t') - date('j')) . ' days till you can submit your next request.</em>';
-  } elseif ($result == 1) {
-    echo '<a role="button" class="o-button o-button--tertiary c-card__button u-space--half--bottom" href="/campground-request/"><span>Make a Request</span></a>';
-    echo '<p><em>You have ' . esc_html( $result ) . ' request left for the month of '.date('F', strtotime('this month')).'.</em></p>';
-  } else {
-    echo '<a role="button" class="o-button o-button--tertiary c-card__button u-space--half--bottom" href="/campground-request/"><span>Make a Request</span></a>';
-    echo '<p><em>You have ' . esc_html( $result ) . ' requests left for the month of '.date('F', strtotime('this month')).'.</em></p>';
-  }
-}
-
-function max_form_limit_message($form_data) {
-  // Only display on form 836.
-  if ( absint( $form_data['id'] ) !== 836 ) {
-    return;
-  }
-
-  // Set the default timezone.
-  date_default_timezone_set("America/Edmonton");
-  $this_month = date('Y-m-d H:i:s', strtotime('this month'));
-
-  $entries_count = wpforms()->entry->get_entries(
-    array(
-      'form_id' => '836',
-      'user_id' => get_current_user_id(),
-      'date' => $this_month
-    ), true
-  );
-  $result = absint( 2 - $entries_count );
-
-  // Display results container.
-  if ($result == 0) {
-    echo '<div class="o-limit-reached">Sorry, you\'ve hit the maximum number of 2 requests for the month. You will be able to submit 2 more requests next month. Please check back on the 1st! If you have any questions, please reach out to <a href="mailto:hello@rvspotdrop.com">hello@rvspotdrop.com</a>.</div>';
-  } elseif ($result == 1) {
-    echo '<em>You have ' . esc_html( $result ) . ' request left for the month of '.date('F', strtotime('this month')).'.</em>';
-  } else {
-    echo '<em>You have ' . esc_html( $result ) . ' requests left for the month of '.date('F', strtotime('this month')).'.</em>';
-  }
-}
-
-add_action( 'wpforms_frontend_output', 'max_form_limit_message', 7 );
-
-/**
  * Send an email when a user updates their profile.
  */
 // function user_profile_update( $user_id ) {
@@ -253,7 +192,7 @@ add_action( 'wpforms_frontend_output', 'max_form_limit_message', 7 );
  *
  * @return string
  */
-
+add_shortcode('wpforms_entries_table', 'wpf_entries_table');
 function wpf_entries_table($atts) {
   // Pull ID shortcode attributes.
   $atts = shortcode_atts([
@@ -363,4 +302,129 @@ function wpf_entries_table($atts) {
   $output = ob_get_clean();
   return $output;
 }
-add_shortcode('wpforms_entries_table', 'wpf_entries_table');
+
+/**
+ * Updated user post meta on form submit.
+ */
+add_action( 'template_redirect', 'update_user_profile' );
+function update_user_profile() {
+  global $current_user;
+  if (isset($_POST['user_avatar'])) {
+    update_user_meta($current_user->ID, 'user_avatar', $_POST['user_avatar']);
+  }
+  if (isset($_POST['first_name'])) {
+    update_user_meta( $current_user->ID, 'first_name', $_POST['first_name']);
+  }
+  if (isset($_POST['last_name'])) {
+    update_user_meta( $current_user->ID, 'last_name', $_POST['last_name']);
+  }
+  if (isset($_POST['user_email'])) {
+    update_user_meta( $current_user->ID, 'user_email', $_POST['user_email']);
+  }
+  if (isset($_POST['phone'])) {
+    update_user_meta( $current_user->ID, 'phone', $_POST['phone']);
+  }
+  if (isset($_POST['gender'])) {
+    update_user_meta( $current_user->ID, 'gender', $_POST['gender']);
+  }
+  if (isset($_POST['birthday'])) {
+    update_user_meta( $current_user->ID, 'birthday', $_POST['birthday']);
+  }
+  if (isset($_POST['equipment_type'])) {
+    update_user_meta( $current_user->ID, 'equipment_type', $_POST['equipment_type']);
+  }
+  if (isset($_POST['equipment_year'])) {
+    update_user_meta( $current_user->ID, 'equipment_year', $_POST['equipment_year']);
+  }
+  if (isset($_POST['equipment_length'])) {
+    update_user_meta( $current_user->ID, 'equipment_length', $_POST['equipment_length']);
+  }
+  if (isset($_POST['rv_slide_outs'])) {
+    update_user_meta( $current_user->ID, 'rv_slide_outs', $_POST['rv_slide_outs']);
+  }
+  if (isset($_POST['service_requirements'])) {
+    update_user_meta( $current_user->ID, 'service_requirements', $_POST['service_requirements']);
+  }
+  if (isset($_POST['important_features'])) {
+    update_user_meta( $current_user->ID, 'important_features', $_POST['important_features']);
+  }
+  // Partner Signup Fields
+  if (isset($_POST['position_title'])) {
+    update_user_meta( $current_user->ID, 'position_title', $_POST['position_title']);
+  }
+  if (isset($_POST['rv_park_name'])) {
+    update_user_meta( $current_user->ID, 'rv_park_name', $_POST['rv_park_name']);
+  }
+  if (isset($_POST['rv_park_address'])) {
+    update_user_meta( $current_user->ID, 'rv_park_address', $_POST['rv_park_address']);
+  }
+  if (isset($_POST['rv_park_website'])) {
+    update_user_meta( $current_user->ID, 'rv_park_website', $_POST['rv_park_website']);
+  }
+  if (isset($_POST['rv_park_facebook_url'])) {
+    update_user_meta( $current_user->ID, 'rv_park_facebook_url', $_POST['rv_park_facebook_url']);
+  }
+  if (isset($_POST['rv_park_instagram_handle'])) {
+    update_user_meta( $current_user->ID, 'rv_park_instagram_handle', $_POST['rv_park_instagram_handle']);
+  }
+  if (isset($_POST['rv_park_description'])) {
+    update_user_meta( $current_user->ID, 'rv_park_description', $_POST['rv_park_description']);
+  }
+  if (isset($_POST['long_term_stays'])) {
+    update_user_meta( $current_user->ID, 'long_term_stays', $_POST['long_term_stays']);
+  }
+  if (isset($_POST['nightly_rate'])) {
+    update_user_meta( $current_user->ID, 'nightly_rate', $_POST['nightly_rate']);
+  }
+  if (isset($_POST['direct_booking_link'])) {
+    update_user_meta( $current_user->ID, 'direct_booking_link', $_POST['direct_booking_link']);
+  }
+  if (isset($_POST['available_services'])) {
+    update_user_meta( $current_user->ID, 'available_services', $_POST['available_services']);
+  }
+  if (isset($_POST['rig_types_welcome'])) {
+    update_user_meta( $current_user->ID, 'rig_types_welcome', $_POST['rig_types_welcome']);
+  }
+  if (isset($_POST['rig_age_limit'])) {
+    update_user_meta( $current_user->ID, 'rig_age_limit', $_POST['rig_age_limit']);
+  }
+  if (isset($_POST['age_limit'])) {
+    update_user_meta( $current_user->ID, 'age_limit', $_POST['age_limit']);
+  }
+  if (isset($_POST['maximum_rig_length'])) {
+    update_user_meta( $current_user->ID, 'maximum_rig_length', $_POST['maximum_rig_length']);
+  }
+  if (isset($_POST['park_features'])) {
+    update_user_meta( $current_user->ID, 'park_features', $_POST['park_features']);
+  }
+  if (isset($_POST['other_park_features'])) {
+    update_user_meta( $current_user->ID, 'other_park_features', $_POST['other_park_features']);
+  }
+  if (isset($_POST['rv_spot_type'])) {
+    update_user_meta( $current_user->ID, 'rv_spot_type', $_POST['rv_spot_type']);
+  }
+  if (isset($_POST['rv_full_time_spots'])) {
+    update_user_meta( $current_user->ID, 'rv_full_time_spots', $_POST['rv_full_time_spots']);
+  }
+  if (isset($_POST['rv_park_pet_friendly'])) {
+    update_user_meta( $current_user->ID, 'rv_park_pet_friendly', $_POST['rv_park_pet_friendly']);
+  }
+  if (isset($_POST['rv_park_pet_restrictions'])) {
+    update_user_meta( $current_user->ID, 'rv_park_pet_restrictions', $_POST['rv_park_pet_restrictions']);
+  }
+  if (isset($_POST['rv_park_pet_restriction_details'])) {
+    update_user_meta( $current_user->ID, 'rv_park_pet_restriction_details', $_POST['rv_park_pet_restriction_details']);
+  }
+  if (isset($_POST['rv_park_family_friendly'])) {
+    update_user_meta( $current_user->ID, 'rv_park_family_friendly', $_POST['rv_park_family_friendly']);
+  }
+  if (isset($_POST['guest_age_restrictions'])) {
+    update_user_meta( $current_user->ID, 'guest_age_restrictions', $_POST['guest_age_restrictions']);
+  }
+  if (isset($_POST['age_restrictions'])) {
+    update_user_meta( $current_user->ID, 'age_restrictions', $_POST['age_restrictions']);
+  }
+  if (isset($_POST['other_details'])) {
+    update_user_meta( $current_user->ID, 'other_details', $_POST['other_details']);
+  }
+}

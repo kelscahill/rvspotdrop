@@ -5,8 +5,8 @@
     {% include "@atoms/images/image/figure.twig" with {
       "figure": {
         "image": {
-          "src": user.avatar({size: 100}),
-          "alt": user.name,
+          "src": user.avatar ? user.avatar|resize(100,100) : user.rv_park_profile_image|resize(100,100),
+          "alt": user.first_name ~ ' ' ~ user.last_name,
           "extra": bem_classes(base_class, 'image')
         },
         "link": {
@@ -21,7 +21,7 @@
         "level": "4",
         "size": "s",
         "type": "primary",
-        "text": user.name,
+        "text": user.first_name ~ ' ' ~ user.last_name,
         "link": {
           "url": "/profile",
         },

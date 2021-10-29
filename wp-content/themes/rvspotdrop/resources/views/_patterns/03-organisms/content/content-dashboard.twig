@@ -16,8 +16,21 @@
         "dashboard_cards": dashboard_cards
       } %}
     {% elseif post.slug == 'profile' %}
-      {% filter shortcodes %}[wpforms id="1628"]{% endfilter %}
+      {% if user.roles.member %}
+        {% include "@molecules/forms/form-member-signup.twig" %}
+      {% endif %}
+      {% if user.roles.partner %}
+        {% include "@molecules/forms/form-partner-signup.twig" %}
+      {% endif %}
     {% elseif post.slug == 'subscription' %}
+      Coming soon.
+    {% elseif post.slug == 'campground-request' %}
+      {% if campground_request_entries == 0 %}
+        <div class="o-limit-reached u-color--primary">Sorry, you've hit the maximum number of 2 requests for the month. You will be able to submit 2 more requests next month. Please check back on the 1st! If you have any questions, please reach out to <a href="mailto:hello@rvspotdrop.com">hello@rvspotdrop.com</a>.</div>
+      {% else %}
+        <p><em class="u-color--primary">You have {{ campground_request_entries }} request{{ campground_request_entries > 1 ? 's' }} left for the month of {{ now|date('F') }}.</em></p>
+        {% filter shortcodes %}[wpforms id="836"]{% endfilter %}
+      {% endif %}
     {% elseif post.slug == 'past-campground-requests' %}
       {% filter shortcodes %}[wpforms_entries_table id="836" user="current"]{% endfilter %}
     {% elseif post.slug == 'past-campground-availability' %}

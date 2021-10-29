@@ -25,8 +25,22 @@
 $context = Timber::get_context();
 $post = new TimberPost();
 $context['user_logged_in'] = is_user_logged_in();
+$context['current_user'] = get_current_user_id();
 $context['post'] = $post;
 $context['posts'] = false;
+
+// Set the default timezone.
+date_default_timezone_set("America/Edmonton");
+$this_month = date('Y-m-d H:i:s', strtotime('this month'));
+$entries_count = wpforms()->entry->get_entries(
+  array(
+    'form_id' => '836',
+    'user_id' => get_current_user_id(),
+    'date' => $this_month
+  ), true
+);
+$context['campground_request_entries'] = absint( 2 - $entries_count );
+
 Timber::render(array(
   '05-pages/template-dashboard.twig'
 ), $context);
