@@ -2,6 +2,14 @@
     $HELPER/TRUMP CLASSES
 \* ------------------------------------ */
 
+.u-hide-wpadminbar {
+  margin-top: 0 !important;
+
+  #wpadminbar {
+    display: none;
+  }
+}
+
 @for $i from 1 to 10 {
   .u-animation__delay *:nth-child(#{$i}) {
     animation-delay: $i * 0.25s + 0.5s;

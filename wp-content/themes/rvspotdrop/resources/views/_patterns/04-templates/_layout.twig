@@ -1,5 +1,9 @@
+{% if user_logged_in and (user.roles == 'member' or user.roles == 'partner') %}
+  {% set html_extra_class = ' u-hide-wpadminbar' %}
+{% endif %}
+
 <!DOCTYPE html>
-<html class="no-js" {{ site.language_attribute }}>
+<html class="no-js{{ html_extra_class }}" {{ site.language_attribute }}>
   {% include "@templates/_head.twig" %}
   <body class="body {{ body_class }}">
     <a class="skip-link screen-reader-text visually-hidden" href="#content">Skip to content</a>

@@ -309,9 +309,6 @@ function wpf_entries_table($atts) {
 add_action( 'template_redirect', 'update_user_profile' );
 function update_user_profile() {
   global $current_user;
-  if (isset($_POST['user_avatar'])) {
-    update_user_meta($current_user->ID, 'user_avatar', $_POST['user_avatar']);
-  }
   if (isset($_POST['first_name'])) {
     update_user_meta( $current_user->ID, 'first_name', $_POST['first_name']);
   }
@@ -428,3 +425,87 @@ function update_user_profile() {
     update_user_meta( $current_user->ID, 'other_details', $_POST['other_details']);
   }
 }
+
+/**
+ * Redirect wp-login.php to Login page.
+ */
+add_action('init', 'prevent_wp_login');
+function prevent_wp_login() {
+  global $pagenow;
+  $action = (isset($_GET['action'])) ? $_GET['action'] : '';
+  if ( $pagenow == 'wp-login.php' && ( ! $action || ( $action && ! in_array($action, array('logout', 'lostpassword', 'rp', 'resetpass'))))) {
+    $page = '/login';
+    wp_redirect($page);
+    exit();
+  }
+}
+
+/**
+ * Display table of payment transaction details from Authorize.net/Stripe/PayPal shortcode.
+ *
+ * @link https://wpforms.com/developers/how-to-display-table-of-payment-transaction-details/
+ *
+ */
+function wpf_dev_transactions_table( $atts ) {
+  $atts = shortcode_atts( array(
+    'fields' => false,
+    'id'     => '',
+  ), $atts, 'wpf_transactions' );
+  if (
+    ! is_super_admin() ||
+    empty( $atts['id'] )
+  ) {
+    return;
+  }
+  $form_data = wpforms()->form->get(
+    $atts['id'],
+    array( 'content_only' => true )
+  );
+  $payments = wpforms_has_payment( 'form', $form_data );
+  if ( ! $payments ) {
+    return;
+  }
+  $entries = wpforms()->entry->get_entries(
+    array(
+      'form_id' => $atts['id'],
+    )
+  );
+  if ( empty( $entries ) ) {
+    return;
+  }
+  if ( $atts['fields'] ) {
+    $ids = explode( ',', $atts['fields'] );
+  } else {
+    $ids = false;
+  }
+  ob_start();
+  echo '<table width="100%" style="font-size:11px !important;">';
+  foreach ( $entries as $entry ) {
+    if ( 'payment' !== $entry->type ) {
+      continue;
+    }
+    $fields = json_decode( $entry->fields, true );
+    $meta   = json_decode( $entry->meta, true );
+    echo '<tr>';
+      if ( ! empty( $ids ) ) {
+        foreach ( $ids as $id ) {
+          echo '<td>' . sanitize_text_field( $fields[ $id] [ 'value' ] ) . '</td>';
+        }
+      }
+      echo '<td><a href="' . admin_url( 'admin.php?page=wpforms-entries&view=details&entry_id=' . $entry->entry_id ) . '">' . sanitize_text_field( $meta['payment_total'] ) . '</a></td>';
+      echo '<td>' . sanitize_text_field( ucfirst( $entry->status ) ) . '</td>';
+      echo '<td>' . sanitize_text_field( $meta['payment_transaction'] ) . '</td>';
+      if ( 'stripe' === $meta['payment_type'] ) {
+        echo '<td>Stripe</td>';
+      } elseif ( 'paypal_standard' === $meta['payment_type'] ) {
+        echo '<td>PayPal</td>';
+      } elseif ( 'authorize_net' === $meta['payment_type'] ) {
+        echo '<td>Authorize.net</td>';
+      }
+      echo '<td>' . sanitize_text_field( $entry->date ) . '</td>';
+    echo '</tr>';
+  }
+  echo '</table>';
+  return ob_get_clean();
+}
+add_shortcode( 'wpforms_transactions', 'wpf_dev_transactions_table' );

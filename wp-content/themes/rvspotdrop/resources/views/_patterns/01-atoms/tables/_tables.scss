@@ -130,7 +130,9 @@ tfoot th {
 
     &::before {
       content: attr(data-label);
-      @include o-heading--xs;
+      font-size: $font-size-s;
+      font-weight: bold;
+      color: black;
       text-align: left;
       margin-right: $space;
     }

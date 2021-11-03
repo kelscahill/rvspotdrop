@@ -58,7 +58,8 @@
   &__details {
     opacity: 0;
     visibility: hidden;
-    transition: $transition-all;
+    white-space: nowrap;
+    transition: all 0.125s ease;
 
     @include media('>medium') {
       opacity: 1;

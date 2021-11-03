@@ -11,7 +11,11 @@
 
   &__sticky {
     position: sticky;
-    top: $space;
+    top: $space-half;
+
+    @include media('>medium') {
+      top: 50px;
+    }
   }
 
   &__toggle {

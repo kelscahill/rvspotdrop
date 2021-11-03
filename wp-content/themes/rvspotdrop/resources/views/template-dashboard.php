@@ -25,7 +25,6 @@
 $context = Timber::get_context();
 $post = new TimberPost();
 $context['user_logged_in'] = is_user_logged_in();
-$context['current_user'] = get_current_user_id();
 $context['post'] = $post;
 $context['posts'] = false;
 

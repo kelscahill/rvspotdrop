@@ -329,6 +329,7 @@ body.menu-is-active {
 
   @include media('>medium') {
     left: $space;
+    margin-bottom: 100px;
   }
 
   &::before {
