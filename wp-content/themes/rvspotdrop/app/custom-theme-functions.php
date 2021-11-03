@@ -447,63 +447,69 @@ function prevent_wp_login() {
  *
  */
 function wpf_dev_transactions_table( $atts ) {
-  $atts = shortcode_atts( array(
-    'fields' => false,
-    'id'     => '',
-  ), $atts, 'wpf_transactions' );
-  if (
-    ! is_super_admin() ||
-    empty( $atts['id'] )
-  ) {
+  $atts = shortcode_atts([
+    'id' => '',
+    'user' => '',
+    'fields' => '',
+   ], $atts);
+  if (empty($atts['id']) || !function_exists('wpforms')) {
     return;
   }
+  $entries_args = ['form_id' => absint($atts['id']), ];
   $form_data = wpforms()->form->get(
-    $atts['id'],
+    absint($atts['id']),
     array( 'content_only' => true )
   );
   $payments = wpforms_has_payment( 'form', $form_data );
   if ( ! $payments ) {
     return;
   }
-  $entries = wpforms()->entry->get_entries(
-    array(
-      'form_id' => $atts['id'],
-    )
-  );
-  if ( empty( $entries ) ) {
-    return;
+  $entries = wpforms()->entry->get_entries($entries_args);
+  if (empty($entries)) {
+    return '<p>No subscriptions found.</p>';
   }
   if ( $atts['fields'] ) {
     $ids = explode( ',', $atts['fields'] );
   } else {
     $ids = false;
   }
+
+  $fields = '';
+  foreach ( $entries as $entry ) {
+    $fields = json_decode( $entry->fields, true );
+    $field_id = '';
+    foreach ( $ids as $id ) {
+      $field_id = $id;
+    }
+  }
+
   ob_start();
-  echo '<table width="100%" style="font-size:11px !important;">';
+  echo '<table class="o-table--responsive">';
   foreach ( $entries as $entry ) {
     if ( 'payment' !== $entry->type ) {
       continue;
     }
     $fields = json_decode( $entry->fields, true );
     $meta   = json_decode( $entry->meta, true );
-    echo '<tr>';
-      if ( ! empty( $ids ) ) {
-        foreach ( $ids as $id ) {
-          echo '<td>' . sanitize_text_field( $fields[ $id] [ 'value' ] ) . '</td>';
+    $current_user_email = get_userdata(get_current_user_id())->user_email;
+    if (sanitize_text_field( $fields[$field_id] [ 'value' ] ) === $current_user_email) {
+        echo '<tr class="this-is-active">';
+        echo '<td data-label="Subscription" class="js-toggle-parent">' . date("F j, Y",strtotime($entry->date)) . '</td>';
+        echo '<td data-label="Total">$' . sanitize_text_field( $meta['payment_total'] ) . '/yr</td>';
+        echo '<td data-label="Status">' . sanitize_text_field( ucfirst( $entry->status ) ) . '</td>';
+        if ( 'stripe' === $meta['payment_type'] ) {
+          echo '<td data-label="Payment Type">Stripe</td>';
+        } elseif ( 'paypal_standard' === $meta['payment_type'] ) {
+          echo '<td data-label="Payment Type">PayPal</td>';
+        } elseif ( 'authorize_net' === $meta['payment_type'] ) {
+          echo '<td data-label="Payment Type">Authorize.net</td>';
         }
-      }
-      echo '<td><a href="' . admin_url( 'admin.php?page=wpforms-entries&view=details&entry_id=' . $entry->entry_id ) . '">' . sanitize_text_field( $meta['payment_total'] ) . '</a></td>';
-      echo '<td>' . sanitize_text_field( ucfirst( $entry->status ) ) . '</td>';
-      echo '<td>' . sanitize_text_field( $meta['payment_transaction'] ) . '</td>';
-      if ( 'stripe' === $meta['payment_type'] ) {
-        echo '<td>Stripe</td>';
-      } elseif ( 'paypal_standard' === $meta['payment_type'] ) {
-        echo '<td>PayPal</td>';
-      } elseif ( 'authorize_net' === $meta['payment_type'] ) {
-        echo '<td>Authorize.net</td>';
-      }
-      echo '<td>' . sanitize_text_field( $entry->date ) . '</td>';
-    echo '</tr>';
+        echo '<td data-label="Transaction ID">' . sanitize_text_field( $meta['payment_transaction'] ) . '</td>';
+        echo '<td data-label="Subscription ID">' . sanitize_text_field( $meta['payment_subscription'] ) . '</td>';
+        echo '<td data-label="Customer ID">' . sanitize_text_field( $meta['payment_customer'] ) . '</td>';
+        echo '<td data-label=""><a href="mailto:hello@rvspotdrop.com?subject='.$current_user_email.' would like to cancel their RVSpotDrop Subscription ('.sanitize_text_field( $meta['payment_transaction'] ).').&body=Transaction ID: '.sanitize_text_field( $meta['payment_transaction'] ).'">Cancel Subscription</a></td>';
+      echo '</tr>';
+    }
   }
   echo '</table>';
   return ob_get_clean();

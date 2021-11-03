@@ -25,7 +25,7 @@
         {% include "@molecules/forms/form-partner-signup.twig" %}
       {% endif %}
     {% elseif post.slug == 'subscription' %}
-      {% filter shortcodes %}[wpforms_transactions id="1628"]{% endfilter %}
+      {% filter shortcodes %}[wpforms_transactions id="1628" fields="3"]{% endfilter %}
     {% elseif post.slug == 'campground-request' %}
       {% if campground_request_entries == 0 %}
         <div class="o-limit-reached u-color--primary">Sorry, you've hit the maximum number of 2 requests for the month. You will be able to submit 2 more requests next month. Please check back on the 1st! If you have any questions, please reach out to <a href="mailto:hello@rvspotdrop.com">hello@rvspotdrop.com</a>.</div>

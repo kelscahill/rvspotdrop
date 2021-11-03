@@ -40,6 +40,13 @@ $entries_count = wpforms()->entry->get_entries(
 );
 $context['campground_request_entries'] = absint( 2 - $entries_count );
 
+$entries_subscriptions = wpforms()->entry->get_entries(
+  array(
+    'form_id' => '1628',
+  ), true
+);
+$context['subscriptions'] = $entries_subscriptions;
+
 Timber::render(array(
   '05-pages/template-dashboard.twig'
 ), $context);

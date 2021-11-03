@@ -1,4 +1,4 @@
-{% if user_logged_in and (user.roles == 'member' or user.roles == 'partner') %}
+{% if user_logged_in and ("member" in user.roles|keys or "partner" in user.roles|keys) %}
   {% set html_extra_class = ' u-hide-wpadminbar' %}
 {% endif %}
 
