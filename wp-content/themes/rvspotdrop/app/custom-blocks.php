@@ -11,6 +11,22 @@
  * Register custom block types.
  */
 function register_custom_block_types() {
+  // Register a badges block.
+  acf_register_block_type(
+    array(
+      'name'            => 'badges',
+      'title'           => 'Badges',
+      'description'     => 'A custom badges block.',
+      'category'        => 'custom',
+      'icon'            => 'embed-photo',
+      'keywords'        => array( 'badges'),
+      'render_template' => 'blocks/badges.php',
+      'mode'            => 'edit',
+      'supports'        => array(
+        'mode' => false,
+      ),
+    )
+  );
   // Register a banner block.
   acf_register_block_type(
     array(
