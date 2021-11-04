@@ -96,11 +96,12 @@
       background: none;
       border: 0;
       position: relative;
-      right: -$space;
+      right: -$space-half;
       padding: $space;
 
       @include media(">xlarge") {
         display: none;
+        right: -$space;
       }
     }
   }

@@ -10,8 +10,8 @@
     ]
   },
   "publicPath": "/wp-content/themes/rvspotdrop",
-  "devUrl": "https://rvspotdrop.test",
-  "proxyUrl": "https://localhost:5500",
+  "devUrl": "http://rvspotdrop-pantheon.test",
+  "proxyUrl": "http://localhost:3000",
   "cacheBusting": "[name]_[hash:8]",
   "watch": [
     "app/**/*.php",

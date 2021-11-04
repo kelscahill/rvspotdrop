@@ -252,10 +252,10 @@ Router.prototype.loadEvents = function loadEvents () {
     // Copy link on button click.
     $('.js-copy-link').click(function(e) {
       e.preventDefault();
-      var $temp = $("<input>");
-      var $url = $(this).parent().parent().find('.is-vishidden');
+      var $temp = $("<textarea>");
+      var $code = $(this).parent().parent().find('code').html();
       $("body").append($temp);
-      $temp.val($url).select();
+      $temp.val($code).select();
       document.execCommand("copy");
       $temp.remove();
       $(this).text('Embed Copied!');

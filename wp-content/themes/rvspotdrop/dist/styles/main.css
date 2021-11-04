@@ -5907,19 +5907,39 @@ div.wpforms-container-full .wpforms-form .wpforms-field-label {
           justify-content: space-between;
 }
 
-.c-card--dark {
+.c-card-badge {
+  background-color: white;
+  border-radius: 30px;
+  -webkit-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+          box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.c-card-badge--dark {
   background-color: #333;
 }
 
-.c-card--dark .c-card__footer {
-  border-color: #fff;
-}
-
-.c-card--dark .c-card__footer a {
+.c-card-badge--dark .c-card-badge__footer a,
+.c-card-badge--dark .c-card-badge__footer .o-link {
   color: #fff;
 }
 
-.c-card__footer {
+.c-card-badge--dark .c-card-badge__footer a svg path,
+.c-card-badge--dark .c-card-badge__footer .o-link svg path {
+  fill: currentColor;
+}
+
+.c-card-badge__footer {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -5937,18 +5957,21 @@ div.wpforms-container-full .wpforms-form .wpforms-field-label {
   border-top: 1px solid #adadad;
 }
 
-.c-card__footer a {
+.c-card-badge__footer a,
+.c-card-badge__footer .o-link {
   color: #000;
   line-height: 1;
   font-size: 14px;
 }
 
-.c-card__footer a:hover,
-.c-card__footer a:focus {
+.c-card-badge__footer a:hover,
+.c-card-badge__footer a:focus,
+.c-card-badge__footer .o-link:hover,
+.c-card-badge__footer .o-link:focus {
   color: #5b90bf;
 }
 
-.c-card__footer a:first-child {
+.c-card-badge__footer a:first-child {
   font-family: "Poppins", sans-serif;
   font-size: var(--font-size-s, 14px);
   font-style: normal;
@@ -5960,7 +5983,7 @@ div.wpforms-container-full .wpforms-form .wpforms-field-label {
   margin-right: 20px;
 }
 
-.c-card__footer a:last-child {
+.c-card-badge__footer .o-link {
   text-align: right;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -5971,10 +5994,20 @@ div.wpforms-container-full .wpforms-form .wpforms-field-label {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
+  border: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
-.c-card__footer a:last-child .o-icon {
+.c-card-badge__footer .o-link .o-icon {
   margin-left: 5px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+
+.c-card-badge__footer .o-link .o-icon svg path {
+  fill: currentColor;
 }
 
 /* ------------------------------------ *\
@@ -6164,7 +6197,7 @@ div.wpforms-container-full .wpforms-form .wpforms-field-label {
   background: white;
   padding: 15px 20px;
   margin-bottom: 20px;
-  border-radius: 56px;
+  border-radius: 56px !important;
   border-color: transparent;
   font-size: var(--font-size-body, 18px);
   border: 1px solid #adadad;
@@ -7329,13 +7362,14 @@ body.sidebar-is-active .c-user__details {
   background: none;
   border: 0;
   position: relative;
-  right: -20px;
+  right: -10px;
   padding: 20px;
 }
 
 @media (min-width: 1001px) {
   .c-header__nav .o-toggle {
     display: none;
+    right: -20px;
   }
 }
 
