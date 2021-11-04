@@ -5,7 +5,7 @@
         {
             "key": "field_618323353ce8f",
             "label": "Badges Heading",
-            "name": "",
+            "name": "badges_heading",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -122,5 +122,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1635984523
+    "modified": 1636065436
 }

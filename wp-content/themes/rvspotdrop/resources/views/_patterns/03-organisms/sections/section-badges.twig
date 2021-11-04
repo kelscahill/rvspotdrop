@@ -2,7 +2,7 @@
   <section class="c-section-badges o-section">
     <div class="c-section-badges--inner l-wrap l-container u-spacing--double">
       {% if badges.heading or badges.description %}
-        <div class="c-section-badges__header u-align--center">
+        <div class="c-section-badges__header u-align--center u-spacing">
           {% if badges.heading %}
             <h2 class="c-section-badges__heading o-heading--xl">{{ badges.heading }}</h2>
           {% endif %}
@@ -33,7 +33,6 @@
                     </code>
                   </div>
                 </div>
-
               </div>
             {% endfor %}
           </div>
