@@ -1,0 +1,93 @@
+/* ------------------------------------ *\
+    $HEADINGS
+\* ------------------------------------ */
+
+@mixin o-heading--xxl {
+  font-family: $ff-font--primary;
+  font-size: $font-size-xxl;
+  font-style: normal;
+  font-weight: 800;
+  text-transform: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+}
+
+h1,
+.o-heading--xxl {
+  @include o-heading--xxl;
+}
+
+@mixin o-heading--xl {
+  font-family: $ff-font--primary;
+  font-size: $font-size-xl;
+  font-style: normal;
+  font-weight: 800;
+  text-transform: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+}
+
+h2,
+.o-heading--xl {
+  @include o-heading--xl;
+}
+
+@mixin o-heading--l {
+  font-family: $ff-font--primary;
+  font-size: $font-size-l;
+  font-style: normal;
+  font-weight: 600;
+  text-transform: inherit;
+  line-height: 1.4;
+  letter-spacing: normal;
+}
+
+h3,
+.o-heading--l {
+  @include o-heading--l;
+}
+
+@mixin o-heading--m {
+  font-family: $ff-font--primary;
+  font-size: $font-size-m;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.6;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+h4,
+.o-heading--m {
+  @include o-heading--m;
+}
+
+@mixin o-heading--s {
+  font-family: $ff-font--primary;
+  font-size: $font-size-s;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.6;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+h5,
+.o-heading--s {
+  @include o-heading--s;
+}
+
+@mixin o-heading--xs {
+  font-family: $ff-font--primary;
+  font-size: $font-size-xs;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 1.6;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+h6,
+.o-heading--xs {
+  @include o-heading--xs;
+}

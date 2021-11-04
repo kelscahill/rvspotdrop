@@ -1,0 +1,302 @@
+/* ------------------------------------ *\
+    $PAGE SECTIONS
+\* ------------------------------------ */
+
+.o-section {
+  padding-top: $space-double;
+  padding-bottom: $space-double;
+  margin-left: -$space;
+  margin-right: -$space;
+
+  @include media(">medium") {
+    padding-top: $space-quad;
+    padding-bottom: $space-quad;
+  }
+
+  @include media(">xlarge") {
+    margin-left: -$space-double;
+    margin-right: -$space-double;
+  }
+
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+/**
+ * Hero
+ */
+.c-section-hero {
+  position: relative;
+  overflow: hidden;
+  margin-top: 0;
+  margin-bottom: $space-double;
+
+  @include media(">medium") {
+    margin-bottom: $space-quad;
+  }
+
+  &--inner {
+    @include media("<=medium") {
+      grid-column-gap: 0;
+    }
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    transform: skew(-35deg);
+    transform-origin: top;
+    background-color: rgba($c-secondary, 0.2);
+  }
+
+  &.o-section {
+    padding-top: $space-quad;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__button {
+    align-self: flex-start;
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    position: relative;
+
+    img {
+      box-shadow: $box-shadow--thick;
+      width: 100%;
+      height: auto;
+    }
+
+    svg {
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
+/**
+ * Banner
+ */
+.c-section-banner {
+  padding-left: $space;
+  padding-right: $space;
+  position: relative;
+
+  &--inner {
+    background-color: rgba($c-secondary, 0.2);
+    border-radius: 50px;
+    padding: $space-double;
+
+    @include media("<=medium") {
+      grid-column-gap: 0;
+    }
+
+    @include media(">large") {
+      border-radius: 100px;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: $space;
+
+    @include media(">large") {
+      padding-bottom: $space;
+    }
+  }
+
+  &__button {
+    align-self: flex-start;
+  }
+
+  &__image {
+    position: relative;
+    height: auto;
+    display: block;
+    align-self: center;
+    justify-content: flex-end;
+
+    @include media("<=xxlarge") {
+      transform: scale(0.8) !important;
+    }
+
+
+    @include media(">large") {
+      left: calc(50% + #{$space-quad});
+      position: absolute;
+      top: 0;
+    }
+
+
+    @include media(">xxlarge") {
+      transform: scale(1);
+      right: -160px;
+      left: auto;
+    }
+
+
+    picture {
+      border-radius: 50%;
+      overflow: hidden;
+      z-index: 1;
+      position: relative;
+      border: 5vw solid $c-primary;
+      width: 75%;
+      height: 75%;
+      margin-left: auto;
+      margin-right: auto;
+
+      @include media(">large") {
+        width: 600px;
+        height: 600px;
+        min-width: 600px;
+        margin-left: 0;
+        border-width: 40px;
+      }
+    }
+
+    &::before {
+      content: "";
+      display: none;
+      background-color: $c-primary;
+      height: 100%;
+      width: 50vw;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      z-index: 0;
+
+      @include media(">large") {
+        display: none;
+      }
+    }
+
+    &::after {
+      content: "";
+      display: block;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      z-index: 0;
+      border-left: 50vw solid transparent;
+      border-right: 50vw solid transparent;
+      border-top: 60vw solid $c-primary;
+      transform: translate(-50%, 0);
+      left: 50%;
+      top: 50%;
+
+      @include media(">large") {
+        border-top: 400px solid transparent;
+        border-bottom: 400px solid transparent;
+        border-right: 460px solid $c-primary;
+        border-left: none;
+        transform: translate(0, -50%);
+        left: -50%;
+        top: 50%;
+      }
+    }
+  }
+}
+
+/**
+ * Cards
+ */
+.c-section-cards {
+  &__buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    a {
+      margin: 0 $space-half;
+    }
+
+    a:last-child {
+      @include o-button--tertiary;
+    }
+  }
+
+  .c-cards {
+    grid-column-gap: 0;
+
+    @include media(">medium") {
+      grid-column-gap: $space-double;
+    }
+  }
+
+  .c-card {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: $c-white;
+    border-radius: $border-radius--large;
+    padding: $space;
+    text-align: center;
+
+    picture {
+      display: block;
+      overflow: hidden;
+      border-radius: 50%;
+    }
+
+    &__description {
+      flex: 1;
+    }
+  }
+}
+
+/**
+ * Image
+ */
+// .c-section-image {
+//   background-color: $c-secondary;
+//   min-height: 60vh;
+//   position: relative;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//
+//   &--inner {
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     text-align: center;
+//     color: $c-white;
+//     position: relative;
+//     z-index: 2;
+//   }
+//
+//   &::after {
+//     content: "";
+//     display: block;
+//     background-color: $c-overlay;
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     width: 100%;
+//     height: 100%;
+//     pointer-events: none;
+//     z-index: 1;
+//   }
+// }

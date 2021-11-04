@@ -1,0 +1,12 @@
+<article class="c-content c-content-page">
+  {% include "@molecules/components/page-header.twig" %}
+  <div class="o-rte-text">
+    {{ post.content }}
+    {% if user_logged_in and is_page_login %}
+      <div class="o-intro u-align--center u-spacing">
+        <p>You're already logged in.</p>
+        <a href="/dashboard" class="o-button">Go to Dashboard</a>
+      </div>
+    {% endif %}
+  </div>
+</article>

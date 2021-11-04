@@ -1,0 +1,99 @@
+/*
+ * Button mixin- creates 3d-ish button effect with correct
+ * highlights/shadows, based on a base color.
+ */
+#wpadminbar {
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.05); }
+
+@media screen and (min-width: 782px) {
+  .folded:not(.admin-menu-h) #adminmenu,
+  .folded:not(.admin-menu-h) #adminmenu li.menu-top,
+  .folded:not(.admin-menu-h) #adminmenuback,
+  .folded:not(.admin-menu-h) #adminmenuwrap,
+  .folded:not(.admin-menu-h) #wp-admin-bar-site-name,
+  .folded:not(.admin-menu-h) #wp-admin-bar-visit-site {
+    width: 70px; }
+  .folded:not(.admin-menu-h) #wp-admin-bar-site-name,
+  .folded:not(.admin-menu-h) #wp-admin-bar-visit-site {
+    text-align: center; }
+    .folded:not(.admin-menu-h) #wp-admin-bar-site-name img,
+    .folded:not(.admin-menu-h) #wp-admin-bar-visit-site img {
+      float: none !important; }
+    .folded:not(.admin-menu-h) #wp-admin-bar-site-name img + span,
+    .folded:not(.admin-menu-h) #wp-admin-bar-visit-site img + span {
+      display: none; }
+  .folded:not(.admin-menu-h) #adminmenu .wp-menu-name {
+    font-size: 11px;
+    font-weight: normal;
+    height: 50px;
+    width: 70px;
+    padding: 0 4px;
+    display: table-cell;
+    vertical-align: middle;
+    position: static;
+    text-align: center; }
+  .folded:not(.admin-menu-h) #adminmenu div.wp-menu-image {
+    -webkit-transition: margin-top 0.2s;
+    transition: margin-top 0.2s;
+    height: 50px;
+    padding: 0; }
+    .folded:not(.admin-menu-h) #adminmenu div.wp-menu-image:before {
+      line-height: 50px;
+      padding: 0;
+      font-size: 18px; }
+  .folded:not(.admin-menu-h) #adminmenu li.menu-top:hover div.wp-menu-image, .folded:not(.admin-menu-h) #adminmenu li.menu-top:focus div.wp-menu-image, .folded:not(.admin-menu-h) #adminmenu li.menu-top.wp-has-current-submenu div.wp-menu-image, .folded:not(.admin-menu-h) #adminmenu li.menu-top.current div.wp-menu-image {
+    margin-top: -50px; }
+  .folded:not(.admin-menu-h) #adminmenu li.menu-top a.menu-top {
+    height: 50px;
+    overflow: hidden; }
+
+  body:not(.admin-menu-h) #wp-admin-bar-site-name,
+  body:not(.admin-menu-h) #wp-admin-bar-visit-site {
+    width: 200px; }
+    body:not(.admin-menu-h) #wp-admin-bar-site-name,
+    body:not(.admin-menu-h) #wp-admin-bar-site-name > a,
+    body:not(.admin-menu-h) #wp-admin-bar-visit-site,
+    body:not(.admin-menu-h) #wp-admin-bar-visit-site > a {
+      background-color: #181f24;
+      color: #8ca1af; } }
+@media (min-width: 782px) and (max-width: 960px) {
+  .auto-fold:not(.admin-menu-h) #adminmenu,
+  .auto-fold:not(.admin-menu-h) #adminmenu li.menu-top,
+  .auto-fold:not(.admin-menu-h) #adminmenuback,
+  .auto-fold:not(.admin-menu-h) #adminmenuwrap,
+  .auto-fold:not(.admin-menu-h) #wp-admin-bar-site-name,
+  .auto-fold:not(.admin-menu-h) #wp-admin-bar-visit-site {
+    width: 70px; }
+  .auto-fold:not(.admin-menu-h) #wp-admin-bar-site-name,
+  .auto-fold:not(.admin-menu-h) #wp-admin-bar-visit-site {
+    text-align: center; }
+    .auto-fold:not(.admin-menu-h) #wp-admin-bar-site-name img,
+    .auto-fold:not(.admin-menu-h) #wp-admin-bar-visit-site img {
+      float: none !important; }
+    .auto-fold:not(.admin-menu-h) #wp-admin-bar-site-name img + span,
+    .auto-fold:not(.admin-menu-h) #wp-admin-bar-visit-site img + span {
+      display: none; }
+  .auto-fold:not(.admin-menu-h) #adminmenu .wp-menu-name {
+    font-size: 11px;
+    font-weight: normal;
+    height: 50px;
+    width: 70px;
+    padding: 0 4px;
+    display: table-cell;
+    vertical-align: middle;
+    position: static;
+    text-align: center; }
+  .auto-fold:not(.admin-menu-h) #adminmenu div.wp-menu-image {
+    -webkit-transition: margin-top 0.2s;
+    transition: margin-top 0.2s;
+    height: 50px;
+    padding: 0; }
+    .auto-fold:not(.admin-menu-h) #adminmenu div.wp-menu-image:before {
+      line-height: 50px;
+      padding: 0;
+      font-size: 18px; }
+  .auto-fold:not(.admin-menu-h) #adminmenu li.menu-top:hover div.wp-menu-image, .auto-fold:not(.admin-menu-h) #adminmenu li.menu-top:focus div.wp-menu-image, .auto-fold:not(.admin-menu-h) #adminmenu li.menu-top.wp-has-current-submenu div.wp-menu-image, .auto-fold:not(.admin-menu-h) #adminmenu li.menu-top.current div.wp-menu-image {
+    margin-top: -50px; }
+  .auto-fold:not(.admin-menu-h) #adminmenu li.menu-top a.menu-top {
+    height: 50px;
+    overflow: hidden; } }

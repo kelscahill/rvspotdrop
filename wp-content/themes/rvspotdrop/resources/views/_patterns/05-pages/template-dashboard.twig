@@ -1,0 +1,9 @@
+{% extends "@templates/_layout.twig" %}
+
+{% block content %}
+  {% if user_logged_in %}
+    {% include "@organisms/content/content-dashboard.twig" %}
+  {% else %}
+    {% include "@organisms/content/content-dashboard-restricted.twig" %}
+  {% endif %}
+{% endblock %}

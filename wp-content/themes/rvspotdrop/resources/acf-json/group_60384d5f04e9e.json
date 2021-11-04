@@ -1,0 +1,274 @@
+{
+    "key": "group_60384d5f04e9e",
+    "title": "Member Additional Details",
+    "fields": [
+        {
+            "key": "field_604965f9dfdf1",
+            "label": "Equipment Details",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_603850ce4805a",
+            "label": "Equipment Type",
+            "name": "equipment_type",
+            "type": "radio",
+            "instructions": "What kind of rig do you have?",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Class A": "Class A",
+                "Travel trailer": "Travel trailer",
+                "Class B \/ Van": "Class B \/ Van",
+                "Fifth wheel": "Fifth wheel",
+                "Class C": "Class C",
+                "Hybrid": "Hybrid",
+                "Pop-up camper": "Pop-up camper",
+                "Truck camper": "Truck camper"
+            },
+            "allow_null": 0,
+            "other_choice": 0,
+            "default_value": "",
+            "layout": "vertical",
+            "return_format": "value",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_603851194805b",
+            "label": "Equipment Year",
+            "name": "equipment_year",
+            "type": "text",
+            "instructions": "What year is your rig? *Some campgrounds may have age restrictions.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_6038506d48059",
+            "label": "Equipment length",
+            "name": "equipment_length",
+            "type": "text",
+            "instructions": "Please select the length of your rig in feet. This measurement is the trailer only and includes the hitch.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_6042a640367ef",
+            "label": "RV Slide-outs",
+            "name": "rv_slide_outs",
+            "type": "checkbox",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Driver": "Driver",
+                "Passenger": "Passenger",
+                "Rear": "Rear",
+                "No slide-outs": "No slide-outs"
+            },
+            "allow_custom": 0,
+            "default_value": [],
+            "layout": "vertical",
+            "toggle": 0,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_60384fae48058",
+            "label": "Service Requirements",
+            "name": "service_requirements",
+            "type": "checkbox",
+            "instructions": "Choose what service requirements you need. *Full hookups is typically electric, water, and sewer.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Full hookup (30 amp)": "Full hookup (30 amp)",
+                "Full hookup (50 amp)": "Full hookup (50 amp)",
+                "20 amp": "20 amp",
+                "30 amp": "30 amp",
+                "50 amp": "50 amp",
+                "100 amp": "100 amp",
+                "Water hookup": "Water hookup",
+                "Sewer hookup": "Sewer hookup",
+                "Dump station": "Dump station",
+                "Dry camping (no services)": "Dry camping (no services)",
+                "ADA Accessible": "ADA Accessible",
+                "Wifi \/ Internet": "Wifi \/ Internet"
+            },
+            "allow_custom": 0,
+            "default_value": [],
+            "layout": "vertical",
+            "toggle": 0,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_60466e5bd4ebe",
+            "label": "Other Important Features",
+            "name": "important_features",
+            "type": "checkbox",
+            "instructions": "What other features are important to you when you choose a campground?",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Pet friendly": "Pet friendly",
+                "Kid friendly": "Kid friendly",
+                "Adult only": "Adult only",
+                "None of the above": "None of the above"
+            },
+            "allow_custom": 0,
+            "default_value": [],
+            "layout": "vertical",
+            "toggle": 0,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_6042a4921fc9b",
+            "label": "Other Information",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_60466eb687ab6",
+            "label": "Phone",
+            "name": "phone",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_6042a4021fc97",
+            "label": "Gender",
+            "name": "gender",
+            "type": "radio",
+            "instructions": "Select your gender",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Not specified": "Not specified",
+                "Male": "Male",
+                "Female": "Female",
+                "Other": "Other"
+            },
+            "allow_null": 0,
+            "other_choice": 0,
+            "default_value": "",
+            "layout": "vertical",
+            "return_format": "value",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_6042a4581fc98",
+            "label": "Birthday",
+            "name": "birthday",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "user_role",
+                "operator": "==",
+                "value": "member"
+            }
+        ]
+    ],
+    "menu_order": -1,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "modified": 1615423048
+}

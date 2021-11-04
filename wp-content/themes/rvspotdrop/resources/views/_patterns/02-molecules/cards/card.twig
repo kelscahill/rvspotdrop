@@ -1,0 +1,50 @@
+{% set base_class = card.base_class|default('c-card') %}
+
+{% if card %}
+  <div class="{{ bem_classes(base_class, card.element, card.modifiers, card.extra) }} u-spacing--double" {{ add_attributes(card.attributes) }}>
+    <div class="{{ bem_classes(base_class, 'content') }} u-spacing--half">
+      {% include "@atoms/icons/icon.twig" with {
+        "icon": {
+          "name": card.icon,
+          "modifiers": "xlarge",
+          "extra": bem_classes(base_class, 'icon')
+        }
+      } %}
+      {% include "@atoms/text/heading/heading.twig" with {
+        "heading": {
+          "level": "2",
+          "size": "l",
+          "text": card.title,
+          "extra": bem_classes(base_class, 'heading')
+        }
+      } %}
+      {% include "@atoms/text/dek/dek.twig" with {
+        "dek": {
+          "text": card.description,
+          "extra": bem_classes(base_class, 'dek')
+        }
+      } %}
+    </div>
+    <div class="{{ bem_classes(base_class, 'footer') }} u-spacing--half">
+      {% include "@atoms/buttons/button.twig" with {
+        "button": {
+          "url": card.button.url,
+          "text": card.button.text,
+          "modifiers": "tertiary",
+          "extra": [bem_classes(base_class, 'button'), card.title == 'Make a Campground Request' and campground_request_entries == 0 ? "is-disabled"]
+        }
+      } %}
+      {% if card.title == 'Make a Campground Request' %}
+        <p class="o-small">
+          <em>
+            {% if campground_request_entries == 0 %}
+              You have {{ now|date('t') - now|date('j') }} days till you can submit your next request.
+            {% else %}
+              You have {{ campground_request_entries }} request{{ campground_request_entries > 1 ? 's' }} left for the month of {{ now|date('F') }}.
+            {% endif %}
+          </em>
+        </p>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}

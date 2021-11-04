@@ -1,0 +1,87 @@
+@import '_variables_menu';
+@import 'variables';
+@import 'mixins';
+
+#wpadminbar{
+	box-shadow: 0 1px 0px rgba(0,0,0,0.05);
+}
+
+@mixin folded( $fold-name ) {
+	.#{$fold-name}{
+		&:not(.admin-menu-h){
+			#adminmenu, 
+			#adminmenu li.menu-top, 
+			#adminmenuback,
+			#adminmenuwrap,
+			#wp-admin-bar-site-name,
+			#wp-admin-bar-visit-site{
+				width: $menu-fold-width;
+			}
+			#wp-admin-bar-site-name,
+			#wp-admin-bar-visit-site{
+				text-align: center;
+				img{
+					float: none !important;
+				}
+				img + span{
+					display: none;
+				}
+			}
+			#adminmenu .wp-menu-name{
+				font-size: 11px;
+				font-weight: normal;
+				height: $menu-fold-height;
+				width: $menu-fold-width;
+				padding: 0 4px;
+				display: table-cell;
+				vertical-align: middle;
+				position: static;
+				text-align: center;
+			}
+			#adminmenu div.wp-menu-image{
+				-webkit-transition: margin-top 0.2s;
+    			transition: margin-top 0.2s;
+				height: $menu-fold-height;
+				padding: 0;
+				&:before{
+					line-height: $menu-fold-height;
+					padding:0;
+					font-size: 18px;
+				}
+			}
+			#adminmenu li.menu-top{
+				&:hover,
+				&:focus,
+				&.wp-has-current-submenu,
+				&.current{
+					div.wp-menu-image{
+						margin-top: -$menu-fold-height;
+					}
+				}
+				a.menu-top{
+					height: $menu-fold-height;
+					overflow: hidden;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 782px) {
+	@include folded("folded");
+	body:not(.admin-menu-h){
+		#wp-admin-bar-site-name,
+		#wp-admin-bar-visit-site {
+			width: $menu-width;
+			&,
+			> a{
+				background-color: $menu-background;
+				color: $menu-text;
+			}
+		}
+	}
+}
+
+@media (min-width: 782px) and (max-width: 960px) {
+	@include folded("auto-fold");
+}
