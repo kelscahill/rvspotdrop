@@ -211,34 +211,34 @@ add_filter(
   }
 );
 
-/**
- * Register Custom Theme Functions.
- */
-$register_theme_functions = __DIR__ . '/../app/custom-theme-functions.php';
-if (file_exists($register_theme_functions)) {
-  require_once $register_theme_functions;
-}
-
-/**
- * Register Custom Post Types.
- */
-// $register_custom_content_types = __DIR__ . '/../app/custom-content-types.php';
-// if (file_exists($register_custom_content_types)) {
-//   require_once $register_custom_content_types;
+// /**
+//  * Register Custom Theme Functions.
+//  */
+// $register_theme_functions = __DIR__ . '/../app/custom-theme-functions.php';
+// if (file_exists($register_theme_functions)) {
+//   require_once $register_theme_functions;
 // }
-
-/**
- * Register Custom Taxonomies.
- */
-// $register_custom_taxonomy = __DIR__ . '/../app/custom-taxonomy.php';
-// if (file_exists($register_custom_taxonomy)) {
-//   require_once $register_custom_taxonomy;
+//
+// /**
+//  * Register Custom Post Types.
+//  */
+// // $register_custom_content_types = __DIR__ . '/../app/custom-content-types.php';
+// // if (file_exists($register_custom_content_types)) {
+// //   require_once $register_custom_content_types;
+// // }
+//
+// /**
+//  * Register Custom Taxonomies.
+//  */
+// // $register_custom_taxonomy = __DIR__ . '/../app/custom-taxonomy.php';
+// // if (file_exists($register_custom_taxonomy)) {
+// //   require_once $register_custom_taxonomy;
+// // }
+//
+// /**
+//  * Register Custom Blocks.
+//  */
+// $register_custom_blocks = __DIR__ . '/../app/custom-blocks.php';
+// if (file_exists($register_custom_blocks)) {
+//   require_once $register_custom_blocks;
 // }
-
-/**
- * Register Custom Blocks.
- */
-$register_custom_blocks = __DIR__ . '/../app/custom-blocks.php';
-if (file_exists($register_custom_blocks)) {
-  require_once $register_custom_blocks;
-}
