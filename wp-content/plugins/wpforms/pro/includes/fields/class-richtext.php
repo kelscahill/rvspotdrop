@@ -135,8 +135,6 @@ class WPForms_Field_Richtext extends WPForms_Field {
 
 		add_action( 'wpforms_frontend_strings', [ $this, 'add_frontend_strings' ] );
 
-		remove_filter( "wpforms_pro_fields_entry_preview_get_field_value_{$this->type}_field_after", 'nl2br', 100 );
-
 		add_filter( "wpforms_pro_fields_entry_preview_get_field_value_{$this->type}_field_after", [ $this, 'entry_preview' ], 10, 3 );
 
 		add_filter( 'quicktags_settings', [ $this, 'modify_quicktags' ], 10, 2 );
@@ -929,6 +927,8 @@ class WPForms_Field_Richtext extends WPForms_Field {
 	 * @param array $form_data    Form data and settings.
 	 */
 	public function format( $field_id, $field_submit, $form_data ) {
+
+		remove_filter( "wpforms_pro_fields_entry_preview_get_field_value_{$this->type}_field_after", 'nl2br', 100 );
 
 		if ( is_array( $field_submit ) ) {
 			$field_submit = implode( "\r\n", array_filter( $field_submit ) );

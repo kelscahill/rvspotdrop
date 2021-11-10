@@ -6,6 +6,7 @@ use ProfilePress\Core\Classes\ExtensionManager as EM;
 use ProfilePress\Core\Classes\FormRepository as FR;
 use ProfilePress\Core\Classes\PROFILEPRESS_sql as PROFILEPRESS_sql;
 use ProfilePress\Core\Classes\SendEmail;
+use ProfilePress\Core\ShortcodeParser\Builder\FieldsShortcodeCallback;
 
 /** Plugin DB settings data */
 function ppress_db_data()
@@ -1444,4 +1445,13 @@ function ppress_shortcode_exist_in_post($shortcode)
     }
 
     return false;
+}
+
+function ppress_clean($var)
+{
+    if (is_array($var)) {
+        return array_map('ppress_clean', $var);
+    } else {
+        return is_scalar($var) ? sanitize_textarea_field($var) : $var;
+    }
 }

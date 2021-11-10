@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the ProfilePress package.
 msgid ""
 msgstr ""
-"Project-Id-Version: ProfilePress 3.2.2\n"
+"Project-Id-Version: ProfilePress 3.2.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-user-avatar\n"
-"POT-Creation-Date: 2021-11-01 15:05:50+00:00\n"
+"POT-Creation-Date: 2021-11-08 19:20:49+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -348,7 +348,7 @@ msgstr ""
 #: deprecated/wp-user-avatar/includes/wpua-functions.php:78
 #: deprecated/wp-user-avatar/includes/wpua-functions.php:131
 #: src/Classes/ImageUploader.php:49
-#: src/ShortcodeParser/MyAccount/MyAccountTag.php:496
+#: src/ShortcodeParser/MyAccount/MyAccountTag.php:498
 msgid "Profile Picture"
 msgstr ""
 
@@ -470,9 +470,9 @@ msgstr ""
 #: src/Admin/SettingsPages/DragDropBuilder/Metabox.php:162
 #: src/Admin/SettingsPages/DragDropBuilder/Metabox.php:223
 #: src/Admin/SettingsPages/GeneralSettings.php:293
-#: src/Functions/GlobalFunctions.php:1240
-#: src/Functions/GlobalFunctions.php:1268
-#: src/Functions/GlobalFunctions.php:1290
+#: src/Functions/GlobalFunctions.php:1241
+#: src/Functions/GlobalFunctions.php:1269
+#: src/Functions/GlobalFunctions.php:1291
 msgid "Select..."
 msgstr ""
 
@@ -520,7 +520,7 @@ msgid ""
 msgstr ""
 
 #: src/Admin/SettingsPages/AddNewForm.php:85
-#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:120
+#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:122
 msgid "Upgrade to Premium"
 msgstr ""
 
@@ -548,7 +548,7 @@ msgid "Select Icon"
 msgstr ""
 
 #: src/Admin/SettingsPages/DragDropBuilder/DragDropBuilder.php:1202
-#: src/Functions/GlobalFunctions.php:1293
+#: src/Functions/GlobalFunctions.php:1294
 #: src/Themes/DragDrop/AbstractMemberDirectoryTheme.php:202
 msgid "Standard Fields"
 msgstr ""
@@ -558,7 +558,7 @@ msgid "Extra Fields"
 msgstr ""
 
 #: src/Admin/SettingsPages/DragDropBuilder/DragDropBuilder.php:1205
-#: src/Classes/ExtensionManager.php:53 src/Functions/GlobalFunctions.php:1296
+#: src/Classes/ExtensionManager.php:53 src/Functions/GlobalFunctions.php:1297
 #: src/Themes/DragDrop/AbstractMemberDirectoryTheme.php:216
 msgid "Custom Fields"
 msgstr ""
@@ -585,7 +585,7 @@ msgstr ""
 #: src/AdminBarDashboardAccess/include.settings-page.php:54
 #: src/AdminBarDashboardAccess/include.settings-page.php:109
 #: src/Functions/custom-settings-api.php:1078
-#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:1018
+#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:1035
 msgid "Save Changes"
 msgstr ""
 
@@ -747,7 +747,7 @@ msgstr ""
 
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/Bio.php:22
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/UserProfile/Bio.php:22
-#: src/Functions/GlobalFunctions.php:1280
+#: src/Functions/GlobalFunctions.php:1281
 #: src/Themes/DragDrop/AbstractMemberDirectoryTheme.php:211
 #: src/Themes/DragDrop/AbstractTheme.php:189
 msgid "Biography"
@@ -785,7 +785,7 @@ msgstr ""
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/Country.php:47
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/CoverImage.php:31
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/Date.php:71
-#: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Agreeable.php:51
+#: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Agreeable.php:61
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Checkbox.php:65
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Date.php:57
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Input.php:58
@@ -814,7 +814,7 @@ msgstr ""
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/Country.php:48
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/CoverImage.php:32
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/Date.php:72
-#: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Agreeable.php:52
+#: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Agreeable.php:62
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Checkbox.php:66
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Date.php:58
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Input.php:59
@@ -845,7 +845,7 @@ msgstr ""
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/Country.php:54
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/CoverImage.php:38
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/Date.php:78
-#: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Agreeable.php:58
+#: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Agreeable.php:68
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Checkbox.php:57
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Date.php:64
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Input.php:65
@@ -886,7 +886,7 @@ msgstr ""
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/Country.php:56
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/CoverImage.php:40
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/Date.php:80
-#: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Agreeable.php:60
+#: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Agreeable.php:70
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Checkbox.php:59
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Date.php:66
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Input.php:67
@@ -996,9 +996,21 @@ msgid ""
 "Select a date and time format that users will be able to choose a date in."
 msgstr ""
 
+#: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Agreeable.php:50
+msgid "Checked by Default"
+msgstr ""
+
+#: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Agreeable.php:52
+msgid "False"
+msgstr ""
+
+#: src/Admin/SettingsPages/DragDropBuilder/Fields/DefinedFieldTypes/Agreeable.php:53
+msgid "True"
+msgstr ""
+
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/DisplayName.php:22
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/UserProfile/DisplayName.php:22
-#: src/Functions/GlobalFunctions.php:1278
+#: src/Functions/GlobalFunctions.php:1279
 #: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:318
 #: src/Themes/DragDrop/AbstractMemberDirectoryTheme.php:208
 #: src/Themes/DragDrop/AbstractMemberDirectoryTheme.php:460
@@ -1023,7 +1035,7 @@ msgstr ""
 
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/Email.php:22
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/UserProfile/Email.php:22
-#: src/Functions/GlobalFunctions.php:1279
+#: src/Functions/GlobalFunctions.php:1280
 #: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:210
 #: src/Themes/DragDrop/AbstractMemberDirectoryTheme.php:206
 #: src/Themes/DragDrop/AbstractTheme.php:162
@@ -1033,7 +1045,7 @@ msgstr ""
 
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/FirstName.php:22
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/UserProfile/FirstName.php:22
-#: src/Functions/GlobalFunctions.php:1275
+#: src/Functions/GlobalFunctions.php:1276
 #: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:350
 #: src/Themes/DragDrop/AbstractMemberDirectoryTheme.php:209
 #: src/Themes/DragDrop/AbstractMemberDirectoryTheme.php:461
@@ -1053,7 +1065,7 @@ msgstr ""
 
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/LastName.php:22
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/UserProfile/LastName.php:22
-#: src/Functions/GlobalFunctions.php:1276
+#: src/Functions/GlobalFunctions.php:1277
 #: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:383
 #: src/Themes/DragDrop/AbstractMemberDirectoryTheme.php:210
 #: src/Themes/DragDrop/AbstractMemberDirectoryTheme.php:462
@@ -1086,7 +1098,7 @@ msgstr ""
 
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/Nickname.php:22
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/UserProfile/Nickname.php:22
-#: src/Functions/GlobalFunctions.php:1277
+#: src/Functions/GlobalFunctions.php:1278
 #: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:286
 #: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:300
 #: src/ShortcodeParser/MyAccount/edit-profile.tmpl.php:138
@@ -1242,7 +1254,7 @@ msgstr ""
 
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/UserProfile/Username.php:22
 #: src/Admin/SettingsPages/DragDropBuilder/Fields/Username.php:22
-#: src/Functions/GlobalFunctions.php:1274
+#: src/Functions/GlobalFunctions.php:1275
 #: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:135
 #: src/Themes/DragDrop/AbstractMemberDirectoryTheme.php:463
 #: src/Themes/DragDrop/AbstractTheme.php:159
@@ -1419,220 +1431,220 @@ msgid "Footer Text"
 msgstr ""
 
 #: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:28
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:134
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:135
 #: src/Admin/SettingsPages/GeneralSettings.php:58
 msgid "Emails"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:70
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:71
 msgid "Account Welcome Email"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:71
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:72
 #: src/Classes/WelcomeEmailAfterSignup.php:51
 msgid "Welcome To %s"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:73
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:74
 msgid "Email that is sent to the user upon successful registration."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:74
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:92
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:75
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:93
 msgid "Users"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:76
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:77
 msgid "Username of the registered user."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:77
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:95
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:78
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:96
 msgid "Email address of the registered user."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:78
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:79
 msgid "Password of the registered user."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:79
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:96
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:80
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:97
 msgid "Website title or name."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:80
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:81
 msgid "First Name entered by user on registration."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:81
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:82
 msgid "Last Name entered by user on registration."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:82
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:97
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:83
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:98
 msgid "URL to reset password."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:83
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:84
 msgid "URL to login.."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:88
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:89
 msgid "Password Reset Email"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:89
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:90
 #: src/Classes/PasswordReset.php:24 src/RegisterActivation/Base.php:85
 msgid "[%s] Password Reset"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:91
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:92
 msgid "Email that is sent to the user upon password reset request."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:94
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:95
 msgid "Username of user."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:102
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:103
 msgid "New User Admin Notification"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:103
-#: src/Functions/GlobalFunctions.php:726 src/RegisterActivation/Base.php:89
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:104
+#: src/Functions/GlobalFunctions.php:727 src/RegisterActivation/Base.php:89
 msgid "[%s] New User Registration"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:105
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:106
 msgid "Email that is sent to admins when there is a new user registration"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:106
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:107
 msgid "Administrators"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:108
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:109
 msgid "Username of the newly registered user."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:109
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:110
 msgid "Email address of the newly registered user."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:110
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:111
 msgid "First name of the newly registered user."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:111
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:112
 msgid "Last name of the newly registered user."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:112
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:113
 msgid "Website name or name."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:114
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:115
 msgid "Replace \"field_key\" with the %scustom field key%s or usermeta key."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:139
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:140
 msgid "Admin Email Address(es)"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:140
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:141
 msgid ""
 "The Email address to receive admin notifications. Use comma to separate "
 "multiple email addresses."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:145
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:146
 msgid "Sender Name"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:146
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:147
 msgid ""
 "The name to use as the sender of all ProfilePress emails. Preferably your "
 "website name."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:152
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:153
 msgid "Sender Email Address"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:153
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:154
 msgid "The email address to use as the sender of all ProfilePress emails."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:159
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:160
 msgid "HTML"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:160
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:161
 msgid "Plain Text"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:163
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:164
 msgid "Content Type"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:164
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:165
 msgid ""
 "Choose whether to send ProfilePress emails in HTML or plain text. HTML is "
 "recommended."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:169
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:170
 msgid "Default Template"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:170
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:171
 msgid "Custom Email Template"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:173
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:174
 msgid "Email Template"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:174
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:175
 msgid ""
 "Choose \"Custom Email Template\" if you want to code your own email template "
 "from scratch."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:181
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:182
 msgid "Customize Default Template"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:224
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:225
 msgid "Preview Email"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:245
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:246
 msgid "Enable Notification"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:246
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:247
 #: src/Admin/SettingsPages/GeneralSettings.php:371
 msgid "Enable"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:249
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:250
 msgid "Check to enable this email notification."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:254
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:255
 msgid "Subject Line"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:255
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:256
 msgid "Enter the subject or title for the welcome message email."
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:260
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:261
 msgid "Message Body"
 msgstr ""
 
-#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:303
+#: src/Admin/SettingsPages/EmailSettings/EmailSettingsPage.php:304
 msgid "Available placeholders for subject and message body"
 msgstr ""
 
@@ -1649,47 +1661,47 @@ msgstr ""
 msgid "Recipient"
 msgstr ""
 
-#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:37
-#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:49
+#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:39
+#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:51
 msgid "Addons"
 msgstr ""
 
-#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:85
+#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:87
 msgid "Activate All"
 msgstr ""
 
-#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:88
+#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:90
 msgid "Deactivate All"
 msgstr ""
 
-#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:98
+#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:100
 msgid ""
 "Upgrade to Premium to unlock extensions and other great features. As a "
 "valued ProfilePress Lite user, you will %1$sreceive 10%3$s off%2$s your "
 "purchase, automatically applied at checkout!"
 msgstr ""
 
-#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:104
+#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:106
 msgid "Upgrade Now"
 msgstr ""
 
-#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:120
+#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:122
 msgid "Upgrade Plan"
 msgstr ""
 
-#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:135
+#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:137
 msgid "Learn More"
 msgstr ""
 
-#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:146
+#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:148
 msgid "Unavailable: %s"
 msgstr ""
 
-#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:151
+#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:153
 msgid "Activated"
 msgstr ""
 
-#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:151
+#: src/Admin/SettingsPages/ExtensionsSettingsPage.php:153
 msgid "Deactivated"
 msgstr ""
 
@@ -3128,16 +3140,16 @@ msgstr ""
 msgid "Protection Rules"
 msgstr ""
 
-#: src/ContentProtection/SettingsPage.php:122
+#: src/ContentProtection/SettingsPage.php:126
 msgid "Title cannot be empty."
 msgstr ""
 
-#: src/ContentProtection/SettingsPage.php:156
+#: src/ContentProtection/SettingsPage.php:160
 #: src/Themes/DragDrop/AbstractTheme.php:114
 msgid "Changes saved."
 msgstr ""
 
-#: src/ContentProtection/SettingsPage.php:177
+#: src/ContentProtection/SettingsPage.php:181
 msgid "Add a Protection Rule"
 msgstr ""
 
@@ -3253,59 +3265,59 @@ msgid "Redirect URL"
 msgstr ""
 
 #. translators: %s: User login.
-#: src/Functions/GlobalFunctions.php:796
+#: src/Functions/GlobalFunctions.php:797
 msgid "Username: %s"
 msgstr ""
 
-#: src/Functions/GlobalFunctions.php:797
+#: src/Functions/GlobalFunctions.php:798
 msgid "To set your password, visit the following address:"
 msgstr ""
 
 #. translators: Login details notification email subject. %s: Site title.
-#: src/Functions/GlobalFunctions.php:805
+#: src/Functions/GlobalFunctions.php:806
 msgid "[%s] Login Details"
 msgstr ""
 
-#: src/Functions/GlobalFunctions.php:1103
+#: src/Functions/GlobalFunctions.php:1104
 msgid ""
 "It must be unique for each field, not a reserve text, in lowercase letters "
 "only with an underscore ( _ ) separating words e.g job_title"
 msgstr ""
 
-#: src/Functions/GlobalFunctions.php:1224
+#: src/Functions/GlobalFunctions.php:1225
 msgid "%s (WooCommerce Billing Address)"
 msgstr ""
 
-#: src/Functions/GlobalFunctions.php:1228
+#: src/Functions/GlobalFunctions.php:1229
 msgid "%s (WooCommerce Shipping Address)"
 msgstr ""
 
-#: src/Functions/GlobalFunctions.php:1272
+#: src/Functions/GlobalFunctions.php:1273
 msgid "First and Last Names"
 msgstr ""
 
-#: src/Functions/GlobalFunctions.php:1273
+#: src/Functions/GlobalFunctions.php:1274
 msgid "Last and First Names"
 msgstr ""
 
-#: src/Functions/GlobalFunctions.php:1281
+#: src/Functions/GlobalFunctions.php:1282
 msgid "Registration Date"
 msgstr ""
 
-#: src/Functions/GlobalFunctions.php:1398
+#: src/Functions/GlobalFunctions.php:1399
 msgid "There was an problem while verifying your file."
 msgstr ""
 
-#: src/Functions/GlobalFunctions.php:1403
+#: src/Functions/GlobalFunctions.php:1404
 msgid "Sorry, this file extension is not permitted for security reasons."
 msgstr ""
 
-#: src/Functions/GlobalFunctions.php:1407
+#: src/Functions/GlobalFunctions.php:1408
 msgid "Sorry, this file type is not permitted for security reasons."
 msgstr ""
 
-#: src/Functions/GlobalFunctions.php:1411
-#: src/Functions/GlobalFunctions.php:1415
+#: src/Functions/GlobalFunctions.php:1412
+#: src/Functions/GlobalFunctions.php:1416
 msgid "Error: The file you uploaded is not accepted on our website."
 msgstr ""
 
@@ -4337,7 +4349,7 @@ msgid "Log Out"
 msgstr ""
 
 #: src/NavigationMenuLinks/Backend.php:31 src/RegisterActivation/Base.php:159
-#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:1015
+#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:1032
 #: src/ShortcodeParser/Builder/GlobalShortcodes.php:174
 #: src/Widgets/TabbedWidget.php:90
 msgid "Sign Up"
@@ -4477,13 +4489,13 @@ msgstr ""
 
 #: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:490
 #: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:547
-#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:608
-#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:665
-#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:691
-#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:758
-#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:814
-#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:873
-#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:922
+#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:636
+#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:680
+#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:706
+#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:773
+#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:829
+#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:888
+#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:939
 #: src/ShortcodeParser/Builder/FrontendProfileBuilder.php:346
 msgid "Field key is missing"
 msgstr ""
@@ -4492,27 +4504,27 @@ msgstr ""
 msgid "Select country"
 msgstr ""
 
-#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:695
+#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:710
 msgid "No dropdown option found."
 msgstr ""
 
-#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:764
+#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:779
 msgid "No radio choice found."
 msgstr ""
 
-#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:819
+#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:834
 msgid "No checkbox choice found."
 msgstr ""
 
-#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:930
+#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:947
 msgid "custom field not defined"
 msgstr ""
 
-#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:1084
+#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:1101
 msgid "Delete Avatar"
 msgstr ""
 
-#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:1120
+#: src/ShortcodeParser/Builder/FieldsShortcodeCallback.php:1137
 msgid "Delete Cover Photo"
 msgstr ""
 
@@ -4615,7 +4627,7 @@ msgstr ""
 msgid "Email Notifications"
 msgstr ""
 
-#: src/ShortcodeParser/MyAccount/MyAccountTag.php:495
+#: src/ShortcodeParser/MyAccount/MyAccountTag.php:497
 msgid "Cover Photo (min. width: 1000px)"
 msgstr ""
 
@@ -5059,7 +5071,7 @@ msgid "Fields to show in sorting dropdown menu"
 msgstr ""
 
 #: src/Themes/DragDrop/AbstractMemberDirectoryTheme.php:244
-#: src/Themes/DragDrop/AbstractMemberDirectoryTheme.php:834
+#: src/Themes/DragDrop/AbstractMemberDirectoryTheme.php:821
 msgid "Search"
 msgstr ""
 
@@ -5496,9 +5508,9 @@ msgstr ""
 msgid "ProfilePress"
 msgstr ""
 
-#. #-#-#-#-#  wp-user-avatar.pot (ProfilePress 3.2.2)  #-#-#-#-#
+#. #-#-#-#-#  wp-user-avatar.pot (ProfilePress 3.2.3)  #-#-#-#-#
 #. Plugin URI of the plugin/theme
-#. #-#-#-#-#  wp-user-avatar.pot (ProfilePress 3.2.2)  #-#-#-#-#
+#. #-#-#-#-#  wp-user-avatar.pot (ProfilePress 3.2.3)  #-#-#-#-#
 #. Author URI of the plugin/theme
 msgid "https://profilepress.net"
 msgstr ""

@@ -1,5 +1,10 @@
 ﻿== Changelog ==
 
+= 3.2.3 =
+* Fixed bug where custom content protection message wasn't properly formatted.
+* Escaped html attributes in html response returned on ajax form request.
+* Removed display-name as title for user profile in member directory.
+
 = 3.2.2 =
 * Added a new admin page header.
 * Add redirect_to query parameter when Global Access redirects to a login page.

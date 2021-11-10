@@ -791,20 +791,7 @@ abstract class AbstractMemberDirectoryTheme extends AbstractTheme
 
                                     $dateFormat = ! empty($custom_field['options']) ? $custom_field['options'] : 'Y-m-d';
 
-                                    $hasTime = FieldsShortcodeCallback::hasTime($dateFormat);
-                                    $time24  = false;
-
-                                    if ($hasTime && strpos($dateFormat, 'H') !== false) {
-                                        $time24 = true;
-                                    }
-
-                                    $config = apply_filters('ppress_frontend_flatpickr_date_config', [
-                                        'dateFormat'    => $dateFormat,
-                                        'enableTime'    => $hasTime,
-                                        'noCalendar'    => ! FieldsShortcodeCallback::hasDate($dateFormat),
-                                        'disableMobile' => true,
-                                        'time_24hr'     => $time24
-                                    ]);
+                                    $config = FieldsShortcodeCallback::date_picker_config($field_key, $dateFormat);
 
                                     printf(
                                         '<input type="text" name="%1$s" placeholder="%2$s" value="%4$s" class="ppressmd-form-field ppmd-date" data-config="%3$s">',

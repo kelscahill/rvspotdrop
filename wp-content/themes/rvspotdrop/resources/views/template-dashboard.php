@@ -27,6 +27,8 @@ $post = new TimberPost();
 $context['user_logged_in'] = is_user_logged_in();
 $context['post'] = $post;
 $context['posts'] = false;
+$context['dashboard_member_intro'] = 'Welcome to your RVSpotDrop Dashboard! Update your profile, manage your subscription, make a campground request, and more.';
+$context['dashboard_partner_intro'] = 'Welcome to your RVSpotDrop Dashboard! Update your profile, easily send us your availability, and more.';
 
 // Set the default timezone.
 date_default_timezone_set("America/Edmonton");

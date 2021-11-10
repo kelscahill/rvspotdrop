@@ -43,8 +43,9 @@ class EmailSettingsPage
 
             }, 10, 3);
 
-            $this->settingsPageInstance = Custom_Settings_Page_Api::instance('', PPRESS_SETTINGS_DB_OPTION_NAME);
-
+            if (ppressGET_var('view') == 'email') {
+                $this->settingsPageInstance = Custom_Settings_Page_Api::instance('', PPRESS_SETTINGS_DB_OPTION_NAME);
+            }
         });
     }
 

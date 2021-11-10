@@ -4,11 +4,11 @@ use ProfilePress\Core\ContentProtection\ContentConditions;
 use ProfilePress\Core\ContentProtection\SettingsPage;
 use ProfilePress\Core\Classes\PROFILEPRESS_sql as PR;
 
-$dbData = PR::get_meta_value(absint(ppress_var($_GET,'id')), SettingsPage::META_DATA_KEY);
+$dbData = PR::get_meta_value(absint(ppress_var($_GET, 'id')), SettingsPage::META_DATA_KEY);
 
 $contentToRestrictData = ppress_var($dbData, 'content');
 
-$accessConditionData   = ppress_var($dbData, 'access_condition');
+$accessConditionData = ppress_var($dbData, 'access_condition');
 
 add_action('add_meta_boxes', function () use ($contentToRestrictData) {
     add_meta_box(
@@ -66,7 +66,7 @@ do_action('add_meta_boxes', 'ppcontentprotection', '');
                 <div id="titlewrap">
                     <label class="screen-reader-text" id="title"><?= esc_html__('Add title', 'wp-user-avatar') ?></label>
                     <?php $postedData = ppress_var($_POST, 'ppress_cc_data', []); ?>
-                    <input value="<?= ppressPOST_var('title', ppress_var($dbData, 'title'), false, $postedData) ?>" style="width:100%!important;max-width:100%!important;" type="text" name="ppress_cc_data[title]" id="title">
+                    <input value="<?= esc_attr(ppressPOST_var('title', ppress_var($dbData, 'title'), false, $postedData)) ?>" style="width:100%!important;max-width:100%!important;" type="text" name="ppress_cc_data[title]" id="title">
                 </div>
             </div>
         </div>

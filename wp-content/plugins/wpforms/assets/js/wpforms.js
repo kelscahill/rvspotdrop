@@ -252,6 +252,49 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 					return this.optional( element ) || /^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(\ ?[AP]M)?$/i.test( value );
 				}, wpforms_settings.val_time24h );
 
+				// Validate time limits.
+				$.validator.addMethod( 'time-limit', function( value, element ) { // eslint-disable-line complexity
+
+					var $input = $( element ),
+						minTime = $input.data( 'min-time' ),
+						maxTime = $input.data( 'max-time' ),
+						isRequired = $input.prop( 'required' ),
+						isLimited = typeof minTime !== 'undefined';
+
+					if ( ! isLimited ) {
+						return true;
+					}
+
+					if ( ! isRequired && app.empty( value ) ) {
+						return true;
+					}
+
+					if ( app.compareTimesGreaterThan( maxTime, minTime ) ) {
+						return app.compareTimesGreaterThan( value, minTime ) && app.compareTimesGreaterThan( maxTime, value );
+					}
+
+					return ( app.compareTimesGreaterThan( value, minTime ) && app.compareTimesGreaterThan( value, maxTime ) ) ||
+						( app.compareTimesGreaterThan( minTime, value ) && app.compareTimesGreaterThan( maxTime, value  ) );
+
+				}, function( params, element ) {
+
+					var $input = $( element ),
+						minTime = $input.data( 'min-time' ),
+						maxTime = $input.data( 'max-time' );
+
+					// Replace `00:**pm` with `12:**pm`.
+					minTime = minTime.replace( /^00:([0-9]{2})pm$/, '12:$1pm' );
+					maxTime = maxTime.replace( /^00:([0-9]{2})pm$/, '12:$1pm' );
+
+					// Properly format time: add space before AM/PM, make uppercase.
+					minTime = minTime.replace( /(am|pm)/g, ' $1' ).toUpperCase();
+					maxTime = maxTime.replace( /(am|pm)/g, ' $1' ).toUpperCase();
+
+					return wpforms_settings.val_time_limit
+						.replace( '{minTime}', minTime )
+						.replace( '{maxTime}', maxTime );
+				} );
+
 				// Validate checkbox choice limit.
 				$.validator.addMethod( 'check-limit', function( value, element ) {
 					var $ul = $( element ).closest( 'ul' ),
@@ -812,11 +855,23 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 				$input.mailcheck( {
 					suggested: function( $el, suggestion ) {
 
-						if ( suggestion.domain.match( /^xn--/ ) ) {
-							suggestion.full = suggestion.address + '@' + punycode.toUnicode( suggestion.domain );
+						if ( suggestion.address.match( /^xn--/ ) ) {
+							suggestion.full = punycode.toUnicode( decodeURI( suggestion.full ) );
+
+							var parts = suggestion.full.split( '@' );
+
+							suggestion.address = parts[0];
+							suggestion.domain = parts[1];
 						}
 
-						suggestion = '<a href="#" class="mailcheck-suggestion" data-id="' + id + '" title="' + wpforms_settings.val_email_suggestion_title + '">' + decodeURI( suggestion.full.replace( /%[^a-z0-9]/gi, '%25' ) ) + '</a>';
+						if ( suggestion.domain.match( /^xn--/ ) ) {
+							suggestion.domain = punycode.toUnicode( decodeURI( suggestion.domain ) );
+						}
+
+						var address = decodeURI( suggestion.address ).replaceAll( /[<>'"()/\\|:;=@%&\s]/ig, '' ).substr( 0, 64 ),
+							domain = decodeURI( suggestion.domain ).replaceAll( /[<>'"()/\\|:;=@%&+_\s]/ig, '' );
+
+						suggestion = '<a href="#" class="mailcheck-suggestion" data-id="' + id + '" title="' + wpforms_settings.val_email_suggestion_title + '">' + address + '@' + domain + '</a>';
 						suggestion = wpforms_settings.val_email_suggestion.replace( '{suggestion}', suggestion );
 
 						$el.closest( '.wpforms-field' ).find( '#' + id + '_suggestion' ).remove();
@@ -2239,6 +2294,28 @@ var wpforms = window.wpforms || ( function( document, window, $ ) {
 		isFunction: function( object ) {
 
 			return !! ( object && object.constructor && object.call && object.apply );
+		},
+
+		/**
+		 * Compare times.
+		 *
+		 * @since 1.7.1
+		 *
+		 * @param {string} time1 Time 1.
+		 * @param {string} time2 Time 2.
+		 *
+		 * @returns {boolean} True if time1 is greater than time2.
+		 */
+		compareTimesGreaterThan: function( time1, time2 ) {
+
+			// Properly format time: add space before AM/PM, make uppercase.
+			time1 = time1.replace( /(am|pm)/g, ' $1' ).toUpperCase();
+			time2 = time2.replace( /(am|pm)/g, ' $1' ).toUpperCase();
+
+			var time1Date = Date.parse( '01 Jan 2021 ' + time1 ),
+				time2Date = Date.parse( '01 Jan 2021 ' + time2 );
+
+			return time1Date >= time2Date;
 		},
 	};
 

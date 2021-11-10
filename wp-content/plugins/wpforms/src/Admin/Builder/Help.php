@@ -303,6 +303,7 @@ class Help {
 			'settings/conversational_forms'                      => 'conversational forms',
 			'settings/form_locker'                               => 'form locker',
 			'settings/form_pages'                                => 'form pages',
+			'settings/save_resume'                               => 'save and resume',
 			'settings/webhooks'                                  => 'webhooks',
 			'providers'                                          => '',
 			'providers/aweber'                                   => 'aweber',
@@ -1079,6 +1080,21 @@ class Help {
 			'form pages'                => [
 				'/docs/how-to-install-and-use-the-form-pages-addon/',
 			],
+			'save'                      => [
+				'/docs/how-to-install-and-use-the-save-and-resume-addon-with-wpforms/',
+			],
+			'resume'                    => [
+				'/docs/how-to-install-and-use-the-save-and-resume-addon-with-wpforms/',
+			],
+			'continue'                  => [
+				'/docs/how-to-install-and-use-the-save-and-resume-addon-with-wpforms/',
+			],
+			'save and resume'           => [
+				'/docs/how-to-install-and-use-the-save-and-resume-addon-with-wpforms/',
+			],
+			'save and continue'         => [
+				'/docs/how-to-install-and-use-the-save-and-resume-addon-with-wpforms/',
+			],
 			'webhooks'                  => [
 				'/docs/how-to-install-and-use-the-webhooks-addon-with-wpforms/',
 			],
@@ -1185,7 +1201,7 @@ class Help {
 
 		$result = array_filter(
 			$this->docs,
-			function( $doc ) use ( $link ) {
+			static function( $doc ) use ( $link ) {
 
 				return ! empty( $doc['url'] ) && $doc['url'] === 'https://wpforms.com' . $link;
 			}

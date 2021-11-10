@@ -88,7 +88,7 @@ $noaccess_action_redirect_custom_url = ppressPOST_var('noaccess_action_redirect_
                 remove_all_filters('mce_buttons', 10);
                 remove_all_filters('mce_external_plugins', 10);
                 remove_all_actions('after_wp_tiny_mce');
-                wp_editor($noaccess_action_message_custom, 'pp-cc-access-noaccess-action-message-custom', [
+                wp_editor(wp_kses_post($noaccess_action_message_custom), 'pp-cc-access-noaccess-action-message-custom', [
                     'textarea_name' => 'ppress_cc_data[access_condition][noaccess_action_message_custom]',
                     'textarea_rows' => 20,
                     'wpautop'       => false,
@@ -117,7 +117,7 @@ $noaccess_action_redirect_custom_url = ppressPOST_var('noaccess_action_redirect_
                 </label>
             </th>
             <td>
-                <input type="text" id="pp-cc-access-noaccess-action-redirect-custom-url" name="ppress_cc_data[access_condition][noaccess_action_redirect_custom_url]" value="<?= $noaccess_action_redirect_custom_url ?>">
+                <input type="text" id="pp-cc-access-noaccess-action-redirect-custom-url" name="ppress_cc_data[access_condition][noaccess_action_redirect_custom_url]" value="<?= esc_attr($noaccess_action_redirect_custom_url) ?>">
             </td>
         </tr>
         </tbody>

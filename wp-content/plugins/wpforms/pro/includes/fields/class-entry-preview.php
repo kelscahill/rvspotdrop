@@ -41,6 +41,7 @@ class WPForms_Entry_Preview extends WPForms_Field {
 		add_action( 'wpforms_form_settings_confirmations_single_after', [ $this, 'add_confirmation_fields' ], 10, 2 );
 		add_action( 'wpforms_frontend_confirmation_message_after', [ $this, 'entry_preview_confirmation' ], 10, 4 );
 		add_filter( 'wpforms_frontend_form_data', [ $this, 'ignore_fields' ] );
+		add_filter( "wpforms_pro_admin_entries_edit_is_field_displayable_{$this->type}", '__return_false' );
 	}
 
 	/**
@@ -506,7 +507,7 @@ class WPForms_Entry_Preview extends WPForms_Field {
 
 		$label = ! empty( $field['name'] )
 			? wp_strip_all_tags( $field['name'] )
-			: sprintf( /* translators: %d - field id. */
+			: sprintf( /* translators: %d - field ID. */
 				esc_html__( 'Field ID #%d', 'wpforms' ),
 				absint( $field['id'] )
 			);
@@ -618,7 +619,7 @@ class WPForms_Entry_Preview extends WPForms_Field {
 	}
 
 	/**
-	 * The field is available to show inside the entry preview field.
+	 * Determine whether the field is available to show inside the entry preview field.
 	 *
 	 * @since 1.6.9
 	 *
@@ -631,16 +632,10 @@ class WPForms_Entry_Preview extends WPForms_Field {
 	private function is_field_support_preview( $value, $field, $form_data ) {
 
 		$field_type   = $field['type'];
-		$field_id     = $field['id'];
-		$field_data   = ! empty( $form_data['fields'][ $field_id ] ) ? $form_data['fields'][ $field_id ] : [];
 		$is_supported = true;
 
 		// Compatibility with Authorize.Net and Stripe addons.
 		if ( wpforms_is_empty_string( $value ) && in_array( $field_type, [ 'stripe-credit-card', 'authorize_net' ], true ) ) {
-			return false;
-		}
-
-		if ( $field_type === 'file-upload' ) {
 			return false;
 		}
 
@@ -659,11 +654,12 @@ class WPForms_Entry_Preview extends WPForms_Field {
 		$is_supported = (bool) apply_filters( "wpforms_pro_fields_entry_preview_is_field_support_preview_{$field_type}_field", $is_supported, $value, $field, $form_data );
 
 		/**
-		 * The field availability inside the entry preview field.
+		 * Fields availability inside the entry preview field.
+		 * Actually, it can control availabilities for all field types.
 		 *
 		 * @since 1.6.9
 		 *
-		 * @param bool   $is_supported The field availability.
+		 * @param bool   $is_supported Fields availability.
 		 * @param string $value        Value.
 		 * @param array  $field        Field data.
 		 * @param array  $form_data    Form data.

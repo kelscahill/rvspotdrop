@@ -528,7 +528,7 @@ class WPForms_About {
 						<?php
 						printf(
 							wp_kses( /* translators: %s - stars. */
-								__( 'We know that you will truly love WPForms. It has over <strong>9000+ five star ratings</strong> (%s) and is active on over 4 million websites.', 'wpforms-lite' ),
+								__( 'We know that you will truly love WPForms. It has over <strong>9000+ five star ratings</strong> (%s) and is active on over 5 million websites.', 'wpforms-lite' ),
 								[
 									'strong' => [],
 								]
@@ -1326,14 +1326,14 @@ class WPForms_About {
 					'status' => 'partial',
 					'text'   => [
 						'<strong>' . esc_html__( 'Limited Advanced Features', 'wpforms-lite' ) . '</strong>',
-						esc_html__( 'Multi-page Forms, File Upload Forms, Multiple Form Notifications, Conditional Form Confirmation', 'wpforms-lite' ),
+						esc_html__( 'Multi-page Forms, File Upload Forms, Multiple Form Notifications, Conditional Form Confirmation, Save and Resume Form', 'wpforms-lite' ),
 					],
 				],
 				'pro'   => [
 					'status' => 'full',
 					'text'   => [
 						'<strong>' . esc_html__( 'All Advanced Features', 'wpforms-lite' ) . '</strong>',
-						esc_html__( 'Multi-page Forms, File Upload Forms, Multiple Form Notifications, Conditional Form Confirmation, Custom CAPTCHA, Offline Forms, Signature Forms', 'wpforms-lite' ),
+						esc_html__( 'Multi-page Forms, File Upload Forms, Multiple Form Notifications, Conditional Form Confirmation, Custom CAPTCHA, Offline Forms, Signature Forms, Save and Resume Form', 'wpforms-lite' ),
 					],
 				],
 			],
@@ -1360,28 +1360,28 @@ class WPForms_About {
 					'status' => 'full',
 					'text'   => [
 						'<strong>' . esc_html__( 'Pro Addons Included', 'wpforms-lite' ) . '</strong>',
-						esc_html__( 'Form Abandonment, Conversational Forms, Frontend Post Submission, User Registration, Geolocation, and more (22 total)', 'wpforms-lite' ),
+						esc_html__( 'Form Abandonment, Conversational Forms, Frontend Post Submission, User Registration, Geolocation, and more (23 total)', 'wpforms-lite' ),
 					],
 				],
 				'elite'    => [
 					'status' => 'full',
 					'text'   => [
 						'<strong>' . esc_html__( 'All Addons Included', 'wpforms-lite' ) . '</strong>',
-						esc_html__( 'Form Abandonment, Conversational Forms, Frontend Post Submission, User Registration, Geolocation, Webhooks, and more (26 total)', 'wpforms-lite' ),
+						esc_html__( 'Form Abandonment, Conversational Forms, Frontend Post Submission, User Registration, Geolocation, Webhooks, and more (27 total)', 'wpforms-lite' ),
 					],
 				],
 				'ultimate' => [
 					'status' => 'full',
 					'text'   => [
 						'<strong>' . esc_html__( 'All Addons Included', 'wpforms-lite' ) . '</strong>',
-						esc_html__( 'Form Abandonment, Conversational Forms, Frontend Post Submission, User Registration, Geolocation, Webhooks, and more (26 total)', 'wpforms-lite' ),
+						esc_html__( 'Form Abandonment, Conversational Forms, Frontend Post Submission, User Registration, Geolocation, Webhooks, and more (27 total)', 'wpforms-lite' ),
 					],
 				],
 				'agency'   => [
 					'status' => 'full',
 					'text'   => [
 						'<strong>' . esc_html__( 'All Addons Included', 'wpforms-lite' ) . '</strong>',
-						esc_html__( 'Form Abandonment, Conversational Forms, Frontend Post Submission, User Registration, Geolocation, Webhooks, and more (26 total)', 'wpforms-lite' ),
+						esc_html__( 'Form Abandonment, Conversational Forms, Frontend Post Submission, User Registration, Geolocation, Webhooks, and more (27 total)', 'wpforms-lite' ),
 					],
 				],
 			],

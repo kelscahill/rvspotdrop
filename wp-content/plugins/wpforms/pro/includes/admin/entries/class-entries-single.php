@@ -150,8 +150,7 @@ class WPForms_Entries_Single {
 
 		_deprecated_function( __CLASS__ . '::' . __METHOD__, '1.5.5 of WPForms plugin', 'WPForms\Pro\Admin\Export\Export class' );
 
-		// Security check
-		if ( empty( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'wpforms_entry_details_export' ) ) {
+		if ( empty( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'wpforms_entry_details_export' ) ) {
 			return;
 		}
 		require_once WPFORMS_PLUGIN_DIR . 'pro/includes/admin/entries/class-entries-export.php';
@@ -171,7 +170,7 @@ class WPForms_Entries_Single {
 	public function process_star() {
 
 		// Security check.
-		if ( empty( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'wpforms_entry_details_star' ) ) {
+		if ( empty( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'wpforms_entry_details_star' ) ) {
 			return;
 		}
 
@@ -258,7 +257,7 @@ class WPForms_Entries_Single {
 	public function process_unread() {
 
 		// Security check.
-		if ( empty( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpforms_entry_details_unread' ) ) {
+		if ( empty( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'wpforms_entry_details_unread' ) ) {
 			return;
 		}
 
@@ -315,7 +314,7 @@ class WPForms_Entries_Single {
 	public function process_note_delete() {
 
 		// Security check.
-		if ( empty( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpforms_entry_details_deletenote' ) ) {
+		if ( empty( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'wpforms_entry_details_deletenote' ) ) {
 			return;
 		}
 
@@ -363,7 +362,7 @@ class WPForms_Entries_Single {
 		}
 
 		// Security check.
-		if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'wpforms_entry_details_addnote' ) ) {
+		if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['_wpnonce'] ), 'wpforms_entry_details_addnote' ) ) {
 			return;
 		}
 
@@ -403,7 +402,7 @@ class WPForms_Entries_Single {
 		}
 
 		// Security check.
-		if ( empty( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'wpforms_entry_details_notifications' ) ) {
+		if ( empty( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'wpforms_entry_details_notifications' ) ) {
 			return;
 		}
 
@@ -584,21 +583,33 @@ class WPForms_Entries_Single {
 					<span class="wpforms-entry-navigation-text">
 						<?php
 						printf(
-							/* translators: %1$s - current number of entry; %2$s - total number of entries. */
-							esc_html__( 'Entry %1$s of %2$s', 'wpforms' ),
-							$entry->entry_prev_count + 1,
-							$entry->entry_count
+							/* translators: %1$d - current number of entry; %2$d - total number of entries. */
+							esc_html__( 'Entry %1$d of %2$d', 'wpforms' ),
+							(int) $entry->entry_prev_count + 1,
+							(int) $entry->entry_count
 						);
 						?>
 					</span>
 					<span class="wpforms-entry-navigation-buttons">
-						<a href="<?php echo esc_url( $entry->entry_prev_url ); ?>" title="<?php esc_attr_e( 'Previous form entry', 'wpforms' ); ?>" id="wpforms-entry-prev-link" class="add-new-h2 wpforms-btn-grey <?php echo $entry->entry_prev_class; ?>">
+						<a
+								href="<?php echo esc_url( $entry->entry_prev_url ); ?>"
+								title="<?php esc_attr_e( 'Previous form entry', 'wpforms' ); ?>"
+								id="wpforms-entry-prev-link"
+								class="add-new-h2 wpforms-btn-grey <?php echo sanitize_html_class( $entry->entry_prev_class ); ?>">
 							<span class="dashicons dashicons-arrow-left-alt2"></span>
 						</a>
 
-						<span class="wpforms-entry-current" title="<?php esc_attr_e( 'Current form entry', 'wpforms' ); ?>"><?php echo $entry->entry_prev_count + 1; ?></span>
+						<span
+								class="wpforms-entry-current"
+								title="<?php esc_attr_e( 'Current form entry', 'wpforms' ); ?>">
+								<?php echo (int) $entry->entry_prev_count + 1; ?>
+						</span>
 
-						<a href="<?php echo esc_url( $entry->entry_next_url ); ?>" title="<?php esc_attr_e( 'Next form entry', 'wpforms' ); ?>" id="wpforms-entry-next-link" class=" add-new-h2 wpforms-btn-grey <?php echo $entry->entry_next_class; ?>">
+						<a
+								href="<?php echo esc_url( $entry->entry_next_url ); ?>"
+								title="<?php esc_attr_e( 'Next form entry', 'wpforms' ); ?>"
+								id="wpforms-entry-next-link"
+								class=" add-new-h2 wpforms-btn-grey <?php echo sanitize_html_class( $entry->entry_next_class ); ?>">
 							<span class="dashicons dashicons-arrow-right-alt2"></span>
 						</a>
 					</span>
@@ -636,12 +647,13 @@ class WPForms_Entries_Single {
 	 * Entry fields metabox.
 	 *
 	 * @since 1.1.5
+	 *
 	 * @param object $entry     Submitted entry values.
 	 * @param array  $form_data Form data and settings.
 	 */
 	public function details_fields( $entry, $form_data ) {
 
-		$hide_empty = isset( $_COOKIE['wpforms_entry_hide_empty'] ) && 'true' === $_COOKIE['wpforms_entry_hide_empty'] ;
+		$hide_empty = isset( $_COOKIE['wpforms_entry_hide_empty'] ) && $_COOKIE['wpforms_entry_hide_empty'] === 'true';
 		$form_title = ! isset( $form_data['settings']['form_title'] ) ? $form_data['settings']['form_title'] : '';
 
 		if ( empty( $form_title ) ) {
@@ -671,6 +683,7 @@ class WPForms_Entries_Single {
 			<div class="inside">
 
 				<?php
+
 				$fields = apply_filters( 'wpforms_entry_single_data', wpforms_decode( $entry->fields ), $entry, $form_data );
 
 				if ( empty( $fields ) ) {
@@ -680,35 +693,52 @@ class WPForms_Entries_Single {
 
 				} else {
 
-					// Display the fields and their values
+					add_filter( 'wp_kses_allowed_html', [ $this, 'modify_allowed_tags_entry_field_value' ], 10, 2 );
+
+					// Display the fields and their values.
 					foreach ( $fields as $key => $field ) {
 
-						// We can't display the field of unknown type.
 						if ( empty( $field['type'] ) ) {
+							continue;
+						}
+
+						$field_type = $field['type'];
+
+						/** This filter is documented in /src/Pro/Admin/Entries/Edit.php */
+						if ( ! (bool) apply_filters( "wpforms_pro_admin_entries_edit_is_field_displayable_{$field_type}", true, $field, $form_data ) ) {
 							continue;
 						}
 
 						$field_value  = isset( $field['value'] ) ? $field['value'] : '';
 						$field_value  = apply_filters( 'wpforms_html_field_value', wp_strip_all_tags( $field_value ), $field, $form_data, 'entry-single' );
-						$field_class  = sanitize_html_class( 'wpforms-field-' . $field['type'] );
+						$field_class  = sanitize_html_class( 'wpforms-field-' . $field_type );
 						$field_class .= wpforms_is_empty_string( $field_value ) ? ' empty' : '';
 						$field_style  = $hide_empty && empty( $field_value ) ? 'display:none;' : '';
 
-						echo '<div class="wpforms-entry-field ' . $field_class . '" style="' . $field_style . '">';
+						echo '<div class="wpforms-entry-field ' . wpforms_sanitize_classes( $field_class ) . '" style="' . esc_attr( $field_style ) . '">';
 
 							// Field name
 							echo '<p class="wpforms-entry-field-name">';
 								/* translators: %d - field ID. */
-								echo ! empty( $field['name'] ) ? wp_strip_all_tags( $field['name'] ) : sprintf( esc_html__( 'Field ID #%d', 'wpforms' ), absint( $field['id'] ) );
+								echo ! empty( $field['name'] )
+									? esc_html( wp_strip_all_tags( $field['name'] ) )
+									: sprintf( /* translators: %d - field ID. */
+										esc_html__( 'Field ID #%d', 'wpforms' ),
+										absint( $field['id'] )
+									);
 							echo '</p>';
 
 							// Field value
 							echo '<div class="wpforms-entry-field-value">';
-								echo ! wpforms_is_empty_string( $field_value ) ? nl2br( make_clickable( $field_value ) ) : esc_html__( 'Empty', 'wpforms' );
+								echo ! wpforms_is_empty_string( $field_value )
+									? wp_kses_post( nl2br( make_clickable( $field_value ) ) )
+									: esc_html__( 'Empty', 'wpforms' );
 							echo '</div>';
 
 						echo '</div>';
 					}
+
+					remove_filter( 'wp_kses_allowed_html', [ $this, 'modify_allowed_tags_entry_field_value' ] );
 				}
 				 ?>
 
@@ -716,6 +746,30 @@ class WPForms_Entries_Single {
 
 		</div>
 		<?php
+	}
+
+	/**
+	 * Allow additional tags for the wp_kses_post function.
+	 *
+	 * @since 1.7.1
+	 *
+	 * @param array  $allowed_html List of allowed HTML.
+	 * @param string $context      Context name.
+	 *
+	 * @return array
+	 */
+	public function modify_allowed_tags_entry_field_value( $allowed_html, $context ) {
+
+		if ( $context !== 'post' ) {
+			return $allowed_html;
+		}
+
+		$allowed_html['iframe'] = [
+			'data-src' => [],
+			'class'    => [],
+		];
+
+		return $allowed_html;
 	}
 
 	/**
@@ -1382,9 +1436,12 @@ class WPForms_Entries_Single {
 
 					<?php
 					foreach ( $action_links as $slug => $link ) {
-						$window = ! empty( $link['target'] ) ? 'target="_blank" rel="noopener noreferrer"' : '';
 						printf( '<p class="wpforms-entry-%s">', esc_attr( $slug ) );
-							printf( '<a href="%s" %s>', esc_url( $link['url'] ), $window );
+							printf(
+								'<a href="%s" %s>',
+								esc_url( $link['url'] ),
+								! empty( $link['target'] ) ? 'target="_blank" rel="noopener noreferrer"' : ''
+							);
 								printf( '<span class="dashicons %s"></span>', esc_attr( $link['icon'] ) );
 								echo esc_html( $link['label'] );
 							echo '</a>';

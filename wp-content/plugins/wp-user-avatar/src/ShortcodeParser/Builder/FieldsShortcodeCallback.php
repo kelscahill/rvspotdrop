@@ -72,7 +72,7 @@ class FieldsShortcodeCallback
     {
         if ( ! is_array($atts)) return $atts;
 
-        $invalid_atts = array('enforce', 'key', 'field_key', 'limit', 'options', 'checkbox_text', 'date_format', 'field_width', 'icon');
+        $invalid_atts = array('enforce', 'key', 'field_key', 'limit', 'options', 'checkbox_text', 'date_format', 'field_width', 'icon', 'checked_state');
 
         $valid_atts = array();
 
@@ -596,6 +596,34 @@ class FieldsShortcodeCallback
         return false;
     }
 
+    public static function date_picker_config($field_key, $dateFormat = '')
+    {
+        if (empty($dateFormat)) {
+
+            $dateFormat = ppress_var(
+                PROFILEPRESS_sql::get_profile_custom_field_by_key($field_key),
+                'options',
+                'Y-m-d',
+                true
+            );
+        }
+
+        $hasTime = self::hasTime($dateFormat);
+        $time24  = false;
+
+        if ($hasTime && strpos($dateFormat, 'H') !== false) {
+            $time24 = true;
+        }
+
+        return apply_filters('ppress_frontend_flatpickr_date_config', [
+            'dateFormat'    => $dateFormat,
+            'enableTime'    => $hasTime,
+            'noCalendar'    => ! self::hasDate($dateFormat),
+            'disableMobile' => true,
+            'time_24hr'     => $time24
+        ]);
+    }
+
     /**
      * @param $atts
      *
@@ -630,20 +658,7 @@ class FieldsShortcodeCallback
             $dateFormat = $atts['options'];
         }
 
-        $hasTime = self::hasTime($dateFormat);
-        $time24  = false;
-
-        if ($hasTime && strpos($dateFormat, 'H') !== false) {
-            $time24 = true;
-        }
-
-        $config = apply_filters('ppress_frontend_flatpickr_date_config', [
-            'dateFormat'    => $dateFormat,
-            'enableTime'    => $hasTime,
-            'noCalendar'    => ! self::hasDate($dateFormat),
-            'disableMobile' => true,
-            'time_24hr'     => $time24
-        ]);
+        $config = self::date_picker_config($key, $dateFormat);
 
         $html .= sprintf(
             '<script type="text/javascript">jQuery(function() {jQuery( ".pp_datepicker.%s" ).flatpickr(%s);});</script>',
@@ -878,10 +893,12 @@ class FieldsShortcodeCallback
         $field_label = isset($atts['checkbox_text']) ? html_entity_decode($atts['checkbox_text']) : '';
 
         // checked for checkbox
-        $checked = checked(isset($_POST[$key]) ? isset($_POST[$key]) : '', 'true', false);
+        $checked = checked(ppressPOST_var($key, ppress_var($atts, 'checked_state')), 'true', false);
 
         if ($this->form_type == FormRepository::EDIT_PROFILE_TYPE) {
             $db_data = ! empty($atts['value']) ? sanitize_text_field($atts['value']) : $this->current_user->$key;
+            $db_data = ('1' == $db_data) ? 'true' : $db_data;
+
             $checked = @checked(
                 ! empty($_POST[$key]) ? $_POST[$key] : $db_data,
                 'true',
@@ -943,7 +960,7 @@ class FieldsShortcodeCallback
 
         if ($type == 'agreeable') {
             $atts['key']           = $key;
-            $atts['checkbox_text'] = $field_label = html_entity_decode(PROFILEPRESS_sql::get_field_label($key));
+            $atts['checkbox_text'] = html_entity_decode(PROFILEPRESS_sql::get_field_label($key));
             $html                  = $this->single_checkbox_field($atts);
         }
 

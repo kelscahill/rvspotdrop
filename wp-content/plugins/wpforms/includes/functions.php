@@ -1032,7 +1032,7 @@ function wpforms_countries() {
 		'SE' => esc_html__( 'Sweden', 'wpforms-lite' ),
 		'CH' => esc_html__( 'Switzerland', 'wpforms-lite' ),
 		'SY' => esc_html__( 'Syrian Arab Republic', 'wpforms-lite' ),
-		'TW' => esc_html__( 'Taiwan, Province of China', 'wpforms-lite' ),
+		'TW' => esc_html__( 'Taiwan, Republic of China', 'wpforms-lite' ),
 		'TJ' => esc_html__( 'Tajikistan', 'wpforms-lite' ),
 		'TZ' => esc_html__( 'Tanzania (United Republic of)', 'wpforms-lite' ),
 		'TH' => esc_html__( 'Thailand', 'wpforms-lite' ),
@@ -1825,12 +1825,13 @@ function wpforms_log( $title = '', $message = '', $args = array() ) {
 	/**
 	 * Compare error levels to determine if we should log.
 	 * Current supported levels:
-	 * - Errors (error)
-	 * - Spam (spam)
+	 * - Conditional Logic (conditional_logic)
 	 * - Entries (entry)
+	 * - Errors (error)
 	 * - Payments (payment)
 	 * - Providers (provider)
-	 * - Conditional Logic (conditional_logic)
+	 * - Security (security)
+	 * - Spam (spam)
 	 */
 	$types = ! empty( $args['type'] ) ? (array) $args['type'] : [ 'error' ];
 
@@ -2968,4 +2969,38 @@ function wpforms_readonly( $readonly, $current = true, $echo = true ) {
 	}
 
 	return __checked_selected_helper( $readonly, $current, $echo, 'readonly' );
+}
+
+/**
+ * Process smart tags.
+ *
+ * @since 1.7.1
+ *
+ * @param string $content   Content.
+ * @param array  $form_data Form data.
+ * @param array  $fields    List of fields.
+ * @param string $entry_id  Entry ID.
+ *
+ * @return string
+ */
+function wpforms_process_smart_tags( $content, $form_data, $fields = [], $entry_id = '' ) {
+
+	// Skip it if variables have invalid format.
+	if ( ! is_string( $content ) || ! is_array( $form_data ) || ! is_array( $fields ) ) {
+		return $content;
+	}
+
+	/**
+	 * Process smart tags.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param string $content   Content.
+	 * @param array  $form_data Form data.
+	 * @param array  $fields    List of fields.
+	 * @param string $entry_id  Entry ID.
+	 *
+	 * @return string
+	 */
+	return apply_filters( 'wpforms_process_smart_tags',  $content, $form_data, $fields, $entry_id );
 }

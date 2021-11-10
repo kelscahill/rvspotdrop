@@ -23,7 +23,9 @@ class ExtensionsSettingsPage extends AbstractSettingsPage
         }
 
         add_action('admin_init', function () {
-            $this->spInstance = Custom_Settings_Page_Api::instance([], EM::DB_OPTION_NAME);
+            if (ppressGET_var('page') == PPRESS_EXTENSIONS_SETTINGS_SLUG) {
+                $this->spInstance = Custom_Settings_Page_Api::instance([], EM::DB_OPTION_NAME);
+            }
         });
     }
 

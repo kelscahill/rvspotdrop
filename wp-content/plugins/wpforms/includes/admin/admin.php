@@ -140,7 +140,10 @@ function wpforms_admin_scripts() {
 		'close'                           => esc_html__( 'Close', 'wpforms-lite' ),
 		'entry_delete_confirm'            => esc_html__( 'Are you sure you want to delete this entry and all its information (files, notes, logs, etc.)?', 'wpforms-lite' ),
 		'entry_delete_all_confirm'        => esc_html__( 'Are you sure you want to delete ALL entries and all their information (files, notes, logs, etc.)?', 'wpforms-lite' ),
-		'entry_delete_n_confirm'          => esc_html__( 'Are you sure you want to delete {entry_count} entry(s) and all the information (files, notes, logs, etc.)?', 'wpforms-lite' ),
+		'entry_delete_n_confirm'          => sprintf( /* translators: %s - entry count. */
+			esc_html__( 'Are you sure you want to delete %s entry(s) and all the information (files, notes, logs, etc.)?', 'wpforms-lite' ),
+			'{entry_count}'
+		),
 		'entry_empty_fields_hide'         => esc_html__( 'Hide Empty Fields', 'wpforms-lite' ),
 		'entry_empty_fields_show'         => esc_html__( 'Show Empty Fields', 'wpforms-lite' ),
 		'entry_field_columns'             => esc_html__( 'Entries Field Columns', 'wpforms-lite' ),

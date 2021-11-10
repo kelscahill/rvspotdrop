@@ -45,6 +45,16 @@ class Agreeable extends FieldBase
     public function field_settings()
     {
         return apply_filters('ppress_form_builder_textbox_field_settings', [
+            parent::GENERAL_TAB  => [
+                'checked_state' => [
+                    'label'   => esc_html__('Checked by Default', 'profilepress-pro'),
+                    'options' => [
+                        'false' => esc_html__('False', 'profilepress-pro'),
+                        'true'  => esc_html__('True', 'profilepress-pro'),
+                    ],
+                    'field'   => self::SELECT_FIELD
+                ]
+            ],
             parent::SETTINGS_TAB => [
                 'required' => [
                     'type'        => 'checkbox',

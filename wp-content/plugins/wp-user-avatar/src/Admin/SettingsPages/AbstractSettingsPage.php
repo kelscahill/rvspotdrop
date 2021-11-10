@@ -105,7 +105,7 @@ abstract class AbstractSettingsPage
             <nav class="ppress-nav-tab-wrapper nav-tab-wrapper">
                 <?php foreach ($menus as $menu) : ?>
                     <?php
-                    $id                             = sanitize_text_field(ppress_var($menu,'id', ''));
+                    $id                             = sanitize_text_field(ppress_var($menu, 'id', ''));
                     $url                            = esc_url_raw(! empty($menu['url']) ? $menu['url'] : add_query_arg('view', $id));
                     self::$parent_menu_url_map[$id] = $url;
                     ?>
@@ -146,7 +146,7 @@ abstract class AbstractSettingsPage
     {
         static $cache = null;
 
-        if (is_null($cache)) {
+        if (is_null($cache) && strpos(ppressGET_var('page'), 'pp') !== false) {
             $cache = isset($_GET['view']) ? sanitize_text_field($_GET['view']) : $this->default_header_menu();
         }
 
@@ -157,7 +157,7 @@ abstract class AbstractSettingsPage
     {
         static $cache = null;
 
-        if (is_null($cache)) {
+        if (is_null($cache) && strpos(ppressGET_var('page'), 'pp') !== false) {
 
             $active_menu = $this->active_menu_tab();
 

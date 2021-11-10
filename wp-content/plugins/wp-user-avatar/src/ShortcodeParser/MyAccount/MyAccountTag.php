@@ -164,7 +164,7 @@ class MyAccountTag extends FormProcessor
         if (is_page() && self::is_endpoint()) {
             $endpoint       = $this->get_current_endpoint();
             $endpoint_title = $this->get_endpoint_title($endpoint);
-            $title          = ! empty($endpoint_title) ? $endpoint_title : $title;
+            $title          = ! empty($endpoint_title) ? $endpoint_title . ' - ' . get_bloginfo('name') : $title;
         }
 
         return $title;
@@ -403,9 +403,11 @@ class MyAccountTag extends FormProcessor
      *
      * @return string
      */
-    public function parse_shortcode($atts)
+    public function parse_shortcode()
     {
         add_action('wp_footer', [$this, 'js_script']);
+
+        do_action('ppress_my_account_shortcode_callback');
 
         global $wp;
 

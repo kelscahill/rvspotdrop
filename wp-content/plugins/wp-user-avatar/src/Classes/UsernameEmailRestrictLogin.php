@@ -9,7 +9,7 @@ class UsernameEmailRestrictLogin
 {
     public function __construct()
     {
-        add_filter('authenticate', [$this, 'do_action'], 999999999, 3);
+        add_filter('authenticate', [$this, 'do_action'], 999999, 3);
     }
 
     /**

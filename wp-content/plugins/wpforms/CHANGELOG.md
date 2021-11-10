@@ -1,6 +1,32 @@
 # Changelog
 All notable changes to this project will be documented in this file and formatted via [this recommendation](https://keepachangelog.com/en/1.0.0/).
 
+## [1.7.1] - 2021-11-09
+### Added
+- Time values are now validated against Limit Hours settings of the Date / Time field.
+
+### Changed
+- Updated bundled Dropzone.js library to 5.9.3.
+- Improved translations by removing confusion if non-translatable placeholders are used.
+- Improved support for WordPress Core UI colors and admin themes in admin bar menu.
+- Improved format and limits validation of modern File Upload field.
+- Improved display of empty and hidden field labels in Form Builder preview. 
+- Field helper notification in the Form Builder now can be dismissed.
+- Improved and standardized look of classic and modern Dropdown field across Form Builder, admin area and frontend.
+- Display "Save and Resume" link in Page Break field preview in Form Builder if Save and Resume is turned on. 
+
+### Fixed
+- Empty fields are displayed on Entry details after editing an Entry with Page Break or Entry Preview fields.
+- Strip slashes from Paragraph Text field when the value is dynamically populated.
+- SMTP settings page linked to Setup Wizard even when SMTP settings are already configured.
+- Occasional fatal error when moving Page Break field while another field is being added on slow Internet connections.
+- Entry Print Preview displays empty admin page if Entry ID is not valid.
+- File upload error when custom validation of any other field fails.
+- Notifications count in the admin bar is misaligned.
+- Field helper notification in the Form Builder overlaps and blocks Duplicate and Delete actions when hovered.
+- Inconsistent new lines in different field types in Entry Preview.
+- Non-latin (Punycode) email addresses are not converted for display in email suggestion hints.
+
 ## [1.7.0] - 2021-10-05
 ### Added
 - New field - Rich Text.

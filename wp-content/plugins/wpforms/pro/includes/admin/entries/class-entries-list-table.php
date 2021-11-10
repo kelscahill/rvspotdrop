@@ -386,7 +386,7 @@ class WPForms_Entries_Table extends WP_List_Table {
 		$entry_fields = wpforms_decode( $entry->fields );
 
 		if (
-			! empty( $entry_fields[ $field_id ] ) &&
+			isset( $entry_fields[ $field_id ]['value'] ) &&
 			! wpforms_is_empty_string( $entry_fields[ $field_id ]['value'] )
 		) {
 
@@ -1255,7 +1255,7 @@ class WPForms_Entries_Table extends WP_List_Table {
 		}
 		if ( ! empty( $_GET['status'] ) ) {
 			$data_args['status'] = sanitize_text_field( $_GET['status'] ); // phpcs:ignore WordPress.Security
-			$total_items         = $this->counts['abandoned'];
+			$total_items         = ! empty( $this->counts[ $data_args['status'] ] ) ? $this->counts[ $data_args['status'] ] : 0;
 		}
 
 		if ( array_key_exists( 'notes_count', $columns ) ) {

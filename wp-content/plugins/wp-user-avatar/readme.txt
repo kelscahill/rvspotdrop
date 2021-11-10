@@ -5,7 +5,7 @@ Tags: user registration, user profile, registration form, membership, login form
 Requires at least: 4.7
 Requires PHP: 5.6.0
 Tested up to: 5.8
-Stable tag: 3.2.2
+Stable tag: 3.2.3
 License: GPLv2 or later
 
 Modern membership plugin for user registration, login form, user profile, member directories & content restriction.
@@ -117,26 +117,13 @@ No. You can create and manage your forms, user profiles and member directories w
 
 == Changelog ==
 
+= 3.2.3 =
+* Fixed bug where custom content protection message wasn't properly formatted.
+* Escaped html attributes in html response returned on ajax form request.
+* Removed display-name as title for user profile in member directory.
+
 = 3.2.2 =
 * Added a new admin page header.
 * Add redirect_to query parameter when Global Access redirects to a login page.
-
-= 3.2.1 =
-* Fixed issue with avatar sizes.
-* Fix: PHP DOMDocument loadHTML not encoding UTF-8 correctly.
-* Fixed: Index column size too large.
-
-= 3.2.0 =
-* Added cover photo uploader to WP edit profile page.
-* Added pagination to profile posts.
-* Added pagination to profile comments.
-* Added "previous_page" support for redirecting to previous page using "redirect" form attribute.
-* Renamed cover image to cover photo.
-* Ensure avatar url returns the full image url.
-* Added filter to override get_avatar size.
-* Fixed bug where double member directory embed resulted in same result in both.
-* Fixed form builder metabox label not correctly displaying.
-* Ensure missing closing tags are closed in content protection.
-* Made website url in profile display clickable.
 
 See the [changelog file](https://plugins.svn.wordpress.org/wp-user-avatar/trunk/changelog.txt) for full change log information.

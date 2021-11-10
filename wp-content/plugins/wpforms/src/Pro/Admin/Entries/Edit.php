@@ -344,7 +344,10 @@ class Edit {
 			'continue_editing'  => esc_html__( 'Continue Editing', 'wpforms' ),
 			'view_entry'        => esc_html__( 'View Entry', 'wpforms' ),
 			'msg_saved'         => esc_html__( 'The entry was successfully saved.', 'wpforms' ),
-			'entry_delete_file' => esc_html__( 'Are you sure you want to permanently delete the file "{file_name}"?', 'wpforms' ),
+			'entry_delete_file' => sprintf( /* translators: %s - file name. */
+				esc_html__( 'Are you sure you want to permanently delete the file "%s"?', 'wpforms' ),
+				'{file_name}'
+			),
 			'entry_empty_file'  => esc_html__( 'Empty', 'wpforms' ),
 		];
 
@@ -634,7 +637,7 @@ class Edit {
 
 		$form_id = (int) $form_data['id'];
 
-		echo '<input type="hidden" name="wpforms[id]" value="' . esc_attr( $form_id ) . '">';
+		echo '<input type="hidden" name="wpforms[id]" value="' . absint( $form_id ) . '">';
 		echo '<input type="hidden" name="wpforms[entry_id]" value="' . esc_attr( $this->entry->entry_id ) . '">';
 		echo '<input type="hidden" name="nonce" value="' . esc_attr( wp_create_nonce( 'wpforms-entry-edit-' . $form_id . '-' . $this->entry->entry_id ) ) . '">';
 
@@ -666,8 +669,8 @@ class Edit {
 
 		$field_type = ! empty( $field['type'] ) ? $field['type'] : '';
 
-		// Do not display some fields at all.
-		if ( ! $this->is_field_can_be_displayed( $field_type ) ) {
+		// We can't display the field of unknown type or field, that is not displayable.
+		if ( ! $this->is_field_displayable( $field_type, $field, $form_data ) ) {
 			return;
 		}
 
@@ -1176,16 +1179,49 @@ class Edit {
 	 * Check if the field can be displayed.
 	 *
 	 * @since 1.6.0
+	 * @since 1.7.1 Added $field and $form_data arguments.
 	 *
-	 * @param string $type Field type.
+	 * @param string $field_type Field type.
+	 * @param array  $field      Field data.
+	 * @param array  $form_data  Form data and settings.
 	 *
 	 * @return bool
 	 */
-	private function is_field_can_be_displayed( $type ) {
+	private function is_field_displayable( $field_type, $field, $form_data ) {
+
+		if ( empty( $field_type ) ) {
+			return false;
+		}
+
+		/**
+		 * Determine if the field is displayable on the backend.
+		 *
+		 * @since 1.7.1
+		 *
+		 * @param bool  $is_displayable Is the field displayable?
+		 * @param array $field          Field data.
+		 * @param array $form_data      Form data and settings.
+		 *
+		 * @return bool
+		 */
+		$is_displayable = (bool) apply_filters( "wpforms_pro_admin_entries_edit_is_field_displayable_{$field_type}", true, $field, $form_data );
+
+		if ( ! has_filter( 'wpforms_pro_admin_entries_edit_fields_dont_display' ) ) {
+			return $is_displayable;
+		}
 
 		$dont_display = [ 'divider', 'entry-preview', 'html', 'pagebreak' ];
 
-		return ! empty( $type ) && ! in_array( $type, (array) apply_filters( 'wpforms_pro_admin_entries_edit_fields_dont_display', $dont_display ), true );
+		return ! in_array(
+			$field_type,
+			(array) apply_filters_deprecated(
+				'wpforms_pro_admin_entries_edit_fields_dont_display',
+				[ $dont_display ],
+				'1.7.1 of the WPForms plugin',
+				"wpforms_pro_admin_entries_edit_is_field_displayable_{$field_type}"
+			),
+			true
+		);
 	}
 
 	/**
