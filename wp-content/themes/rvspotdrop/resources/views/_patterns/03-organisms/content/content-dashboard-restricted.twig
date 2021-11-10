@@ -1,0 +1,9 @@
+{% set base_class = content.base_class|default('c-content') %}
+
+<article class="c-content u-spacing--double">
+  <h1 class="o-page-title">{{ post.title }}</h1>
+  <div class="l-container--l o-rte-text u-align--center">
+    <p class="u-text-align--center">Sorry, you need to log in to view your dashboard.</p>
+    <a href="/login" class="o-button">Login</a>
+  </div>
+</article>

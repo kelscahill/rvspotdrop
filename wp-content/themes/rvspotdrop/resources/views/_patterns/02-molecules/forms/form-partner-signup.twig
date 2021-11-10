@@ -1,0 +1,318 @@
+{% set base_class = form.base_class|default('o-form-partner-signup') %}
+
+<div class="wpforms-container">
+  <form name="update_user_profile" method="post" action="/profile/" class="u-spacing">
+    <h3>Personal Information</h3>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>First name <span class="o-required">*</span></label>
+      </div>
+      <input value="{{ user.first_name }}" name="first_name" type="text" required="" />
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Last name <span class="o-required">*</span></label>
+      </div>
+      <input value="{{ user.last_name }}" name="last_name" type="text" required="" />
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Title <span class="o-required">*</span></label>
+        <p>Your title (e.g. owner, manager, camp host)</p>
+      </div>
+      <input value="{{ user.position_title }}" name="position_title" type="text" required="" />
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Email <span class="o-required">*</span></label>
+      </div>
+      <input value="{{ user.user_email }}" name="user_email" type="email" />
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Phone <span class="o-required">*</span></label>
+        <p>Best number to reach you including area code.</p>
+      </div>
+      <input value="{{ user.phone }}" name="phone" type="tel" placeholder="xxx-xxx-xxxx" required="" />
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>RV Park Name <span class="o-required">*</span></label>
+      </div>
+      <input value="{{ user.rv_park_name }}" name="rv_park_name" type="text" required="" />
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>RV Park Address <span class="o-required">*</span></label>
+        <p>Please note we are currently only serving Canada and the US (excluding Hawaii).</p>
+      </div>
+      <textarea name="rv_park_address" required="">{{ user.rv_park_address }}</textarea>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Website Url <span class="o-required">*</span></label>
+        <p>Your park's website.</p>
+      </div>
+      <input value="{{ user.rv_park_website }}" name="rv_park_website" type="url" required="" />
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Insagram Handle</label>
+        <p>Instagram handle (if you have one).</p>
+      </div>
+      <input value="{{ user.rv_park_instagram_handle }}" name="rv_park_instagram_handle" placeholder="@" type="text"/>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Facebook Page Url</label>
+        <p>Facebook page (if you have one).</p>
+      </div>
+      <input value="{{ user.rv_park_facebook_url }}" name="rv_park_facebook_url" type="url" />
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Message / Notes</label>
+        <p>Tell us a little about yourself and your RV campground/resort</p>
+      </div>
+      <textarea name="rv_park_description">{{ user.rv_park_description }}</textarea>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Do you allow long term stays? <span class="o-required">*</span></label>
+      </div>
+      <ul class="u-spacing--quarter">
+        {% set long_term_stays = function('get_field_object', 'long_term_stays', 'user_452').choices %}
+        {% for item in long_term_stays %}
+          <li><input type="radio" id="{{ 'radio-long-term-stays-' ~ loop.index }}" name="long_term_stays" value="{{ item }}"{{ user.long_term_stays == item ? ' checked'}}/><label for="{{ 'radio-long-term-stays-' ~ loop.index }}">{{ item }}</label></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>What is the price range for a nightly stay? <span class="o-required">*</span></label>
+        <p>Choose all that apply</p>
+      </div>
+      <ul class="u-spacing--quarter">
+        {% set nightly_rate = function('get_field_object', 'nightly_rate', 'user_452').choices %}
+        {% for item in nightly_rate %}
+          <li><input type="checkbox" name="nightly_rate[]" value="{{ item }}"{{ item in user.nightly_rate ? ' checked'}}/><label>{{ item }}</label></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Direct Booking Link <span class="o-required">*</span></label>
+        <p>Please provide a direct link to your RV park's booking page or booking information page.</p>
+      </div>
+      <input value="{{ user.direct_booking_link }}" name="direct_booking_link" type="url" required="" />
+    </div>
+
+    <hr />
+    <h3>Park Services</h3>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Available Services <span class="o-required">*</span></label>
+        <p>Please choose all service types you offer.<br /><em>*Full hookups typically include electric, water, and sewer)</em></p>
+      </div>
+      <ul class="u-spacing--quarter">
+        {% set available_services = function('get_field_object', 'available_services', 'user_452').choices %}
+        {% for item in available_services %}
+          <li><input type="checkbox" name="available_services[]" value="{{ item }}"{{ item in user.available_services ? ' checked'}}/><label>{{ item }}</label></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Rig Types Welcome <span class="o-required">*</span></label>
+        <p>Please indicate the types of rigs you welcome</p>
+      </div>
+      <ul class="u-spacing--quarter">
+        {% set rig_types_welcome = function('get_field_object', 'rig_types_welcome', 'user_452').choices %}
+        {% for item in rig_types_welcome %}
+          <li><input type="checkbox" name="rig_types_welcome[]" value="{{ item }}"{{ item in user.rig_types_welcome ? ' checked'}}/><label>{{ item }}</label></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>What is The Age Limit? <span class="o-required">*</span></label>
+        <p>If you have an age limit, what is it? Enter a numerical value in years.</p>
+      </div>
+      <ul class="u-spacing--quarter">
+        {% set rig_age_limit = function('get_field_object', 'rig_age_limit', 'user_452').choices %}
+        {% for item in rig_age_limit %}
+          <li><input type="radio" id="{{ 'radio-rig-age-limit-' ~ loop.index }}" name="rig_age_limit" value="{{ item }}"{{ user.rig_age_limit == item ? ' checked'}}/><label for="{{ 'radio-rig-age-limit-' ~ loop.index }}">{{ item }}</label></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>What is The Age Limit?</label>
+        <p>If you have an age limit, what is it? Enter a numerical value in years.</p>
+      </div>
+      <input value="{{ user.age_limit }}" name="age_limit" type="text" />
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Maximum Rig Length</label>
+        <p>Please indicate the longest length of rig you can accommodate.</p>
+      </div>
+      <input value="{{ user.maximum_rig_length }}" name="maximum_rig_length" type="number" />
+    </div>
+
+    <hr />
+    <h3>Park Features</h3>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Park Features <span class="o-required">*</span></label>
+        <p>What amenities do you offer your customers?</p>
+      </div>
+      <ul class="u-spacing--quarter">
+        {% set park_features = function('get_field_object', 'park_features', 'user_452').choices %}
+        {% for item in park_features %}
+          <li><input type="checkbox" name="park_features[]" value="{{ item }}"{{ item in user.park_features ? ' checked'}}/><label>{{ item }}</label></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Other Park Features</label>
+      </div>
+      <input value="{{ user.other_park_features }}" name="other_park_features" type="text" />
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>What Type of Spots Do You Have? <span class="o-required">*</span></label>
+        <p>What type of spots does your RV park have? Check all that apply.</p>
+      </div>
+      <ul class="u-spacing--quarter">
+        {% set rv_spot_type = function('get_field_object', 'rv_spot_type', 'user_452').choices %}
+        {% for item in rv_spot_type %}
+          <li><input type="checkbox" name="rv_spot_type[]" value="{{ item }}"{{ item in user.rv_spot_type ? ' checked'}}/><label>{{ item }}</label></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Do You Have Full Time Spots? <span class="o-required">*</span></label>
+        <p>Do you have spots for full-time RVers?</p>
+      </div>
+      <ul class="u-spacing--quarter">
+        {% set rv_full_time_spots = function('get_field_object', 'rv_full_time_spots', 'user_452').choices %}
+        {% for item in rv_full_time_spots %}
+          <li><input type="radio" id="{{ 'radio-rv_full_time_spots-' ~ loop.index }}" name="rv_full_time_spots" value="{{ item }}"{{ user.rv_full_time_spots == item ? ' checked'}}/><label for="{{ 'radio-rv_full_time_spots-' ~ loop.index }}">{{ item }}</label></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Are You Pet Friendly? <span class="o-required">*</span></label>
+      </div>
+      <ul class="u-spacing--quarter">
+        {% set rv_park_pet_friendly = function('get_field_object', 'rv_park_pet_friendly', 'user_452').choices %}
+        {% for item in rv_park_pet_friendly %}
+          <li><input type="radio" id="{{ 'radio-rv_park_pet_friendly-' ~ loop.index }}" name="rv_park_pet_friendly" value="{{ item }}"{{ user.rv_park_pet_friendly == item ? ' checked'}}/><label for="{{ 'radio-rv_park_pet_friendly-' ~ loop.index }}">{{ item }}</label></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Do You Have Any Pet Restrictions? <span class="o-required">*</span></label>
+        <p>If you are pet-friendly, do you have any pet restrictions?</p>
+      </div>
+      <ul class="u-spacing--quarter">
+        {% set rv_park_pet_restrictions = function('get_field_object', 'rv_park_pet_restrictions', 'user_452').choices %}
+        {% for item in rv_park_pet_restrictions %}
+          <li><input type="radio" id="{{ 'radio-rv_park_pet_restrictions-' ~ loop.index }}" name="rv_park_pet_restrictions" value="{{ item }}"{{ user.rv_park_pet_restrictions == item ? ' checked'}}/><label for="{{ 'radio-rv_park_pet_restrictions-' ~ loop.index }}">{{ item }}</label></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>What Are Your Pet Restrictions?</label>
+        <p>Please list any pet restrictions. Eg. 2 pets, under 20lbs, no lizards.</p>
+      </div>
+      <textarea name="rv_park_pet_restriction_details">{{ user.rv_park_pet_restriction_details }}</textarea>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Are You Family Friendly?</label>
+      </div>
+      <ul class="u-spacing--quarter">
+        {% set rv_park_family_friendly = function('get_field_object', 'rv_park_family_friendly', 'user_452').choices %}
+        {% for item in rv_park_family_friendly %}
+          <li><input type="radio" id="{{ 'radio-rv_park_family_friendly-' ~ loop.index }}" name="rv_park_family_friendly" value="{{ item }}"{{ user.rv_park_family_friendly == item ? ' checked'}}/><label for="{{ 'radio-rv_park_family_friendly-' ~ loop.index }}">{{ item }}</label></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Do You Have Any Age Restrictions For Guests? <span class="o-required">*</span></label>
+      </div>
+      <ul class="u-spacing--quarter">
+        {% set guest_age_restrictions = function('get_field_object', 'guest_age_restrictions', 'user_452').choices %}
+        {% for item in guest_age_restrictions %}
+          <li><input type="radio" id="{{ 'radio-guest_age_restrictions-' ~ loop.index }}" name="guest_age_restrictions" value="{{ item }}"{{ user.guest_age_restrictions == item ? ' checked'}}/><label for="{{ 'radio-guest_age_restrictions-' ~ loop.index }}">{{ item }}</label></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>What are your age restrictions to guests?</label>
+      </div>
+      <ul class="u-spacing--quarter">
+        {% set age_restrictions = function('get_field_object', 'age_restrictions', 'user_452').choices %}
+        {% for item in age_restrictions %}
+          <li><input type="checkbox" name="age_restrictions[]" value="{{ item }}"{{ item in user.age_restrictions ? ' checked'}}/><label>{{ item }}</label></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="{{ bem_classes(base_class, 'row') }} u-spacing--half">
+      <div class="{{ bem_classes(base_class, 'label') }} u-spacing--quarter">
+        <label>Any Other Details That You Want us to Know?</label>
+        <p>Are there any other details that we need to know about your park? Please leave this section blank if no.</p>
+      </div>
+      <textarea name="other_details">{{ user.other_details }}</textarea>
+    </div>
+
+    {% include "@atoms/buttons/button.twig" with {
+      "button": {
+        "text": "Save Changes",
+        "attributes": {
+          "type": "submit"
+        },
+        "extra": bem_classes(base_class, 'save')
+      }
+    } %}
+  </form>
+</div>

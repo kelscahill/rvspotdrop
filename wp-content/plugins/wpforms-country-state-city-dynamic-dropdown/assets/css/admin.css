@@ -1,0 +1,16 @@
+.wpforms-field-select_country.size-small select.primary-input,.wpforms-field-select_state.size-small select.primary-input,.wpforms-field-select_city.size-small select.primary-input {
+	width:25%;
+}
+
+.wpforms-field-select_country.size-medium select.primary-input,.wpforms-field-select_state.size-medium select.primary-input,.wpforms-field-select_city.size-medium select.primary-input {
+	width:65%;
+}
+
+.wpforms-field-select_country.size-large select.primary-input,.wpforms-field-select_state.size-large select.primary-input,.wpforms-field-select_city.size-large select.primary-input {
+	width:100%;
+}
+
+
+.wpforms-field-select_country select.primary-input,.wpforms-field-select_state select.primary-input,.wpforms-field-select_city select.primary-input {
+	width:65%;
+}

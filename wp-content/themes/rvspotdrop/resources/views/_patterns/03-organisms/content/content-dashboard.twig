@@ -1,0 +1,42 @@
+{% set base_class = content.base_class|default('c-content-dashbaord') %}
+
+<article class="{{ bem_classes(base_class, content.element, content.modifiers, content.extra) }}">
+  {% include "@organisms/asides/aside-dashboard.twig" with {
+    "aside": {
+      "extra": bem_classes(base_class, 'sidebar')
+    }
+  } %}
+  <div class="{{ bem_classes(base_class, 'body') }} u-spacing--double">
+    {% include "@molecules/components/page-header.twig" %}
+    <div class="o-rte-text">
+      {{ post.content }}
+    </div>
+    {% if post.slug == 'dashboard' %}
+      {% include "@molecules/components/dashboard-cards.twig" with {
+        "dashboard_cards": dashboard_cards
+      } %}
+    {% elseif post.slug == 'profile' %}
+      {% filter shortcodes %}[avatar_upload]{% endfilter %}
+      <hr />
+      {% if user.roles.member %}
+        {% include "@molecules/forms/form-member-signup.twig" %}
+      {% endif %}
+      {% if user.roles.partner %}
+        {% include "@molecules/forms/form-partner-signup.twig" %}
+      {% endif %}
+    {% elseif post.slug == 'subscription' %}
+      {% filter shortcodes %}[wpforms_transactions id="1628" fields="3"]{% endfilter %}
+    {% elseif post.slug == 'campground-request' %}
+      {% if campground_request_entries == 0 %}
+        <div class="o-limit-reached u-color--primary">Sorry, you've hit the maximum number of 2 requests for the month. You will be able to submit 2 more requests next month. Please check back on the 1st! If you have any questions, please reach out to <a href="mailto:hello@rvspotdrop.com">hello@rvspotdrop.com</a>.</div>
+      {% else %}
+        <p><em class="u-color--primary">You have {{ campground_request_entries }} request{{ campground_request_entries > 1 ? 's' }} left for the month of {{ now|date('F') }}.</em></p>
+        {% filter shortcodes %}[wpforms id="836"]{% endfilter %}
+      {% endif %}
+    {% elseif post.slug == 'past-campground-requests' %}
+      {% filter shortcodes %}[wpforms_entries_table id="836" user="current"]{% endfilter %}
+    {% elseif post.slug == 'past-campground-availability' %}
+      {% filter shortcodes %}[wpforms_entries_table id="1429" user="current"]{% endfilter %}
+    {% endif %}
+  </div>
+</article>

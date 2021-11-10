@@ -1,0 +1,21 @@
+{% if user_logged_in and ("member" in user.roles|keys or "partner" in user.roles|keys) %}
+  {% set html_extra_class = ' u-hide-wpadminbar' %}
+{% endif %}
+
+<!DOCTYPE html>
+<html class="no-js{{ html_extra_class }}" {{ site.language_attribute }}>
+  {% include "@templates/_head.twig" %}
+  <body class="body {{ body_class }}">
+    <a class="skip-link screen-reader-text visually-hidden" href="#content">Skip to content</a>
+    {% include "@organisms/global/header.twig" %}
+    {% block sections_before %}{% endblock %}
+    <div class="l-wrap" role="document">
+      <main class="l-main">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+    {% block sections_after %}{% endblock %}
+    {% include "@organisms/global/footer.twig" %}
+    {{ function('wp_footer') }}
+  </body>
+</html>

@@ -1,0 +1,242 @@
+
+@import '_variables_menu';
+@import 'variables';
+@import 'mixins';
+
+html{
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+}
+body.login{
+	margin: 0;
+	height: auto;
+	background-color: #fff;
+}
+body.login div#login h1 {
+	background-position: center top;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+body.login div#login h1 a{
+	margin-top: 25px;
+}
+
+.wp-core-ui {
+	.button-primary {
+		@include button( $button-color );
+		float: none;
+	}
+}
+
+.login form{
+	background-color: transparent;
+	box-shadow: none;
+	margin-top: 0;
+	padding: 20px 0;
+	border: none;
+	.button{
+		width: 100%;
+		padding: 6px 10px !important;
+		height: auto !important;
+		line-height: 28px !important;
+		font-size: 16px;
+	}
+
+	> p,
+	> div{
+		background-color: #fff;
+		border-radius: 0 0 3px 3px;
+		position: relative;
+		min-height: 44px;
+		label{
+			padding: 12px 10px 8px 0px;
+			display: block;
+			color: #ccc;
+		}
+	}
+	.wp-pwd,
+	.input{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		margin: 0;
+		border-radius: 0;
+		padding: 7px 0;
+		height: 44px;
+		background: transparent;
+		border-width: 0;
+		border-bottom-width: 1px;
+		border-bottom-color: #ccc;
+		box-shadow: none;
+		&:focus,
+		&:active,
+		&.active,
+		&.has-value{
+			background: #fff !important;
+			z-index: 1;
+			border-color: $button-color;
+		}
+	}
+
+	.forgetmenot,
+	.submit{
+		min-height: auto;
+		float: none;
+		padding: 10px 0;
+		background: transparent;
+		label{
+			color: #888;
+			display: inline;
+		}
+	}
+
+}
+
+#login{
+	background-color: #202020;
+	background-size: cover;
+    background-position: center center;
+	box-shadow: none;
+	width: auto;
+	padding: 4% 0;
+}
+#login_error, 
+.message{
+	color: #444;
+	border-radius: 0;
+	margin-left: -4px;
+	box-shadow: none;
+	padding: 12px 24px;
+}
+#nav{
+	text-align: center;
+	color: transparent;
+	a{
+		padding: 6px 10px;
+		border-radius: 3px;
+		+ a{
+			margin-left: -6px;
+		}
+	}
+} 
+
+.login-subtitle{
+	margin: 40px 10px 10px 10px;
+	text-align: center;
+	font-size: 1.1em;
+	line-height: 1.5;
+}
+
+.login-form-title{
+	margin-bottom: 20px;
+}
+
+.login-footer{
+	margin: 30px 10px 10px 10px;
+	text-align: center;
+	font-size: 12px;
+	opacity: 0.6;
+}
+
+#login-form{
+	color: #222;
+	padding: 8% 4%;
+	p.submit{
+		margin: 0;
+	}
+}
+
+#backtoblog{
+	display: none;
+}
+
+#lostpasswordform p.submit{
+	margin-top: 20px;
+}
+
+@media screen and (min-width: 783px) {
+	body.login{
+		max-width: 760px;
+		margin: 70px auto;
+		height: auto;
+		border-radius: 5px;
+	}
+	#login,
+	#login-form{
+		width: 320px;
+		display: table-cell;
+		border-radius:0 5px 5px 0;
+		padding: 40px 30px !important;
+		vertical-align: middle;
+	}
+	#login{
+		border-radius:5px 0 0 5px;
+	}
+}
+
+#loginform{
+	position: relative !important;
+}
+
+.wp-social-login-widget ~ p.submit{
+	padding-bottom: 65px;
+}
+
+.wp-social-login-widget{
+	border-top: 1px solid #f0f0f0;
+	position: absolute;
+	z-index: 1;
+	bottom: 0;
+	text-align: center;
+	padding-top: 5px;
+	width: 100%;
+}
+
+.wp-social-login-connect-with{
+	color: #999;
+	display: inline-block;
+	background-color: #fff;
+	position: relative;
+	top: -14px;
+	padding: 0 5px;
+}
+
+.wp-social-login-provider-list{
+	padding: 0;
+}
+
+.wp-social-login-provider{
+	border-radius: 20px;
+	padding: 6px 12px;
+	display: inline-block;
+	color: #fff !important;
+	background-color: #999;
+	&:before{
+		font-family: "icons";
+		content: '';
+		font-size: 18px;
+		vertical-align: -4px;
+		margin-right: 4px;
+	}
+}
+.wp-social-login-provider-google{
+	background-color: #db4437;
+	&:before{
+		content: "\e60d";
+	}
+}
+.wp-social-login-provider-twitter{
+	background-color: #55acee;
+	&:before{
+		content: "\e009";
+	}
+}
+.wp-social-login-provider-facebook{
+	background-color: #3b5998;
+	&:before{
+		content: "\e00b";
+	}
+}

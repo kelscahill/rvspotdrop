@@ -1,0 +1,38 @@
+{% set base_class = user.base_class|default('c-user') %}
+
+<div class="{{ bem_classes(base_class, user.element, user.modifiers, user.extra) }} u-spacing--half">
+  <div class="{{ bem_classes(base_class, 'headshot') }}">
+    {% include "@atoms/images/image/figure.twig" with {
+      "figure": {
+        "image": {
+          "src": user.avatar({size: 100}),
+          "alt": user.first_name ~ ' ' ~ user.last_name,
+          "extra": bem_classes(base_class, 'image')
+        },
+        "link": {
+          "url": "/profile"
+        }
+      }
+    } %}
+  </div>
+  <div class="{{ bem_classes(base_class, 'details') }} u-spacing--quarter">
+    {% include "@atoms/text/heading/heading.twig" with {
+      "heading": {
+        "level": "4",
+        "size": "s",
+        "type": "primary",
+        "text": user.first_name ~ ' ' ~ user.last_name,
+        "link": {
+          "url": "/profile",
+        },
+        "extra": bem_classes(base_class, 'name')
+      }
+    } %}
+    {% include "@atoms/text/dek/dek.twig" with {
+      "dek": {
+        "text": function('get_field', 'position_title', 'user_' ~ user.id),
+        "extra": bem_classes(base_class, 'position-title')
+      }
+    } %}
+  </div>
+</div>

@@ -1,0 +1,706 @@
+{
+    "key": "group_6038568b1e31f",
+    "title": "Partner Additional Details",
+    "fields": [
+        {
+            "key": "field_60385cb078bd8",
+            "label": "Park General Information",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_60495fbfd37bf",
+            "label": "Position Title",
+            "name": "position_title",
+            "type": "text",
+            "instructions": "Your title (e.g. owner, manager, camp host)",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_603856d7678aa",
+            "label": "RV Park Name",
+            "name": "rv_park_name",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_603da978f4171",
+            "label": "RV Park Address",
+            "name": "rv_park_address",
+            "type": "textarea",
+            "instructions": "Please note we are currently only serving Canada and the US (excluding Hawaii).",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_60385789aa9b5",
+            "label": "RV Park Website",
+            "name": "rv_park_website",
+            "type": "url",
+            "instructions": "Your park's website.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_603da61557fe0",
+            "label": "RV Park Facebook Url",
+            "name": "rv_park_facebook_url",
+            "type": "url",
+            "instructions": "Facebook page (if you have one).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_603da8957ddfd",
+            "label": "RV Park Instagram Handle",
+            "name": "rv_park_instagram_handle",
+            "type": "text",
+            "instructions": "Instagram handle (if you have one).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "@",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_603ed7140f55c",
+            "label": "RV Park Profile Image",
+            "name": "rv_park_profile_image",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        },
+        {
+            "key": "field_603857ecaa9b8",
+            "label": "RV Park Description",
+            "name": "rv_park_description",
+            "type": "textarea",
+            "instructions": "Tell us a little about yourself and your RV campground\/resort",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": "",
+            "new_lines": "wpautop"
+        },
+        {
+            "key": "field_60385796aa9b6",
+            "label": "Long Term Stays",
+            "name": "long_term_stays",
+            "type": "radio",
+            "instructions": "Do You Allow Long-Term Stays?",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Yes": "Yes",
+                "No": "No"
+            },
+            "allow_null": 0,
+            "other_choice": 0,
+            "default_value": "",
+            "layout": "vertical",
+            "return_format": "value",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_603857baaa9b7",
+            "label": "Nightly Rate",
+            "name": "nightly_rate",
+            "type": "checkbox",
+            "instructions": "What is the price range for a nightly stay?",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "$0-19": "$0-19",
+                "$20-29": "$20-29",
+                "$30-39": "$30-39",
+                "$40-49": "$40-49",
+                "$50-59": "$50-59",
+                "$60-69": "$60-69",
+                "$70-79": "$70-79",
+                ">$80": ">$80"
+            },
+            "allow_custom": 0,
+            "default_value": [],
+            "layout": "vertical",
+            "toggle": 0,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_60495f41c5ee3",
+            "label": "Direct Booking Link",
+            "name": "direct_booking_link",
+            "type": "text",
+            "instructions": "Please provide a direct link to your RV park's booking page or booking information page.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_603ed790a8eec",
+            "label": "Park Services",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_60385b0e78bd2",
+            "label": "Available Services",
+            "name": "available_services",
+            "type": "checkbox",
+            "instructions": "Please choose all service types you offer. *Full hookups typically include electric, water, and sewer)",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Full hookups (30 amp)": "Full hookups (30 amp)",
+                "Full hookups (50 amp)": "Full hookups (50 amp)",
+                "30 amp power": "30 amp power",
+                "50 amp power": "50 amp power",
+                "Water hookup": "Water hookup",
+                "Potable water station": "Potable water station",
+                "Sewer": "Sewer",
+                "Dump station": "Dump station",
+                "Dry camping (no services)": "Dry camping (no services)",
+                "Wifi \/ Internet": "Wifi \/ Internet"
+            },
+            "allow_custom": 0,
+            "default_value": [],
+            "layout": "vertical",
+            "toggle": 0,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_60385b6878bd3",
+            "label": "Rig Types Welcome",
+            "name": "rig_types_welcome",
+            "type": "checkbox",
+            "instructions": "Please indicate the types of rigs you welcome",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "A Class": "A Class",
+                "B Class \/ Van": "B Class \/ Van",
+                "C Class": "C Class",
+                "Travel Trailer": "Travel Trailer",
+                "Fifth Wheel": "Fifth Wheel",
+                "Tent Trailer": "Tent Trailer"
+            },
+            "allow_custom": 0,
+            "default_value": [],
+            "layout": "vertical",
+            "toggle": 0,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_60385b9f78bd4",
+            "label": "Rig Age Limit",
+            "name": "rig_age_limit",
+            "type": "radio",
+            "instructions": "Do You Have a Limit on the Age of the Rigs You Welcome?",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Yes": "Yes",
+                "No": "No"
+            },
+            "allow_null": 0,
+            "other_choice": 0,
+            "default_value": "No",
+            "layout": "vertical",
+            "return_format": "value",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_60385bcf78bd5",
+            "label": "What is The Age Limit?",
+            "name": "age_limit",
+            "type": "text",
+            "instructions": "If you have an age limit, what is it? Enter a numerical value in years.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_60385b9f78bd4",
+                        "operator": "==",
+                        "value": "Yes"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_60385c0778bd6",
+            "label": "Maximum Rig Length",
+            "name": "maximum_rig_length",
+            "type": "number",
+            "instructions": "Please indicate the longest length of rig you can accommodate.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
+            "key": "field_60385ceec29ee",
+            "label": "Park Features",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_60385cfbc29ef",
+            "label": "Park Features",
+            "name": "park_features",
+            "type": "checkbox",
+            "instructions": "What amenities do you offer your customers?",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Laundry facilities": "Laundry facilities",
+                "Bath house": "Bath house",
+                "Onsite store": "Onsite store",
+                "Onsite camphost": "Onsite camphost",
+                "Internet access": "Internet access",
+                "Cable\/satellite": "Cable\/satellite",
+                "Swimming": "Swimming",
+                "Playground": "Playground",
+                "Outdoor recreation": "Outdoor recreation",
+                "Fire rings": "Fire rings",
+                "Dog run\/park": "Dog run\/park",
+                "Open year round": "Open year round",
+                "Other": "Other"
+            },
+            "allow_custom": 0,
+            "default_value": [],
+            "layout": "vertical",
+            "toggle": 0,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_617b448941792",
+            "label": "Other Park Features",
+            "name": "other_park_features",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_60385d74c29f0",
+            "label": "RV Spot Type",
+            "name": "rv_spot_type",
+            "type": "checkbox",
+            "instructions": "What type of spots does your RV park have? Check all that apply.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Back-in": "Back-in",
+                "Pull thru": "Pull thru"
+            },
+            "allow_custom": 0,
+            "default_value": [],
+            "layout": "vertical",
+            "toggle": 0,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_60385dbcc29f1",
+            "label": "RV Full Time Spots",
+            "name": "rv_full_time_spots",
+            "type": "radio",
+            "instructions": "Do you have spots for full-time, year-round RV'ers?",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Yes": "Yes",
+                "No": "No"
+            },
+            "allow_null": 0,
+            "other_choice": 0,
+            "default_value": "",
+            "layout": "vertical",
+            "return_format": "value",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_60385deec29f2",
+            "label": "Pet Friendly",
+            "name": "rv_park_pet_friendly",
+            "type": "radio",
+            "instructions": "Are you pet-friendly?",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Yes": "Yes",
+                "No": "No"
+            },
+            "allow_null": 0,
+            "other_choice": 0,
+            "default_value": "",
+            "layout": "vertical",
+            "return_format": "value",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_60385e6ac29f3",
+            "label": "Pet Restrictions",
+            "name": "rv_park_pet_restrictions",
+            "type": "radio",
+            "instructions": "If you are pet friendly, do you have any pet restrictions?",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Yes": "Yes",
+                "No": "No"
+            },
+            "allow_null": 0,
+            "other_choice": 0,
+            "default_value": "",
+            "layout": "vertical",
+            "return_format": "value",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_60385efac29f4",
+            "label": "Pet Restriction Details",
+            "name": "rv_park_pet_restriction_details",
+            "type": "textarea",
+            "instructions": "What Are Your Pet Restrictions? Please list any pet restrictions. Eg. 2 pets, under 20lbs, no lizards.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_60385e6ac29f3",
+                        "operator": "==",
+                        "value": "Yes"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_60385f2bc29f5",
+            "label": "Family Friendly",
+            "name": "rv_park_family_friendly",
+            "type": "radio",
+            "instructions": "Are You Family Friendly?",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Yes": "Yes",
+                "No": "No"
+            },
+            "allow_null": 0,
+            "other_choice": 0,
+            "default_value": "",
+            "layout": "vertical",
+            "return_format": "value",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_60385f45c29f6",
+            "label": "Guest Age Restrictions",
+            "name": "guest_age_restrictions",
+            "type": "radio",
+            "instructions": "Do you have any age restrictions for guests?",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Yes": "Yes",
+                "No": "No"
+            },
+            "allow_null": 0,
+            "other_choice": 0,
+            "default_value": "No",
+            "layout": "vertical",
+            "return_format": "value",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_60385f74c29f7",
+            "label": "Age Restrictions",
+            "name": "age_restrictions",
+            "type": "checkbox",
+            "instructions": "What are your age restrictions to guests?",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_60385f45c29f6",
+                        "operator": "==",
+                        "value": "Yes"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Over 18": "Over 18",
+                "Over 19": "Over 19",
+                "Over 25": "Over 25",
+                "Over 55": "Over 55"
+            },
+            "allow_custom": 0,
+            "default_value": [],
+            "layout": "vertical",
+            "toggle": 0,
+            "return_format": "value",
+            "save_custom": 0
+        },
+        {
+            "key": "field_60385fc2c29f8",
+            "label": "Other Details",
+            "name": "other_details",
+            "type": "textarea",
+            "instructions": "Are there any other details that we need to know about your park? Please leave this section blank if no.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": "",
+            "new_lines": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "user_role",
+                "operator": "==",
+                "value": "partner"
+            }
+        ]
+    ],
+    "menu_order": -1,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "modified": 1635471312
+}
