@@ -6860,29 +6860,20 @@ body.menu-is-active .c-nav-drawer {
  */
 
 .c-nav-footer {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  text-align: center;
-  margin-bottom: -10px;
+  display: block;
+  -webkit-columns: 2 auto;
+     -moz-columns: 2 auto;
+          columns: 2 auto;
+  -webkit-column-gap: 40px;
+     -moz-column-gap: 40px;
+          column-gap: 40px;
 }
 
 .c-nav-footer__link {
   color: #fff;
-  padding: 10px;
-  border-radius: 50px;
+  padding: 0;
+  text-align: left;
+  display: block;
   font-family: "Poppins", sans-serif;
   font-size: var(--font-size-xs, 11px);
   font-style: normal;
@@ -6895,7 +6886,8 @@ body.menu-is-active .c-nav-drawer {
 .c-nav-footer__link:hover,
 .c-nav-footer__link:focus {
   color: #fff;
-  background-color: #f33f4b;
+  text-decoration: underline;
+  text-underline-position: below;
 }
 
 /**
@@ -7404,6 +7396,31 @@ body.sidebar-is-active .c-user__details {
   padding: 40px 0;
 }
 
+.c-footer-main .c-footer--inner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+@media (min-width: 551px) {
+  .c-footer-main .c-footer--inner {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+  }
+}
+
 .c-footer-main__contact a {
   color: #000;
 }
@@ -7411,6 +7428,13 @@ body.sidebar-is-active .c-user__details {
 .c-footer-main__contact a:hover,
 .c-footer-main__contact a:focus {
   text-decoration: underline;
+}
+
+@media (max-width: 550px) {
+  .c-footer-main__social {
+    margin-left: -10px;
+    margin-top: 20px;
+  }
 }
 
 .c-footer-legal {
@@ -7421,7 +7445,8 @@ body.sidebar-is-active .c-user__details {
 }
 
 .c-footer-legal .c-footer--inner {
-  padding: 5px 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   grid-row-gap: 0;
 }
 

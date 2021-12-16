@@ -269,25 +269,23 @@ body.menu-is-active {
  * Footer nav
  */
 .c-nav-footer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin-bottom: -$space-half;
+  display: block;
+  columns: 2 auto;
+  column-gap: $space-double;
 
   &__link {
     color: $c-white;
-    padding: $space-half;
-    border-radius: 50px;
+    padding: 0;
+    text-align: left;
+    display: block;
 
     @include o-heading--xs;
 
     &:hover,
     &:focus {
       color: $c-white;
-      background-color: $c-primary;
+      text-decoration: underline;
+      text-underline-position: below;
     }
   }
 }

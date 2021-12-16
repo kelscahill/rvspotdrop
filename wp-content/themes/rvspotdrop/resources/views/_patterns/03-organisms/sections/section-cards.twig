@@ -25,10 +25,10 @@
                   <h3 class="c-card__title o-heading--m">{{ post.card_title }}</h3>
                 {% endif %}
                 {% if post.card_description %}
-                  <div class="c-card__description">{{ post.card_description }}</div>
+                  <div class="c-card__description u-spacing">{{ post.card_description }}</div>
                 {% endif %}
                 {% if post.card_link %}
-                  <a href="{{ post.card_link.url }}" class="c-card__button o-button--secondary" target="{{ post.card_link.target ? post.card_button.target : '_self' }}">{{ post.card_button.title ? post.card_button.title : 'Learn More' }}</a>
+                  <a href="{{ post.card_link.url }}" class="c-card__button o-button--secondary" target="{{ post.card_link.target ? post.card_link.target : '_self' }}">{{ post.card_link.title ? post.card_link.title : 'Learn More' }}</a>
                 {% endif %}
               </div>
             {% endfor %}

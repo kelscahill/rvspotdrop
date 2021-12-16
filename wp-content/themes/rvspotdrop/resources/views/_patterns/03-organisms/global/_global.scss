@@ -121,6 +121,17 @@
   &-main {
     padding: $space-double 0;
 
+    .c-footer--inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-direction: column;
+
+      @include media('>small') {
+        flex-direction: row;
+      }
+    }
+
     &__contact {
       a {
         color: $c-black;
@@ -129,6 +140,13 @@
         &:focus {
           text-decoration: underline;
         }
+      }
+    }
+
+    &__social {
+      @include media('<=small') {
+        margin-left: -$space-half;
+        margin-top: $space;
       }
     }
   }
@@ -140,7 +158,8 @@
     font-size: $font-size-xs;
 
     .c-footer--inner {
-      padding: $space-quarter $space;
+      padding-top: $space-quarter;
+      padding-bottom: $space-quarter;
       grid-row-gap: 0;
     }
 
