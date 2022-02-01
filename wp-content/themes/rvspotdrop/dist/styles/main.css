@@ -5134,6 +5134,10 @@ div.wpforms-container.wpforms-container-full .wpforms-form .wpforms-confirmation
           justify-content: center;
 }
 
+#wpforms-1429 {
+  margin-left: 0;
+}
+
 .o-icon {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;

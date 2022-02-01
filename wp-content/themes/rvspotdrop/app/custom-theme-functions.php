@@ -12,6 +12,8 @@
  */
 function cc_mime_types($mimes) {
   $mimes['svg'] = 'image/svg+xml';
+  $mimes['doc'] = 'application/msword';
+  $mimes['docx'] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
   return $mimes;
 }
 add_filter('upload_mimes', 'cc_mime_types');
