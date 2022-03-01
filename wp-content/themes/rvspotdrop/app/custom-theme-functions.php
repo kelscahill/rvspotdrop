@@ -449,6 +449,7 @@ function prevent_wp_login() {
  *
  */
 function wpf_dev_transactions_table( $atts ) {
+  $current_user_email = get_userdata(get_current_user_id())->user_email;
   $atts = shortcode_atts([
     'id' => '',
     'user' => '',
@@ -457,7 +458,7 @@ function wpf_dev_transactions_table( $atts ) {
   if (empty($atts['id']) || !function_exists('wpforms')) {
     return;
   }
-  $entries_args = ['form_id' => absint($atts['id']), ];
+  $entries_args = ['form_id' => absint($atts['id']), 'number' => -1];
   $form_data = wpforms()->form->get(
     absint($atts['id']),
     array( 'content_only' => true )
@@ -485,16 +486,17 @@ function wpf_dev_transactions_table( $atts ) {
     }
   }
 
+
   ob_start();
   echo '<table class="o-table--responsive">';
   foreach ( $entries as $entry ) {
     if ( 'payment' !== $entry->type ) {
       continue;
     }
+
     $fields = json_decode( $entry->fields, true );
     $meta   = json_decode( $entry->meta, true );
-    $current_user_email = get_userdata(get_current_user_id())->user_email;
-    if (sanitize_text_field( $fields[$field_id] [ 'value' ] ) === $current_user_email) {
+    if (sanitize_text_field( $fields[$field_id][ 'value' ] ) === $current_user_email) {
         echo '<tr class="this-is-active">';
         echo '<td data-label="Subscription" class="js-toggle-parent">' . date("F j, Y",strtotime($entry->date)) . '</td>';
         echo '<td data-label="Total">$' . sanitize_text_field( $meta['payment_total'] ) . '/yr</td>';
